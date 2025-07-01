@@ -9,15 +9,13 @@
 <body>
   <div class="bg-black text-white">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-2 px-8" aria-label="Global">
-      <a href="#" class="mr-1.5 p-1.5">
-        Test
-      </a>
+      <a href="#" class="mr-40 text-gray-200 font-bold text-xl">Test</a>
       <div class="flex gap-12 w-full">
-        <a href="/" class="text-sm/6 font-semibold text-gray-200">Homepage</a>
-        <a href="/about" class="text-sm/6 font-semibold text-gray-200">About</a>
-        <a href="/contact" class="text-sm/6 font-semibold text-gray-200">Contact</a>
+        <x-nav-link href="/" :active="request()->is('/')">Homepage</x-nav-link>
+        <x-nav-link href="/jobs" :active="request()->is('jobs')">Jobs</x-nav-link>
+        <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
       <div class="flex flex-1 justify-end">
-        <a href="/login" class="text-sm/6 font-semibold text-gray-200">Log in <span aria-hidden="true">&rarr;</span></a>
+        <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span></x-nav-link>
       </div>
     </nav>
   </div>
