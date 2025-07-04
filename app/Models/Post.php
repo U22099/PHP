@@ -4,17 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
-class Job extends Model
+class Post extends Model
 {
-    protected $table = 'jobs_listing';
-
     use HasFactory;
 
     // The attributes that are mass assignable.
     protected $fillable = [
-        'name',
-        'salary',
+        'title',
+        'body',
+        'author'
     ];
 }
