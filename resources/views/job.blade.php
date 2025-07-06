@@ -3,32 +3,69 @@
         {{ $job->name }}
     </x-slot:heading>
 
-    <div class="bg-white shadow-lg rounded-xl p-8 md:p-10 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <p class="text-2xl font-semibold text-green-700">
-                <span
-                    class="inline-flex items-center rounded-md bg-green-50 px-4 py-2 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                    Pays {{ $job->salary }} per year
-                </span>
+    <div class="bg-white shadow-xl rounded-xl p-8 md:p-10 lg:p-12 mb-8">
+        <!-- Employer and Salary Section -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 pb-6 border-b border-gray-100">
+            <div>
+                @if ($job->employer)
+                    {{-- Ensure employer exists before trying to access it --}}
+                    <p class="text-lg text-gray-600 font-medium mb-1">
+                        Offered by: <span class="text-indigo-600 font-bold">{{ $job->employer->name }}</span>
+                    </p>
+                @endif
+                <p class="text-2xl font-semibold text-green-700">
+                    <span
+                        class="inline-flex items-center rounded-md bg-green-50 px-4 py-2 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                        Pays {{ $job->salary }} per year
+                    </span>
+                </p>
+            </div>
+
+            {{-- Optional: Add a company logo here if you have one --}}
+            {{--
+            @if ($job->employer && $job->employer->logo_url)
+                <img src="{{ $job->employer->logo_url }}" alt="{{ $job->employer->name }} Logo" class="h-20 w-auto mt-4 sm:mt-0 sm:ml-6">
+            @endif
+            --}}
+        </div>
+
+        <!-- Job Description Section -->
+        <div class="mt-6">
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Job Description</h3>
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-6">
+                <!-- Assuming $job->description exists and is the full content -->
+                @if ($job->description)
+                    {!! nl2br(e($job->description)) !!} {{-- Use nl2br and escape for safety, or {!! $job->description !!} if already sanitized HTML --}}
+                @else
+                    <p>This exciting role offers a unique opportunity to contribute to a dynamic team. We are looking
+                        for passionate individuals who are eager to grow, innovate, and make a significant impact.
+                        Responsibilities include collaborative problem-solving, efficient project execution, and
+                        continuous learning within a supportive environment. Join us and shape the future!</p>
+                @endif
+            </div>
+            <p class="mt-4 text-gray-500 text-sm italic">
+                *Specific responsibilities and qualifications may be detailed above or upon application.
             </p>
         </div>
 
-        <div class="mt-6 border-t border-gray-100 pt-6">
-            <h3 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h3>
-            <p class="text-gray-700 leading-relaxed text-lg">
-                <!-- Placeholder for actual job description. You'd typically have a $job->description here -->
-                This exciting role offers a unique opportunity to contribute to a dynamic team. We are looking for
-                passionate individuals who are eager to grow, innovate, and make a significant impact. Responsibilities
-                include collaborative problem-solving, efficient project execution, and continuous learning within a
-                supportive environment. Join us and shape the future!
-            </p>
-            <p class="mt-4 text-gray-500 text-sm">
-                *Specific responsibilities and qualifications available upon application.
-            </p>
-        </div>
+        <!-- Tags Section -->
+        @if ($job->tags->isNotEmpty())
+            <div class="mt-10 pt-6 border-t border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Key Skills & Tags</h3>
+                <div class="flex flex-wrap gap-3">
+                    @foreach ($job->tags as $tag)
+                        <span
+                            class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-200">
+                            {{ $tag->name }}
+                        </span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 
-    <div class="flex justify-end mt-8">
+    <!-- Back Button -->
+    <div class="flex justify-start mt-8">
         <a href="/jobs"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
             <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

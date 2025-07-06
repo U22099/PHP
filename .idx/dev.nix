@@ -5,6 +5,7 @@
   channel = "stable-24.05"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
   packages = [
+    pkgs.sudo
     pkgs.php82
     pkgs.php82Packages.composer
     pkgs.nodejs_20

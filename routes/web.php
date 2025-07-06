@@ -18,24 +18,22 @@ Route::get('/contact', function () {
 
 Route::get('/jobs', function () {
     return view('jobs', [
-        'jobs' => Job::all()
+        'jobs' => Job::all()->groupBy('employer.name')
     ]);
 });
 
 Route::get('/job/{id}', function ($id) {
     $job = Job::find($id);
-
     return view('job', ['job' => $job]);
 });
 
 Route::get('/posts', function () {
     return view('posts', [
-        'posts' => Post::all()
+        'posts' => Post::all()->groupBy('user.firstname')
     ]);
 });
 
 Route::get('/post/{id}', function ($id) {
     $post = Post::find($id);
-
     return view('post', ['post' => $post]);
 });
