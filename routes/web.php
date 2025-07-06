@@ -18,7 +18,7 @@ Route::get('/contact', function () {
 
 Route::get('/jobs', function () {
     return view('jobs', [
-        'jobs' => Job::all()->groupBy('employer.name')
+        'jobs' => Job::with('employer', 'tags')->get()->groupBy('employer.name')
     ]);
 });
 
@@ -29,7 +29,7 @@ Route::get('/job/{id}', function ($id) {
 
 Route::get('/posts', function () {
     return view('posts', [
-        'posts' => Post::all()->groupBy('user.firstname')
+        'posts' => Post::with('user', 'tags')->get()->groupBy('user.firstname')
     ]);
 });
 
