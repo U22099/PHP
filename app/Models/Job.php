@@ -16,8 +16,10 @@ class Job extends Model
 
     // The attributes that are mass assignable.
     protected $fillable = [
-        'name',
+        'employer_id',
+        'title',
         'salary',
+        'description',
     ];
 
     public function employer()

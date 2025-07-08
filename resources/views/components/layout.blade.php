@@ -35,7 +35,8 @@
                 <x-nav-link href="/jobs" :active="request()->is('jobs')">Jobs</x-nav-link>
                 <x-nav-link href="/posts" :active="request()->is('posts')">Posts</x-nav-link>
                 <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
-                <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span></x-nav-link>
+                <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span>
+                </x-nav-link>
             </div>
 
             <!-- Mobile Menu Button (Hamburger) -->
@@ -82,7 +83,8 @@
                     <x-nav-link href="/" :active="request()->is('/')" @click="open = false">Homepage</x-nav-link>
                     <x-nav-link href="/jobs" :active="request()->is('jobs')" @click="open = false">Jobs</x-nav-link>
                     <x-nav-link href="/posts" :active="request()->is('posts')" @click="open = false">Posts</x-nav-link>
-                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact</x-nav-link>
+                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact
+                    </x-nav-link>
                 </div>
                 <div class="py-6">
                     <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
@@ -94,9 +96,14 @@
 
     <!-- Header for Heading -->
     @isset($heading)
-        <header class="bg-white shadow">
-            <div class="mx-auto max-w-7xl px-6 md:px-8">
+        <header class="bg-white shadow w-full">
+            <div class="flex justify-between items-center mx-auto max-w-7xl px-6 md:px-8 w-full">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 py-4 sm:py-6">{{ $heading }}</h1>
+                @if (request()->is('jobs'))
+                    <x-button type="link" href="/jobs/create">
+                        Create Job
+                    </x-button>
+                @endif
             </div>
         </header>
     @endisset
