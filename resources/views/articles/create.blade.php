@@ -1,14 +1,14 @@
 <x-layout>
     <x-slot:heading>
-        Create Job
+        Create Article
     </x-slot:heading>
 
-    <form method="POST" action="/jobs">
+    <form method="POST" action="/articles">
         @csrf
 
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
-                <h2 class="text-base font-semibold leading-7 text-gray-900">Create a New Job Listing</h2>
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Create a New Article</h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly.</p>
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -19,7 +19,8 @@
                                 class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input type="text" name="title" id="title"
                                     class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                    placeholder="Software Engineer" value="{{ old('title') }}" required>
+                                    placeholder="How to build a website with Laravel" value="{{ old('title') }}"
+                                    required>
                             </div>
                             @error('title')
                                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
@@ -27,33 +28,17 @@
                         </div>
                     </div>
 
-                    <div class="sm:col-span-4">
-                        <label for="salary" class="block text-sm font-medium leading-6 text-gray-900">Salary (e.g.,
-                            $50,000)</label>
-                        <div class="mt-2">
-                            <div
-                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input type="text" name="salary" id="salary"
-                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                    placeholder="$50,000 Per Year" value="{{ old('salary') }}" required>
-                            </div>
-                            @error('salary')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
                     <div class="col-span-full">
-                        <label for="description"
-                            class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+                        <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Body</label>
                         <div class="mt-2">
-                            <textarea id="description" name="description" rows="4"
+                            <textarea id="body" name="body" rows="6"
                                 class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                required>{{ old('description') }}</textarea>
+                                required>{{ old('body') }}</textarea>
                         </div>
-                        <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the job requirements
+                        <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the article
+                            requirements
                             and responsibilities.</p>
-                        @error('description')
+                        @error('body')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
                     </div>
@@ -62,7 +47,7 @@
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <x-button type="link" href="/jobs"
+            <x-button type="link" href="/articles"
                 class="text-sm font-semibold leading-6 text-gray-900">Cancel</x-button>
             <x-button type="submit">Save</x-button>
         </div>

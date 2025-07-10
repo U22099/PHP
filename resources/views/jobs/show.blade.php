@@ -16,7 +16,7 @@
                 <p class="text-2xl font-semibold text-green-700">
                     <span
                         class="inline-flex items-center rounded-md bg-green-50 px-4 py-2 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        Pays {{ $job->salary }} per year
+                        Pays {{ $job->salary }}
                     </span>
                 </p>
             </div>

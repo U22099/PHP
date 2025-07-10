@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Tags;
@@ -26,9 +27,9 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('post_tags', function (Blueprint $table) {
+        Schema::create('article_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Post::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Article::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
@@ -41,6 +42,6 @@ return new class extends Migration {
     {
         Schema::dropIfExists('tags');
         Schema::dropIfExists('job_tags');
-        Schema::dropIfExists('post_tags');
+        Schema::dropIfExists('article_tags');
     }
 };

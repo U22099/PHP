@@ -32,8 +32,9 @@
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex md:gap-8 lg:gap-12 md:text-lg flex-grow justify-end items-center">
                 <x-nav-link href="/" :active="request()->is('/')">Homepage</x-nav-link>
-                <x-nav-link href="/jobs" :active="request()->is('jobs')">Jobs</x-nav-link>
-                <x-nav-link href="/posts" :active="request()->is('posts')">Posts</x-nav-link>
+                <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')">Jobs</x-nav-link>
+                <x-nav-link href="/articles" :active="request()->routeIs('articles.*')">Articles</x-nav-link>
+                <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">Posts</x-nav-link>
                 <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
                 <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span>
                 </x-nav-link>
@@ -81,8 +82,9 @@
             <div class="-my-6 divide-y divide-gray-700 px-6">
                 <div class="space-y-2 py-6 flex gap-4 flex-col">
                     <x-nav-link href="/" :active="request()->is('/')" @click="open = false">Homepage</x-nav-link>
-                    <x-nav-link href="/jobs" :active="request()->is('jobs')" @click="open = false">Jobs</x-nav-link>
-                    <x-nav-link href="/posts" :active="request()->is('posts')" @click="open = false">Posts</x-nav-link>
+                    <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')" @click="open = false">Jobs</x-nav-link>
+                    <x-nav-link href="/articles" :active="request()->routeIs('articles.*')" @click="open = false">Articles</x-nav-link>
+                    <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">Posts</x-nav-link>
                     <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact
                     </x-nav-link>
                 </div>
@@ -99,9 +101,21 @@
         <header class="bg-white shadow w-full">
             <div class="flex justify-between items-center mx-auto max-w-7xl px-6 md:px-8 w-full">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 py-4 sm:py-6">{{ $heading }}</h1>
-                @if (request()->is('jobs'))
-                    <x-button type="link" href="/jobs/create">
-                        Create Job
+                @php
+                    $page = request()->route(explode('.', request()->route()->getName())[0]);
+                @endphp
+                @if (request()->is('jobs') or request()->is('posts') or request()->is('articles'))
+                    <x-button type="link" href="/{{ explode('.', request()->route()->getName())[0] }}/create"
+                        addclass="capitalize">
+                        Create {{ explode('.', request()->route()->getName())[0] }}
+                    </x-button>
+                @elseif (
+                    $page &&
+                        (request()->routeIs('jobs.show') or request()->routeIs('posts.show') or request()->routeIs('articles.show')))
+                    <x-button type="link"
+                        href="/{{ explode('.', request()->route()->getName())[0] }}/{{ $page->id }}/edit"
+                        addclass="capitalize">
+                        Edit Job
                     </x-button>
                 @endif
             </div>

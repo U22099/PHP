@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
-class PostFactory extends Factory
+class ArticleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,6 +20,7 @@ class PostFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
+            'title' => $this->faker->sentence(rand(3, 8)),
             'body' => $this->faker->paragraphs(rand(3, 7), true),
         ];
     }
