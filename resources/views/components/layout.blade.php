@@ -35,7 +35,7 @@
                 <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')">Jobs</x-nav-link>
                 <x-nav-link href="/articles" :active="request()->routeIs('articles.*')">Articles</x-nav-link>
                 <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">Posts</x-nav-link>
-                <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
+                <x-nav-link href="/contact" :active="request()->is('contact')">Contact Developer</x-nav-link>
                 <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span>
                 </x-nav-link>
             </div>
@@ -85,8 +85,7 @@
                     <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')" @click="open = false">Jobs</x-nav-link>
                     <x-nav-link href="/articles" :active="request()->routeIs('articles.*')" @click="open = false">Articles</x-nav-link>
                     <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">Posts</x-nav-link>
-                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact
-                    </x-nav-link>
+                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact Developer</x-nav-link>
                 </div>
                 <div class="py-6">
                     <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
@@ -102,19 +101,16 @@
             <div class="flex justify-between items-center mx-auto max-w-7xl px-6 md:px-8 w-full">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900 py-4 sm:py-6">{{ $heading }}</h1>
                 @php
-                    $page = request()->route(explode('.', request()->route()->getName())[0]);
+                    $pageRoute = request()->route()->getName();
+                    $page = explode('.', $pageRoute)[0];
+                    $boundModel = request()->route(Str::singular($page));
                 @endphp
-                @if (request()->is('jobs') or request()->is('posts') or request()->is('articles'))
-                    <x-button type="link" href="/{{ explode('.', request()->route()->getName())[0] }}/create"
-                        addclass="capitalize">
-                        Create {{ explode('.', request()->route()->getName())[0] }}
+                @if (in_array($pageRoute, ['jobs.index', 'articles.index', 'posts.index']))
+                    <x-button type="link" href="/{{ $page }}/create" addclass="capitalize">
+                        Create {{ $page }}
                     </x-button>
-                @elseif (
-                    $page &&
-                        (request()->routeIs('jobs.show') or request()->routeIs('posts.show') or request()->routeIs('articles.show')))
-                    <x-button type="link"
-                        href="/{{ explode('.', request()->route()->getName())[0] }}/{{ $page->id }}/edit"
-                        addclass="capitalize">
+                @elseif (in_array($pageRoute, ['jobs.show', 'articles.show', 'posts.show']))
+                    <x-button type="link" href="{{ route($page . '.edit', $boundModel) }}" addclass="capitalize">
                         Edit Job
                     </x-button>
                 @endif

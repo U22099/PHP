@@ -13,7 +13,8 @@ class Article extends Model
     // The attributes that are mass assignable.
     protected $fillable = [
         'title',
-        'body'
+        'body',
+        'user_id'
     ];
 
     public function user()

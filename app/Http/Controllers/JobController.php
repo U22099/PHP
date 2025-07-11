@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\Tags;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -16,7 +17,11 @@ class JobController extends Controller
 
     public function create()
     {
-        return view('jobs.create');
+        $availableTags = Tags::pluck('name')->toArray();
+
+        return view('jobs.create', [
+            'availableTags' => $availableTags
+        ]);
     }
 
     public function store()
@@ -24,14 +29,30 @@ class JobController extends Controller
         request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required'],
+            'tags' => ['array'],
+            'tags.*' => ['string', 'max:255']
         ]);
 
-        Job::create([
+        $job = Job::create([
             'title' => request('title'),
             'salary' => request('salary'),
             'description' => request('description'),
             'employer_id' => rand(1, 5)
         ]);
+
+        if ($request->has('tags')) {
+            $tagNames = $request->input('tags');
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            $job->tags()->sync($tagIds);
+        } else {
+            $job->tags()->sync([]);
+        }
 
         return redirect('/jobs');
     }
@@ -43,7 +64,8 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        return view('jobs.edit', ['job' => $job]);
+        $availableTags = Tags::pluck('name')->toArray();
+        return view('jobs.edit', ['job' => $job, 'availableTags' => $availableTags]);
     }
 
     public function update(Job $job)

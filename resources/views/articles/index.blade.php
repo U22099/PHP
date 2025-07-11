@@ -9,7 +9,7 @@
             @forelse ($articles as $article)
                 <div
                     class="bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300 ease-in-out">
-                    <a href="/article/{{ $article->id }}" class="block p-6 flex flex-col flex-grow">
+                    <a href="/articles/{{ $article->id }}" class="p-6 flex flex-col flex-grow">
                         <h3
                             class="text-xl font-semibold text-indigo-600 group-hover:text-indigo-700 transition-colors duration-200 mb-2 leading-tight">
                             {{ $article->title }}
@@ -29,7 +29,7 @@
                         </div>
                     @endif
                     <div class="px-6 pb-6 pt-2 text-sm text-gray-500 flex justify-end">
-                        <a href="/article/{{ $article->id }}"
+                        <a href="/articles/{{ $article->id }}"
                             class="text-indigo-500 hover:text-indigo-700 font-medium transition-colors duration-200 inline-flex items-center">
                             Read More &rarr;
                         </a>

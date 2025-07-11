@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Tags;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -16,7 +17,10 @@ class ArticleController extends Controller
 
     public function create()
     {
-        return view('articles.create');
+        $availableTags = Tags::pluck('name')->toArray();
+        return view('articles.create', [
+            'availableTags' => $availableTags
+        ]);
     }
 
     public function store()
@@ -24,25 +28,42 @@ class ArticleController extends Controller
         request()->validate([
             'title' => ['required', 'min:3'],
             'body' => ['required'],
+            'tags' => ['array'],
+            'tags.*' => ['string', 'max:255']
         ]);
 
-        Article::create([
+        $article = Article::create([
             'user_id' => rand(1, 5),
             'title' => request('title'),
             'body' => request('body'),
         ]);
+
+        if (request()->has('tags')) {
+            $tagNames = request()->input('tags');
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            $article->tags()->sync($tagIds);
+        } else {
+            $article->tags()->sync([]);
+        }
 
         return redirect('/articles');
     }
 
     public function show(Article $article)
     {
-        return view('articles.show', ['post' => $post]);
+        return view('articles.show', ['article' => $article]);
     }
 
     public function edit(Article $article)
     {
-        return view('articles.edit', ['article' => $article]);
+        $availableTags = Tags::pluck('name')->toArray();
+        return view('articles.edit', ['article' => $article, 'availableTags' => $availableTags]);
     }
 
     public function update(Article $article)
@@ -50,12 +71,28 @@ class ArticleController extends Controller
         request()->validate([
             'title' => ['string', 'required', 'min:3'],
             'body' => ['string', 'required'],
+            'tags' => ['array'],
+            'tags.*' => ['string', 'max:255']
         ]);
 
         $article->updateOrFail([
             'title' => request('title'),
-            'body' => request('title'),
+            'body' => request('body'),
         ]);
+
+        if (request()->has('tags')) {
+            $tagNames = request()->input('tags');
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            $article->tags()->sync($tagIds);
+        } else {
+            $article->tags()->sync([]);
+        }
 
         return redirect('/articles/' . $article->id);
     }

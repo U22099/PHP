@@ -57,6 +57,13 @@
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="col-span-full">
+                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', [])" :available-tags="$availableTags" placeholder="Add tags" />
+                        @error('tags')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>

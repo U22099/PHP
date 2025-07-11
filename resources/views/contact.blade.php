@@ -17,19 +17,19 @@
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
                         <input type="text" name="name" id="name" autocomplete="name"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base p-3"
+                            class="block w-full rounded-md border-b-2 border-b-gray-300 shadow-sm focus:border-b-gray-700 focus:outline-none sm:text-base p-3"
                             placeholder="John Doe">
                     </div>
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                         <input type="email" name="email" id="email" autocomplete="email"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base p-3"
+                            class="block w-full rounded-md border-b-2 border-b-gray-300 shadow-sm focus:border-b-gray-700 focus:outline-none sm:text-base p-3"
                             placeholder="you@example.com">
                     </div>
                     <div>
                         <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
-                        <textarea id="message" name="message" rows="6"
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-base p-3"
+                        <textarea id="message" name="message" rows="3"
+                            class="block w-full rounded-md border-b-2 border-b-gray-300 shadow-sm focus:border-b-gray-700 focus:outline-none sm:text-base p-3"
                             placeholder="Tell us about your project or inquiry..."></textarea>
                     </div>
                     <div class="flex justify-end">
