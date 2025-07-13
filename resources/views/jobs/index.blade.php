@@ -9,7 +9,7 @@
                 {{-- <div class="pt-8 first:pt-0">
                     <h2
                         class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6 border-b-2 border-indigo-600 pb-2 inline-block">
-                        {{ $employerName }}
+                        {{ $userName }}
             </h2> --}}
 
                 <div class="divide-y divide-gray-100">

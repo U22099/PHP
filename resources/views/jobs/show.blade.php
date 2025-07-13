@@ -7,10 +7,10 @@
         <!-- Employer and Salary Section -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 pb-6 border-b border-gray-100">
             <div>
-                @if ($job->employer)
-                    {{-- Ensure employer exists before trying to access it --}}
+                @if ($job->user)
+                    {{-- Ensure user exists before trying to access it --}}
                     <p class="text-lg text-gray-600 font-medium mb-1">
-                        Offered by: <span class="text-indigo-600 font-bold">{{ $job->employer->name }}</span>
+                        Offered by: <span class="text-indigo-600 font-bold">{{ $job->user->name }}</span>
                     </p>
                 @endif
                 <p class="text-2xl font-semibold text-green-700">
@@ -23,8 +23,8 @@
 
             {{-- Optional: Add a company logo here if you have one --}}
             {{--
-            @if ($job->employer && $job->employer->logo_url)
-                <img src="{{ $job->employer->logo_url }}" alt="{{ $job->employer->name }} Logo" class="h-20 w-auto mt-4 sm:mt-0 sm:ml-6">
+            @if ($job->user && $job->user->logo_url)
+                <img src="{{ $job->user->logo_url }}" alt="{{ $job->user->name }} Logo" class="h-20 w-auto mt-4 sm:mt-0 sm:ml-6">
             @endif
             --}}
         </div>

@@ -16,15 +16,15 @@ class Job extends Model
 
     // The attributes that are mass assignable.
     protected $fillable = [
-        'employer_id',
+        'user_id',
         'title',
         'salary',
         'description',
     ];
 
-    public function employer()
+    public function user()
     {
-        return $this->belongsTo(Employer::class);
+        return $this->belongsTo(User::class);
     }
 
     public function tags()

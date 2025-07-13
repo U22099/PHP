@@ -36,8 +36,19 @@
                 <x-nav-link href="/articles" :active="request()->routeIs('articles.*')">Articles</x-nav-link>
                 <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">Posts</x-nav-link>
                 <x-nav-link href="/contact" :active="request()->is('contact')">Contact Developer</x-nav-link>
-                <x-nav-link href="/login" :active="request()->is('login')">Log in <span aria-hidden="true">&rarr;</span>
-                </x-nav-link>
+                @guest
+                    <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
+                            aria-hidden="true">&rarr;</span></x-nav-link>
+                @endguest
+
+                @auth
+                    {{-- <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
+                            aria-hidden="true">&rarr;</span></x-nav-link> --}}
+                    <form method="POST" action="/logout">
+                        @csrf
+                        <x-button type="submit">Logout</x-button>
+                    </form>
+                @endauth
             </div>
 
             <!-- Mobile Menu Button (Hamburger) -->
@@ -88,8 +99,15 @@
                     <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact Developer</x-nav-link>
                 </div>
                 <div class="py-6">
-                    <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
-                            aria-hidden="true">&rarr;</span></x-nav-link>
+                    @guest
+                        <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
+                                aria-hidden="true">&rarr;</span></x-nav-link>
+                    @endguest
+
+                    @auth
+                        <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
+                                aria-hidden="true">&rarr;</span></x-nav-link>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -99,20 +117,24 @@
     @isset($heading)
         <header class="bg-white shadow w-full">
             <div class="flex justify-between items-center mx-auto max-w-7xl px-6 md:px-8 w-full">
-                <h1 class="text-3xl font-bold tracking-tight text-gray-900 py-4 sm:py-6">{{ $heading }}</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-gray-900 py-2 sm:py-4">{{ $heading }}</h1>
                 @php
                     $pageRoute = request()->route()->getName();
                     $page = explode('.', $pageRoute)[0];
                     $boundModel = request()->route(Str::singular($page));
                 @endphp
                 @if (in_array($pageRoute, ['jobs.index', 'articles.index', 'posts.index']))
-                    <x-button type="link" href="/{{ $page }}/create" addclass="capitalize">
-                        Create {{ $page }}
-                    </x-button>
+                    @can('create', 'job')
+                        <x-button type="link" href="/{{ $page }}/create" addclass="capitalize">
+                            Create {{ $page }}
+                        </x-button>
+                    @endcan
                 @elseif (in_array($pageRoute, ['jobs.show', 'articles.show', 'posts.show']))
-                    <x-button type="link" href="{{ route($page . '.edit', $boundModel) }}" addclass="capitalize">
-                        Edit Job
-                    </x-button>
+                    @can('edit', 'job')
+                        <x-button type="link" href="{{ route($page . '.edit', $boundModel) }}" addclass="capitalize">
+                            Edit Job
+                        </x-button>
+                    @endcan
                 @endif
             </div>
         </header>

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Article;
-use App\Models\Employer;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Job;
 use App\Models\Post;
@@ -19,7 +18,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->count(5)->create();
-        Employer::factory()->count(5)->create();
         Tags::factory()->count(20)->create();
 
         Post::factory()->count(50)->create();
@@ -29,9 +27,16 @@ class DatabaseSeeder extends Seeder
             $article->tags()->attach($tags);
         });
 
-        Job::factory()->count(30)->create()->each(function ($job) {
-            $tags = Tags::all()->random(rand(1, 3));
-            $job->tags()->attach($tags);
-        });
+        $clientUsers = User::where('role', 'client')->get();
+        if ($clientUsers->isNotEmpty()) {
+            foreach ($clientUsers as $client) {
+                Job::factory()->count(rand(1,5))->create([
+                    'user_id' => $client->id
+                ])->each(function ($job) {
+                    $tags = Tags::all()->random(rand(1, 3));
+                    $job->tags()->attach($tags);
+                });
+            }
+        }
     }
 }

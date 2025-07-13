@@ -5,18 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
     public function index()
     {
         return view('jobs.index', [
-            'jobs' => Job::with('employer', 'tags')->latest()->simplePaginate()
+            'jobs' => Job::with('user', 'tags')->latest()->simplePaginate()
         ]);
     }
 
     public function create()
     {
+        if(Auth::user()->cannot('create')){
+            return redirect()->back()->with('error','You are not allowed to create jobs.');
+        }
         $availableTags = Tags::pluck('name')->toArray();
 
         return view('jobs.create', [
@@ -26,6 +30,10 @@ class JobController extends Controller
 
     public function store()
     {
+        if(Auth::user()->cannot('create')){
+            return redirect()->back()->with('error','You are not allowed to create jobs.');
+        }
+
         request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required'],
@@ -37,7 +45,7 @@ class JobController extends Controller
             'title' => request('title'),
             'salary' => request('salary'),
             'description' => request('description'),
-            'employer_id' => rand(1, 5)
+            'user_id' => Auth::user()->id
         ]);
 
         if ($request->has('tags')) {
@@ -79,8 +87,7 @@ class JobController extends Controller
         $job->updateOrFail([
             'title' => request('title'),
             'salary' => request('salary'),
-            'description' => request('description'),
-            'employer_id' => rand(1, 5)
+            'description' => request('description')
         ]);
 
         return redirect('/jobs/' . $job->id);
