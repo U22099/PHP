@@ -2,27 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\Job;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class JobPolicy
+class PostPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->is(Auth::user());
+        return true;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Job $job): bool
+    public function view(User $user, Post $post): bool
     {
-        return $user->is(Auth::user());
+        return true;
     }
 
     /**
@@ -30,38 +29,38 @@ class JobPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role == 'client';
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Job $job): bool
+    public function update(User $user, Post $post): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return true;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Job $job): bool
+    public function delete(User $user, Post $post): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Job $job): bool
+    public function restore(User $user, Post $post): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return true;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Job $job): bool
+    public function forceDelete(User $user, Post $post): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return true;
     }
 }

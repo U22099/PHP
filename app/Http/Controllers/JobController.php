@@ -18,9 +18,6 @@ class JobController extends Controller
 
     public function create()
     {
-        if(Auth::user()->cannot('create')){
-            return redirect()->back()->with('error','You are not allowed to create jobs.');
-        }
         $availableTags = Tags::pluck('name')->toArray();
 
         return view('jobs.create', [
@@ -28,13 +25,9 @@ class JobController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        if(Auth::user()->cannot('create')){
-            return redirect()->back()->with('error','You are not allowed to create jobs.');
-        }
-
-        request()->validate([
+        $request->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required'],
             'tags' => ['array'],
@@ -53,7 +46,7 @@ class JobController extends Controller
             $tagIds = [];
 
             foreach ($tagNames as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tag = Tags::firstOrCreate(['name' => $tagName]);
                 $tagIds[] = $tag->id;
             }
 

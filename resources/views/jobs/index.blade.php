@@ -2,16 +2,17 @@
     <x-slot:heading>
         Available Positions
     </x-slot:heading>
+    <x-slot:headerbutton>
+        @can('create', \App\Models\Job::class)
+            <x-button type="link" href="/jobs/create" addclass="capitalize">
+                Create Job
+            </x-button>
+        @endcan
+    </x-slot:headerbutton>
 
     <div class="mt-8 flow-root">
         <div class="space-y-10 divide-y divide-gray-200">
             @forelse ($jobs as $job)
-                {{-- <div class="pt-8 first:pt-0">
-                    <h2
-                        class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6 border-b-2 border-indigo-600 pb-2 inline-block">
-                        {{ $userName }}
-            </h2> --}}
-
                 <div class="divide-y divide-gray-100">
                     <a href="/jobs/{{ $job->id }}"
                         class="group block py-6 px-4 hover:bg-gray-50 transition-colors duration-200 ease-in-out border-b border-gray-100 last:border-b-0">

@@ -33,6 +33,13 @@ return new class extends Migration {
             $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Schema::create('post_tags', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Post::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -43,5 +50,6 @@ return new class extends Migration {
         Schema::dropIfExists('tags');
         Schema::dropIfExists('job_tags');
         Schema::dropIfExists('article_tags');
+        Schema::dropIfExists('post_tags');
     }
 };

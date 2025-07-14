@@ -13,11 +13,42 @@
                 <p class="mt-1 text-sm leading-6 text-gray-600">Fill in the form to register.</p>
 
                 <div class="mt-10 flex gap-3 flex-col justify-start items-center w-full">
-                    <x-form-field class="w-full" fieldname="username" placeholder="John Doe" required />
-                    <x-form-field class="w-full" fieldname="email" placeholder="johndoe@gmail.com" required />
-                    <x-form-field type="password" fieldname="password" placeholder="password" required />
+                    <x-form-field class="w-full" fieldname="firstname" placeholder="John Doe" required>
+                        @error('firstname')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+
+                    <x-form-field class="w-full" fieldname="lastname" placeholder="John Doe" required>
+                        @error('lastname')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+
+                    <x-form-field class="w-full" fieldname="username" placeholder="John Doe" required>
+                        @error('username')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+
+                    <x-form-field class="w-full" fieldname="email" placeholder="johndoe@gmail.com" required>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+
+                    <x-form-field type="password" fieldname="password" placeholder="password" required>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+
                     <x-form-field type="password" label="confirm password" fieldname="password_confirmation"
-                        placeholder="retype password" required />
+                        placeholder="retype password" required>
+                        @error('password_confirmation')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
                 </div>
             </div>
         </div>

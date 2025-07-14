@@ -2,6 +2,13 @@
     <x-slot:heading>
         {{ $job->title }}
     </x-slot:heading>
+    <x-slot:headerbutton>
+        @can('update', $job)
+            <x-button type="link" href="/jobs/{{ $job->id }}/edit" addclass="capitalize">
+                Edit Job
+            </x-button>
+        @endcan
+    </x-slot:headerbutton>
 
     <div class="bg-white shadow-xl rounded-xl p-8 md:p-10 lg:p-12 mb-8">
         <!-- Employer and Salary Section -->

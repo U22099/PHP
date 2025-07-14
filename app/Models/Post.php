@@ -19,4 +19,14 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // public function comments()
+    // {
+    //     return $this->belongsToMany(Comments::class);
+    // }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tags::class);
+    }
 }

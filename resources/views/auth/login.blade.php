@@ -13,8 +13,16 @@
                 <p class="mt-1 text-sm leading-6 text-gray-600">Enter your credentials below to log in.</p>
 
                 <div class="mt-10 flex gap-3 flex-col justify-start items-center w-full">
-                    <x-form-field class="w-full" fieldname="email" placeholder="example@gmail.com" required />
-                    <x-form-field type="password" fieldname="password" placeholder="password" required />
+                    <x-form-field class="w-full" fieldname="email" placeholder="example@gmail.com" required>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
+                    <x-form-field type="password" fieldname="password" placeholder="password" required>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                        @enderror
+                    </x-form-field>
                 </div>
             </div>
         </div>

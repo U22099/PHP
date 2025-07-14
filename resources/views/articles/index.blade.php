@@ -2,6 +2,13 @@
     <x-slot:heading>
         Recent Articles
     </x-slot:heading>
+    <x-slot:headerbutton>
+        @can('create', \App\Models\Article::class)
+            <x-button type="link" href="/articles/create" addclass="capitalize">
+                Create Article
+            </x-button>
+        @endcan
+    </x-slot:headerbutton>
 
     <div class="mt-8 flow-root">
 

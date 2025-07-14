@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,6 +52,11 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->belongsToMany(Post::class);
+    }
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class);
     }
 
     public function jobs(): HasMany

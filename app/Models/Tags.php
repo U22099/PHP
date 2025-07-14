@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,11 @@ class Tags extends Model
     public function posts()
     {
         return $this->belongsToMany(Post::class);
+    }
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class);
     }
 
     public function jobs()
