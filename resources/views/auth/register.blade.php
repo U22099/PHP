@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:heading>
-        Log In
+        Register
     </x-slot:heading>
 
     <form method="POST" action="/register"
@@ -13,19 +13,19 @@
                 <p class="mt-1 text-sm leading-6 text-gray-600">Fill in the form to register.</p>
 
                 <div class="mt-10 flex gap-3 flex-col justify-start items-center w-full">
-                    <x-form-field class="w-full" fieldname="firstname" placeholder="John Doe" required>
+                    <x-form-field class="w-full" fieldname="firstname" placeholder="John" required>
                         @error('firstname')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
                     </x-form-field>
 
-                    <x-form-field class="w-full" fieldname="lastname" placeholder="John Doe" required>
+                    <x-form-field class="w-full" fieldname="lastname" placeholder="Doe" required>
                         @error('lastname')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
                     </x-form-field>
 
-                    <x-form-field class="w-full" fieldname="username" placeholder="John Doe" required>
+                    <x-form-field class="w-full" fieldname="username" placeholder="Johnny" required>
                         @error('username')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror

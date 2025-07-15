@@ -1,17 +1,27 @@
-x-layout>
+<x-layout>
     <x-slot:heading>
         Posts Feed
     </x-slot:heading>
 
-    <div class="max-w-3xl mx-auto py-8">
+    <div class="max-w-3xl mx-auto pb-8">
         @if ($posts->isEmpty())
             <p class="text-center text-gray-600 text-lg">No posts yet. Be the first to share something!</p>
-            <div class="mt-6 text-center">
-                <x-button type="link" href="{{ route('posts.create') }}">
-                    Create New Post
-                </x-button>
-            </div>
         @else
+            <form action="{{ route('posts.store') }}" method="POST" class="bg-white shadow-md rounded-lg p-2 mb-8">
+                @csrf
+                <textarea name="body" rows="2"
+                    class="w-full border-gray-400 rounded-md shadow-sm focus:outline-none border-b resize-none p-2"
+                    placeholder="Share your thoughts...">{{ old('body') }}</textarea>
+                @error('body')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+                <div class="mt-4 text-right">
+                    <x-button type="submit">
+                        Post
+                    </x-button>
+                </div>
+            </form>
+            <!-- Post List -->
             <div class="space-y-6">
                 @foreach ($posts as $post)
                     <div class="bg-white shadow-md rounded-lg p-6">
@@ -19,10 +29,10 @@ x-layout>
                         <div class="flex items-center mb-4">
                             <img class="h-10 w-10 rounded-full object-cover mr-3"
                                 src="https://i.pravatar.cc/150?img={{ $post->user->id ?? rand(1, 70) }}"
-                                alt="{{ $post->user->name ?? 'User' }}">
+                                alt="{{ $post->user->username ?? 'User' }}">
                             <div>
                                 <a href="#"
-                                    class="font-semibold text-gray-900 hover:underline">{{ $post->user->name ?? 'Anonymous User' }}</a>
+                                    class="font-semibold text-gray-900 hover:underline">{{ $post->user->username ?? 'Anonymous User' }}</a>
                                 <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
@@ -30,13 +40,24 @@ x-layout>
                         <!-- Post Content -->
                         <div class="mb-4">
                             {{-- Use Str::limit for excerpts, and route to show page --}}
-                            <p class="text-gray-800 leading-relaxed text-base">
+                            <p class="text-gray-800 prose leading-relaxed text-base">
                                 {{ Str::limit($post->body, 250) }}
                             </p>
                             @if (strlen($post->body) > 250)
                                 <a href="{{ route('posts.show', $post) }}"
                                     class="text-indigo-600 hover:text-indigo-800 text-sm font-medium mt-1 inline-block">Read
                                     more</a>
+                            @endif
+                            @if ($post->tags->isNotEmpty())
+                                {{-- Only show tags if there are any --}}
+                                <div class="mt-1 flex flex-wrap gap-1">
+                                    @foreach ($post->tags as $tag)
+                                        <span
+                                            class="font-bold text-blue-600 prose leading-relaxed text-base">
+                                            {{ $tag->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
                             @endif
                         </div>
 
@@ -60,7 +81,7 @@ x-layout>
                                         d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
                                     </path>
                                 </svg>
-                                <span>Comment ({{ $post->comments_count ?? 0 }})</span>
+                                <span>Comment ({{ $post->comments->count() }})</span>
                             </a>
                             <button
                                 class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1">
@@ -74,19 +95,18 @@ x-layout>
                             </button>
                         </div>
 
-                        {{-- Optional: Edit/Delete buttons for owner --}}
                         @auth
                             @can('update', $post)
                                 <div class="mt-4 border-t border-gray-200 pt-4 text-right">
                                     <x-button type="link" href="{{ route('posts.edit', $post) }}"
-                                        class="mr-2 bg-yellow-500 hover:bg-yellow-600">
+                                        addclass="mr-2 bg-yellow-500 hover:bg-yellow-600">
                                         Edit Post
                                     </x-button>
                                     <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline-block"
                                         onsubmit="return confirm('Are you sure you want to delete this post?');">
                                         @csrf
                                         @method('DELETE')
-                                        <x-button type="submit" class="bg-red-600 hover:bg-red-700">
+                                        <x-button type="submit" addclass="bg-red-600 hover:bg-red-700">
                                             Delete Post
                                         </x-button>
                                     </form>
@@ -97,7 +117,6 @@ x-layout>
                 @endforeach
             </div>
             <div class="mt-8">
-                {{-- Pagination links --}}
                 {{ $posts->links() }}
             </div>
         @endif

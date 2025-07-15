@@ -1,14 +1,17 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use App\Models\Article;
+use App\Models\Comments;
 use App\Models\Job;
 use App\Models\Post;
 use illuminate\Support\Arr;
+
 
 Route::get('/', function () {
     return view('homepage');
@@ -78,7 +81,7 @@ Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])
     ->middleware('auth')
     ->can('update', 'article');
 
-Route::put('/articles/{article}', [ArticleController::class, 'update'])
+Route::patch('/articles/{article}', [ArticleController::class, 'update'])
     ->name('articles.update')
     ->middleware('auth')
     ->can('update', 'article');
@@ -109,7 +112,7 @@ Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
     ->middleware('auth')
     ->can('update', 'post');
 
-Route::put('/posts/{post}', [PostController::class, 'update'])
+Route::patch('/posts/{post}', [PostController::class, 'update'])
     ->name('posts.update')
     ->middleware('auth')
     ->can('update', 'post');
@@ -117,3 +120,9 @@ Route::put('/posts/{post}', [PostController::class, 'update'])
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])
     ->name('posts.destroy')
     ->middleware('auth');
+
+// Comments
+Route::post('/comments/{post}', [CommentsController::class, 'store'])
+    ->name('comments.store')
+    ->middleware('auth')
+    ->can('create', Comments::class);

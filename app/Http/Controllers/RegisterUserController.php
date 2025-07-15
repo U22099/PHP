@@ -16,12 +16,15 @@ class RegisterUserController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
+            'firstname' => ['string', 'max:255'],
+            'lastname' => ['string', 'max:255'],
             'username' => ['string', 'max:255'],
             'email' => ['email', 'string', 'max:255'],
             'password' => ['string', 'min:6', 'confirmed']
         ]);
 
         $user = User::create($attributes);
+        
         Auth::login($user);
 
         return redirect('/');

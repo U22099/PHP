@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Post;
+use App\Models\Comments;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class PostPolicy
+class CommentsPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -20,7 +20,7 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post): bool
+    public function view(User $user, Comments $comments): bool
     {
         return $user->is(Auth::user());
     }
@@ -36,32 +36,32 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Post $post): bool
+    public function update(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $post->user->is($user);
+        return $user->is(Auth::user()) && $comments->user->is($user);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Post $post): bool
+    public function delete(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $post->user->is($user);
+        return $user->is(Auth::user()) && $comments->user->is($user);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Post $post): bool
+    public function restore(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $post->user->is($user);
+        return $user->is(Auth::user()) && $comments->user->is($user);
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Post $post): bool
+    public function forceDelete(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $post->user->is($user);
+        return $user->is(Auth::user()) && $comments->user->is($user);
     }
 }

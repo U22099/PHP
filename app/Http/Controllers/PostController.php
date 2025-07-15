@@ -5,19 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function index()
     {
         return view('posts.index', [
-            'posts' => Post::with('user', 'tags')->latest()->simplePaginate(10)
+            'posts' => Post::with('user', 'tags', 'comments')->latest()->simplePaginate(10)
         ]);
     }
 
     public function create()
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('posts')
+            ->pluck('name')
+            ->toArray();
         return view('posts.create', ['availableTags' => $availableTags]);
     }
 
@@ -25,21 +28,24 @@ class PostController extends Controller
     {
         request()->validate([
             'body' => ['required'],
-            'tags' => ['array'],
-            'tags.*' => ['string', 'max:255']
         ]);
+
+        $hashtags = [];
+        if (preg_match_all('/#[^\s]+/', request('body'), $matches)) {
+            $hashtags = $matches[0];
+        }
 
         $post = Post::create([
-            'user_id' => rand(1, 5),
-            'body' => request('body'),
+            'user_id' => Auth::user()->id,
+            'body' => preg_replace('/#\S+/', '', request('body')),
         ]);
 
-        if (request()->has('tags')) {
-            $tagNames = request()->input('tags');
+        if (sizeof($hashtags) > 0) {
+            $tagNames = $hashtags;
             $tagIds = [];
 
             foreach ($tagNames as $tagName) {
-                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tag = Tags::firstOrCreate(['name' => trim($tagName)]);
                 $tagIds[] = $tag->id;
             }
 
@@ -53,12 +59,16 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        $post->load('comments.user');
         return view('posts.show', ['post' => $post]);
     }
 
     public function edit(Post $post)
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('posts')
+            ->pluck('name')
+            ->toArray();
+            
         return view('posts.edit', ['post' => $post, 'availableTags' => $availableTags]);
     }
 
@@ -66,16 +76,19 @@ class PostController extends Controller
     {
         request()->validate([
             'body' => ['string', 'required'],
-            'tags' => ['array'],
-            'tags.*' => ['string', 'max:255']
         ]);
+
+        $hashtags = [];
+        if (preg_match_all('/#[^\s]+/', request('body'), $matches)) {
+            $hashtags = $matches[0];
+        }
 
         $post->updateOrFail([
-            'body' => request('body'),
+            'body' => preg_replace('/#\S+/', '', request('body')),
         ]);
 
-        if (request()->has('tags')) {
-            $tagNames = request()->input('tags');
+        if (sizeof($hashtags) > 0) {
+            $tagNames = $hashtags;
             $tagIds = [];
 
             foreach ($tagNames as $tagName) {

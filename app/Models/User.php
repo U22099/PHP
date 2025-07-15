@@ -21,6 +21,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'firstname',
+        'lastname',
         'username',
         'email',
         'password',
@@ -51,12 +53,12 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     public function articles()
     {
-        return $this->belongsToMany(Article::class);
+        return $this->hasMany(Article::class);
     }
 
     public function jobs(): HasMany

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Comments;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Post extends Model
 
     // The attributes that are mass assignable.
     protected $fillable = [
+        'user_id',
         'body'
     ];
 
@@ -20,10 +22,10 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    // public function comments()
-    // {
-    //     return $this->belongsToMany(Comments::class);
-    // }
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
+    }
 
     public function tags()
     {

@@ -17,7 +17,10 @@ class ArticleController extends Controller
 
     public function create()
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('articles')
+            ->orWhereHas('jobs')
+            ->pluck('name')
+            ->toArray();
         return view('articles.create', [
             'availableTags' => $availableTags
         ]);
@@ -62,7 +65,10 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('articles')
+            ->orWhereHas('jobs')
+            ->pluck('name')
+            ->toArray();
         return view('articles.edit', ['article' => $article, 'availableTags' => $availableTags]);
     }
 

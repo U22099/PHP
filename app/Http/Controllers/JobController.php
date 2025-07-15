@@ -18,7 +18,10 @@ class JobController extends Controller
 
     public function create()
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('articles')
+            ->orWhereHas('jobs')
+            ->pluck('name')
+            ->toArray();
 
         return view('jobs.create', [
             'availableTags' => $availableTags
@@ -65,7 +68,11 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        $availableTags = Tags::pluck('name')->toArray();
+        $availableTags = Tags::whereHas('articles')
+            ->orWhereHas('jobs')
+            ->pluck('name')
+            ->toArray();
+            
         return view('jobs.edit', ['job' => $job, 'availableTags' => $availableTags]);
     }
 
