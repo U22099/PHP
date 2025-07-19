@@ -14,7 +14,7 @@ class ArticlePolicy
      */
     public function create(User $user): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -22,7 +22,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        return $user->is(Auth::user()) && $article->user->is($user);
+        return $user->is($article->user);
     }
 
     /**
@@ -30,7 +30,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        return $user->is(Auth::user()) && $article->user->is($user);
+        return $user->is($article->user);
     }
 
     /**
@@ -38,7 +38,7 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article): bool
     {
-        return $user->is(Auth::user()) && $article->user->is($user);
+        return $user->is($article->user);
     }
 
     /**
@@ -46,6 +46,6 @@ class ArticlePolicy
      */
     public function forceDelete(User $user, Article $article): bool
     {
-        return $user->is(Auth::user()) && $article->user->is($user);
+        return $user->is($article->user);
     }
 }

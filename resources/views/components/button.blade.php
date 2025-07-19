@@ -1,4 +1,4 @@
-@props(['type', 'active' => true, 'addclass' => ''])
+@props(['type' => "button", 'active' => true, 'addclass' => ''])
 
 @php
     $baseClasses =

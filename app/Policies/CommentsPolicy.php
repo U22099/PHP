@@ -14,7 +14,7 @@ class CommentsPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -22,7 +22,7 @@ class CommentsPolicy
      */
     public function view(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -30,7 +30,7 @@ class CommentsPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -38,7 +38,7 @@ class CommentsPolicy
      */
     public function update(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $comments->user->is($user);
+        return Auth::check() && $comments->user->is($user);
     }
 
     /**
@@ -46,7 +46,7 @@ class CommentsPolicy
      */
     public function delete(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $comments->user->is($user);
+        return Auth::check() && $comments->user->is($user);
     }
 
     /**
@@ -54,7 +54,7 @@ class CommentsPolicy
      */
     public function restore(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $comments->user->is($user);
+        return Auth::check() && $comments->user->is($user);
     }
 
     /**
@@ -62,6 +62,6 @@ class CommentsPolicy
      */
     public function forceDelete(User $user, Comments $comments): bool
     {
-        return $user->is(Auth::user()) && $comments->user->is($user);
+        return Auth::check() && $comments->user->is($user);
     }
 }

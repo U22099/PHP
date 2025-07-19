@@ -6,13 +6,63 @@ use App\Models\Post;
 use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Post::with(['user', 'tags'])
+            ->withCount('comments');
+
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q
+                    ->where('body', 'like', '%' . $search . '%')
+                    ->orWhere('title', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($userRole = $request->get('user_role')) {
+            if (in_array($userRole, ['client', 'freelancer'])) {
+                $query->whereHas('user', function ($q) use ($userRole) {
+                    $q->where('role', $userRole);
+                });
+            }
+        }
+
+        if ($tagNames = $request->get('tags')) {
+            if (!is_array($tagNames)) {
+                $tagNames = [$tagNames];
+            }
+            $query->whereHas('tags', function ($q) use ($tagNames) {
+                $q->whereIn('name', $tagNames);
+            });
+        }
+
+        $posts = $query->latest()->paginate(10);
+
+        $posts->through(function ($post) {
+            $post->can_update = Auth::check() ? Auth::user()->can('update', $post) : false;
+            $post->created_at_human = $post->created_at->diffForHumans();
+            $post->body_excerpt = Str::limit($post->body, 250, '...');
+            $post->user_data_for_display = $post->user ? $post->user->toArray() : null;
+            $post->tag_names_for_display = $post->tags ? $post->tags->pluck('name')->toArray() : [];
+            $post->comments_count = $post->comments_count ?? 0;
+            return $post;
+        });
+        $allTags = Tags::orderBy('name')->get();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'posts' => $posts,
+                'allTags' => $allTags->pluck('name'),
+            ]);
+        }
+
         return view('posts.index', [
-            'posts' => Post::with('user', 'tags', 'comments')->latest()->simplePaginate(10)
+            'posts' => $posts,
+            'allTags' => $allTags,
         ]);
     }
 
@@ -68,7 +118,7 @@ class PostController extends Controller
         $availableTags = Tags::whereHas('posts')
             ->pluck('name')
             ->toArray();
-            
+
         return view('posts.edit', ['post' => $post, 'availableTags' => $availableTags]);
     }
 

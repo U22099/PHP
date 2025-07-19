@@ -31,4 +31,9 @@ class Post extends Model
     {
         return $this->belongsToMany(Tags::class);
     }
+
+    public function getCanUpdateAttribute(): bool
+    {
+        return auth()->check() ? auth()->user()->can('update', $this) : false;
+    }
 }

@@ -14,7 +14,7 @@ class JobPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -22,7 +22,7 @@ class JobPolicy
      */
     public function view(User $user, Job $job): bool
     {
-        return $user->is(Auth::user());
+        return Auth::check();
     }
 
     /**
@@ -38,7 +38,7 @@ class JobPolicy
      */
     public function update(User $user, Job $job): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return $user->is($job->user);
     }
 
     /**
@@ -46,7 +46,7 @@ class JobPolicy
      */
     public function delete(User $user, Job $job): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return $user->is($job->user);
     }
 
     /**
@@ -54,7 +54,7 @@ class JobPolicy
      */
     public function restore(User $user, Job $job): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return $user->is($job->user);
     }
 
     /**
@@ -62,6 +62,6 @@ class JobPolicy
      */
     public function forceDelete(User $user, Job $job): bool
     {
-        return $job->user->is($user) && $user->is(Auth::user());
+        return $user->is($job->user);
     }
 }
