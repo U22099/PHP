@@ -9,19 +9,18 @@
             <!-- Main Content Area (Posts) -->
             <div class="lg:col-span-8">
                 @auth
-                    <!-- Enhanced "Add Post" Section -->
                     <div class="bg-white shadow-md rounded-lg p-4 mb-8">
                         <div class="flex items-center mb-4">
                             <img class="h-12 w-12 rounded-full object-cover mr-4"
                                 src="https://i.pravatar.cc/150?img={{ Auth::user()->id ?? rand(1, 70) }}"
-                                alt="{{ Auth::user()->name ?? 'User' }}">
-                            <span class="font-semibold text-gray-900">{{ Auth::user()->name ?? 'Your Name' }}</span>
+                                alt="{{ Auth::user()->username ?? 'User' }}">
+                            <span class="font-semibold text-gray-900">{{ Auth::user()->username ?? 'Your Name' }}</span>
                         </div>
                         <form action="{{ route('posts.store') }}" method="POST">
                             @csrf
                             <textarea name="body" rows="2"
                                 class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 resize-y p-2"
-                                placeholder="What's on your mind, {{ Auth::user()->name ?? 'friend' }}?">{{ old('body') }}</textarea>
+                                placeholder="What's on your mind, {{ Auth::user()->username ?? 'friend' }}?">{{ old('body') }}</textarea>
                             @error('body')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
@@ -80,10 +79,10 @@
                             <div class="flex items-center mb-4">
                                 <img class="h-10 w-10 rounded-full object-cover mr-3"
                                     :src="`https://i.pravatar.cc/150?img=${post.user_data_for_display ? post.user_data_for_display.id : Math.floor(Math.random() * 70) + 1}`"
-                                    :alt="post.user_data_for_display ? post.user_data_for_display.name : 'User'">
+                                    :alt="post.user_data_for_display ? post.user_data_for_display.username : 'User'">
                                 <div>
                                     <a :href="`#`" class="font-semibold text-gray-900 hover:underline"
-                                        x-text="post.user_data_for_display ? post.user_data_for_display.name : 'Anonymous User'"></a>
+                                        x-text="post.user_data_for_display ? post.user_data_for_display.username : 'Anonymous User'"></a>
                                     <p class="text-sm text-gray-500" x-text="post.created_at_human"></p>
                                     <p class="text-xs text-gray-500"
                                         x-text="post.user_data_for_display && post.user_data_for_display.role ? '(' + post.user_data_for_display.role + ')' : ''">
@@ -169,13 +168,13 @@
                         </div>
                     </template>
 
-                    <!-- Load More Button -->
-                    <div x-show="nextPageUrl" class="mt-8 text-center">
+                    <div x-show="posts.length > 0 && nextPageUrl" class="mt-8 text-center">
                         <x-button @click="loadMorePosts()">
                             <span x-show="!loading">Load More Posts</span>
                             <span x-show="loading">Loading...</span>
                         </x-button>
                     </div>
+
                 </div>
             </div>
 
@@ -250,7 +249,7 @@
                     <!-- Filter by Tags -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
-                        <div class="mt-2 flex flex-wrap gap-2">
+                        <div class="mt-2 flex flex-wrap gap-2 max-h-[200px] overflow-y-scroll">
                             <template x-for="tag in allAvailableTags" :key="tag">
                                 <button type="button" @click="toggleTag(tag); applyFilters();"
                                     :class="{

@@ -51,7 +51,8 @@ class PostController extends Controller
             $post->comments_count = $post->comments_count ?? 0;
             return $post;
         });
-        $allTags = Tags::orderBy('name')->get();
+
+        $allTags = Tags::whereHas('posts')->orderBy('name')->get();
 
         if ($request->wantsJson()) {
             return response()->json([
@@ -81,8 +82,8 @@ class PostController extends Controller
         ]);
 
         $hashtags = [];
-        if (preg_match_all('/#[^\s]+/', request('body'), $matches)) {
-            $hashtags = $matches[0];
+        if (preg_match_all('/(#)([^\s]+)/', request('body'), $matches)) {
+            $hashtags = $matches[1];
         }
 
         $post = Post::create([
@@ -129,8 +130,10 @@ class PostController extends Controller
         ]);
 
         $hashtags = [];
-        if (preg_match_all('/#[^\s]+/', request('body'), $matches)) {
-            $hashtags = $matches[0];
+        if (preg_match_all('/(#)([^\s]+)/', request('body'), $matches)) {
+            $hashtags = array_map(function ($tag) {
+                return ltrim($tag, '#');
+            }, $matches[0]);
         }
 
         $post->updateOrFail([
