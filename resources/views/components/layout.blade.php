@@ -128,7 +128,7 @@
 
     <!-- Main Content -->
     <main class="flex-grow">
-        <div class="mx-auto max-w-7xl py-6 px-6 md:px-8">
+        <div class="mx-auto max-w-7xl p-2 lg:py-6 lg:px-6">
             {{ $slot }}
         </div>
     </main>

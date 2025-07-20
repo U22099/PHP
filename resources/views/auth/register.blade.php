@@ -53,7 +53,7 @@
             </div>
         </div>
         <div class="mt-6 flex flex-col items-center justify-end w-full">
-            <x-button type="submit" addclass="w-full justify-center">Register</x-button>
+            <x-button type="submit" class="w-full justify-center">Register</x-button>
         </div>
         <a href="/login" class="text-xs font-semibold text-gray-400">Already have an account? <span
                 class="text-blue-500">Log In</span></a>

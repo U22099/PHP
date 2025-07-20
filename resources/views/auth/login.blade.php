@@ -4,7 +4,7 @@
     </x-slot:heading>
 
     <form method="POST" action="/login"
-        class="border-b border-gray-900/10 flex flex-col gap-2 pb-4 w-full md:w-2/3 lg:w-2/6 justicy-start items-center mx-auto">
+        class="border-b border-gray-900/10 flex flex-col gap-2 p-2 pb-4 w-full md:w-2/3 lg:w-2/6 justicy-start items-center mx-auto">
         @csrf
 
         <div class="space-y-4 w-full">
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="mt-6 flex flex-col items-center justify-end w-full">
-            <x-button type="submit" addclass="w-full justify-center">Log In</x-button>
+            <x-button type="submit" class="w-full justify-center">Log In</x-button>
         </div>
         <a href="/register" class="text-xs font-semibold text-gray-400">Don't have an account? <span
                 class="text-blue-500">Register</span></a>

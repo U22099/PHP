@@ -5,14 +5,55 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = Job::with('user', 'tags');
+        $allTags = Tags::whereHas('jobs')->orderBy('name')->get()->pluck('name');
+
+        if ($search = $request->get('search')) {
+            $query->where(function ($q) use ($search) {
+                $q
+                    ->where('body', 'like', '%' . $search . '%')
+                    ->orWhere('title', 'like', '%' . $search . '%');
+            });
+        }
+
+        if ($timeframe = $request->get('timeframe')) {
+            switch ($timeframe) {
+                case 'today':
+                    $query->whereDate('created_at', Carbon::today());
+                    break;
+                case 'week':
+                    $query->whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+                    break;
+                case 'month':
+                    $query->whereBetween('created_at', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
+                    break;
+                case 'year':
+                    $query->whereBetween('created_at', [Carbon::now()->startOfYear(), Carbon::now()->endOfYear()]);
+                    break;
+            }
+        }
+
+        if ($tagNames = $request->get('tags')) {
+            if (!is_array($tagNames)) {
+                $tagNames = [$tagNames];
+            }
+            $query->whereHas('tags', function ($q) use ($tagNames) {
+                $q->whereIn('name', $tagNames);
+            });
+        }
+
+        $jobs = $query->latest()->simplePaginate(10);
+
         return view('jobs.index', [
-            'jobs' => Job::with('user', 'tags')->latest()->simplePaginate()
+            'jobs' => $jobs,
+            'allTags' => $allTags
         ]);
     }
 
@@ -72,7 +113,7 @@ class JobController extends Controller
             ->orWhereHas('jobs')
             ->pluck('name')
             ->toArray();
-            
+
         return view('jobs.edit', ['job' => $job, 'availableTags' => $availableTags]);
     }
 

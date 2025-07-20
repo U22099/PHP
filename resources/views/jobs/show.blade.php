@@ -4,7 +4,7 @@
     </x-slot:heading>
     <x-slot:headerbutton>
         @can('update', $job)
-            <x-button type="link" href="/jobs/{{ $job->id }}/edit" addclass="capitalize">
+            <x-button type="link" href="/jobs/{{ $job->id }}/edit" class="capitalize">
                 Edit Job
             </x-button>
         @endcan

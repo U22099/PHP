@@ -71,14 +71,14 @@
                 @can('update', $post)
                     <div class="mt-4 border-t border-gray-200 pt-4 text-right">
                         <x-button type="link" href="{{ route('posts.edit', $post) }}"
-                            addclass="mr-2 bg-yellow-500 hover:bg-yellow-600">
+                            class="mr-2 bg-yellow-500 hover:bg-yellow-600">
                             Edit Post
                         </x-button>
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline-block"
                             onsubmit="return confirm('Are you sure you want to delete this post?');">
                             @csrf
                             @method('DELETE')
-                            <x-button type="submit" addclass="bg-red-600 hover:bg-red-700">
+                            <x-button type="submit" class="bg-red-600 hover:bg-red-700">
                                 Delete Post
                             </x-button>
                         </form>

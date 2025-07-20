@@ -6,13 +6,14 @@
     <form method="POST" action="/articles">
         @csrf
 
-        <div class="space-y-12">
+        <div class="space-y-12 p-2">
             <div class="border-b border-gray-900/10 pb-12">
                 <h2 class="text-base font-semibold leading-7 text-gray-900">Create a New Article</h2>
                 <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly.</p>
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <x-form-field rootClass="sm:col-span-4" class="w-full" fieldname="title" placeholder="How to build a laravel app" required>
+                    <x-form-field rootClass="sm:col-span-4" class="w-full" fieldname="title"
+                        placeholder="How to build a laravel app" required>
                         @error('title')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
@@ -22,7 +23,7 @@
                         <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Body</label>
                         <div class="mt-2">
                             <textarea id="body" name="body" rows="6"
-                                class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                class="block w-full rounded-md p-1.5 text-gray-900 border border-gray-300 focus-within:outline-none sm:text-sm sm:leading-6"
                                 required>{{ old('body') }}</textarea>
                         </div>
                         <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the article
@@ -34,7 +35,8 @@
                     </div>
 
                     <div class="col-span-full">
-                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', [])" :available-tags="$availableTags" placeholder="Add tags" />
+                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', [])" :available-tags="$availableTags"
+                            placeholder="Add tags" />
                         @error('tags')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror

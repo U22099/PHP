@@ -4,7 +4,7 @@
     </x-slot:heading>
     <x-slot:headerbutton>
         @can('create', \App\Models\Article::class)
-            <x-button type="link" href="/articles/create" addclass="capitalize">
+            <x-button type="link" href="/articles/create" class="capitalize">
                 Create Article
             </x-button>
         @endcan

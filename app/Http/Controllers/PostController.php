@@ -18,8 +18,7 @@ class PostController extends Controller
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {
                 $q
-                    ->where('body', 'like', '%' . $search . '%')
-                    ->orWhere('title', 'like', '%' . $search . '%');
+                    ->where('body', 'like', '%' . $search . '%');
             });
         }
 
@@ -63,7 +62,7 @@ class PostController extends Controller
 
         return view('posts.index', [
             'posts' => $posts,
-            'allTags' => $allTags,
+            'allTags' => $allTags->pluck('name'),
         ]);
     }
 
