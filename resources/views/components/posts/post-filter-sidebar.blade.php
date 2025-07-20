@@ -70,7 +70,7 @@
 
     <!-- Filter by Tags -->
     <div class="mb-6 hidden lg:block">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags</label>
         <div class="mt-2 flex flex-wrap gap-2 max-h-[250px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
@@ -85,7 +85,7 @@
                 </button>
             </template>
             <template x-if="allAvailableTags.length === 0">
-                <p class="text-xs text-gray-500">No tags available.</p>
+                <p class="text-xs text-gray-500">No hashtags available.</p>
             </template>
         </div>
     </div>
@@ -113,7 +113,7 @@
     </div>
     <!-- Filter by Tags -->
     <div class="mb-6 lg:hidden" x-show="mobileFilterOpen">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags</label>
         <div class="mt-2 flex flex-wrap gap-2 max-h-[200px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
@@ -128,7 +128,7 @@
                 </button>
             </template>
             <template x-if="allAvailableTags.length === 0">
-                <p class="text-xs text-gray-500">No tags available.</p>
+                <p class="text-xs text-gray-500">No hashtags available.</p>
             </template>
         </div>
     </div>

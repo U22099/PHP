@@ -79,7 +79,7 @@
 
     <!-- Filter by Tags -->
     <div class="mb-6 hidden lg:block"> {{-- Desktop view --}}
-        <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
         <div class="mt-2 flex flex-wrap gap-2 max-h-[180px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
@@ -136,7 +136,7 @@
 
     <!-- Filter by Tags Mobile-->
     <div class="mb-6 lg:hidden" x-show="mobileFilterOpen">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
         <div class="mt-2 flex flex-wrap gap-2 max-h-[200px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
