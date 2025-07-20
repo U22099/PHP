@@ -80,7 +80,7 @@
     <!-- Filter by Tags -->
     <div class="mb-6 hidden lg:block"> {{-- Desktop view --}}
         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
-        <div class="mt-2 flex flex-wrap gap-2 max-h-[200px] overflow-y-scroll">
+        <div class="mt-2 flex flex-wrap gap-2 max-h-[180px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
                     :class="{
@@ -100,7 +100,7 @@
     </div>
 
     <!-- Filter by Timeframe Mobile -->
-    <div class="mb-4 mt-4" x-show="mobileFilterOpen"> {{-- Mobile view --}}
+    <div class="mb-4 mt-4 lg:hidden" x-show="mobileFilterOpen"> {{-- Mobile view --}}
         <label class="block text-sm font-medium text-gray-700 mb-1">Posted When</label>
         <div class="mt-2 space-y-2">
             <div class="flex items-center">
@@ -135,7 +135,7 @@
     </div>
 
     <!-- Filter by Tags Mobile-->
-    <div class="mb-6" x-show="mobileFilterOpen">
+    <div class="mb-6 lg:hidden" x-show="mobileFilterOpen">
         <label class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
         <div class="mt-2 flex flex-wrap gap-2 max-h-[200px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
