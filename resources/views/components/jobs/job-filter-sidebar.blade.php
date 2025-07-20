@@ -90,7 +90,7 @@
                             tag)
                     }"
                     class="px-3 py-1 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    #<span x-text="tag"></span>
+                    <span x-text="tag"></span>
                 </button>
             </template>
             <template x-if="allAvailableTags.length === 0">
@@ -147,7 +147,7 @@
                             tag)
                     }"
                     class="px-3 py-1 rounded-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                    #<span x-text="tag"></span>
+                    <span x-text="tag"></span>
                 </button>
             </template>
             <template x-if="allAvailableTags.length===0">
