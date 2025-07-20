@@ -4,8 +4,8 @@
         Post Details
     </x-slot:heading>
 
-    <div class="max-w-3xl mx-auto py-8">
-        <div class="bg-white shadow-md rounded-lg p-6">
+    <div class="max-w-3xl mx-auto px-3 py-8">
+        <div class="border rounded-lg p-6">
             <!-- Profile Header -->
             <div class="flex items-center mb-4">
                 <img class="h-12 w-12 rounded-full object-cover mr-4"
@@ -92,7 +92,7 @@
 
             <!-- New Comment Form -->
             @auth
-                <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+                <div class="border rounded-lg p-3 mb-6">
                     <h4 class="text-lg font-semibold mb-3 text-gray-800">Add a Comment</h4>
                     <form action="{{ route('comments.store', $post) }}" method="POST">
                         @csrf
@@ -103,7 +103,7 @@
                         @error('body')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
-                        <div class="mt-4 text-right">
+                        <div class="mt-2 text-right">
                             <x-button type="submit">
                                 Post Comment
                             </x-button>
@@ -119,7 +119,7 @@
             <!-- Existing Comments -->
             <div class="space-y-4">
                 @forelse ($post->comments->sortByDesc('created_at') as $comment)
-                    <div class="bg-white shadow-sm rounded-lg p-4 border border-gray-200">
+                    <div class="rounded-lg p-4 border border-gray-200">
                         <div class="flex items-center mb-2">
                             <img class="h-8 w-8 rounded-full object-cover mr-3"
                                 src="https://i.pravatar.cc/150?img={{ $comment->user->id ?? rand(1, 70) }}"

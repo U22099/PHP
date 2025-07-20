@@ -10,7 +10,7 @@
         @endcan
     </x-slot:headerbutton>
 
-    <div class="bg-white shadow-xl rounded-xl p-8 md:p-10 lg:p-12 mb-8">
+    <div class="border rounded-xl p-8 md:p-10 lg:p-12 mb-8">
         <!-- Employer and Salary Section -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 pb-6 border-b border-gray-100">
             <div>
@@ -39,7 +39,7 @@
         <!-- Job Description Section -->
         <div class="mt-6">
             <h3 class="text-2xl font-bold text-gray-900 mb-4">Job Description</h3>
-            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-6">
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-6 text-justify">
                 <!-- Assuming $job->description exists and is the full content -->
                 @if ($job->description)
                     {!! nl2br(e($job->description)) !!} {{-- Use nl2br and escape for safety, or {!! $job->description !!} if already sanitized HTML --}}
