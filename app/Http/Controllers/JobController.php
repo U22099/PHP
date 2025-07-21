@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tags;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class JobController extends Controller
 {
@@ -74,6 +74,7 @@ class JobController extends Controller
         $request->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required'],
+            'description' => ['string'],
             'tags' => ['array'],
             'tags.*' => ['string', 'max:255']
         ]);
@@ -117,19 +118,31 @@ class JobController extends Controller
         return view('jobs.edit', ['job' => $job, 'availableTags' => $availableTags]);
     }
 
-    public function update(Job $job)
+    public function update(Request $request, Job $job)
     {
-        request()->validate([
+        $request->validate([
             'title' => ['string', 'required', 'min:3'],
             'salary' => ['string', 'required'],
-            'description' => ['string']
+            'description' => ['string'],
+            'tags' => ['array'],
+            'tags.*' => ['string', 'max:255']
         ]);
 
-        $job->updateOrFail([
-            'title' => request('title'),
-            'salary' => request('salary'),
-            'description' => request('description')
-        ]);
+        $job->updateOrFail($request);
+
+        if ($request->has('tags')) {
+            $tagNames = $request->input('tags');
+            $tagIds = [];
+
+            foreach ($tagNames as $tagName) {
+                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            $job->tags()->sync($tagIds);
+        } else {
+            $job->tags()->sync([]);
+        }
 
         return redirect('/jobs/' . $job->id);
     }

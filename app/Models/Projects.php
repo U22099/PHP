@@ -2,28 +2,25 @@
 
 namespace App\Models;
 
-use App\Models\Employer;
 use App\Models\Tags;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Job extends Model
+class Projects extends Pivot
 {
-    protected $table = 'jobs_listing';
-
     use HasFactory;
 
     // The attributes that are mass assignable.
     protected $fillable = [
         'user_id',
         'title',
-        'salary',
+        'link',
         'description',
-        'screenshots'
+        'images',
     ];
 
-    protected $casts = ['screenshots' => 'array'];
+    protected $casts = ['images' => 'array'];
 
     public function user()
     {
@@ -32,6 +29,6 @@ class Job extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tags::class, foreignPivotKey: 'job_listing_id');
+        return $this->belongsToMany(Tags::class);
     }
 }

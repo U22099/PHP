@@ -3,6 +3,7 @@
 use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
+use App\Models\Projects;
 use App\Models\Tags;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -40,6 +41,13 @@ return new class extends Migration {
             $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Schema::create('project_tags', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Projects::class, 'project_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -51,5 +59,6 @@ return new class extends Migration {
         Schema::dropIfExists('job_tags');
         Schema::dropIfExists('article_tags');
         Schema::dropIfExists('post_tags');
+        Schema::dropIfExists('project_tags');
     }
 };

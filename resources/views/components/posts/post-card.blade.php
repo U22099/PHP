@@ -14,6 +14,8 @@
     </div>
 
     <div class="mb-4">
+
+        <x-image-display type="post" />
         <p class="text-gray-800 prose leading-relaxed text-base" x-html="post.body_excerpt"></p>
         <template x-if="post.body.length > 250">
             <a :href="`{{ url('/posts') }}/${post.id}`"

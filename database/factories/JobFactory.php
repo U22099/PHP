@@ -21,6 +21,19 @@ class JobFactory extends Factory
             'title' => $this->faker->jobTitle(),
             'salary' => '$' . $this->faker->numberBetween(30000, 150000),
             'description' => '',
+            'screenshots' => $this->generateFakeImagesArray(),
         ];
+    }
+
+    protected function generateFakeImagesArray(): array
+    {
+        $images = [];
+        $numberOfImages = rand(1, 5);
+
+        for ($i = 0; $i < $numberOfImages; $i++) {
+            $images[] = 'https://i.pravatar.cc/400?img=' . $this->faker->ean13();
+        }
+
+        return $images;
     }
 }

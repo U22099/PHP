@@ -27,6 +27,7 @@ class UserFactory extends Factory
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'username' => $this->faker->userName(),
+            'image' => 'https://i.pravatar.cc/300?img=' . rand(1, 100),
             'role' => $this->faker->randomElement(['client', 'freelancer']),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),

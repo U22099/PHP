@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('firstname');
             $table->string('lastname');
             $table->string('username');
+            $table->string('image');
             $table->enum('role', ['client', 'freelancer'])->default('freelancer');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

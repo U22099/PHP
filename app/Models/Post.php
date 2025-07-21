@@ -17,6 +17,8 @@ class Post extends Model
         'body'
     ];
 
+    protected $casts = ['images' => 'array'];
+
     public function user()
     {
         return $this->belongsTo(User::class);
