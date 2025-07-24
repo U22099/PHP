@@ -30,29 +30,35 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $user = Auth::user();
+        try {
+            $user = Auth::user();
 
-        $validatedData = $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'image' => 'nullable|image|max:2048',
-        ]);
+            $validatedData = $request->validate([
+                'firstname' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                'image' => 'nullable|image|max:2048',
+            ]);
 
-        $user->fill($validatedData);
+            $user->fill($validatedData);
 
-        // Handle image upload if implemented
-        // if ($request->hasFile('image')) {
-        //     if ($user->image) {
-        //         Storage::disk('public')->delete($user->image);
-        //     }
-        //     $path = $request->file('image')->store('profile_images', 'public');
-        //     $user->image = $path;
-        // }
+            // Handle image upload if implemented
+            // if ($request->hasFile('image')) {
+            //     if ($user->image) {
+            //         Storage::disk('public')->delete($user->image);
+            //     }
+            //     $path = $request->file('image')->store('profile_images', 'public');
+            //     $user->image = $path;
+            // }
 
-        $user->save();
+            $user->save();
 
-        return back()->with('success', 'Profile updated successfully!');
+            return back()->with('success', 'Profile updated successfully!');
+        } catch (ValidationException $e) {
+            return redirect('/profile?error=profile-form-error')
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
 }

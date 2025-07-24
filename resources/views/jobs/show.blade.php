@@ -50,7 +50,7 @@
                         continuous learning within a supportive environment. Join us and shape the future!</p>
                 @endif
                 @if (!empty($job->screenshots))
-                    <h1 class="text-lg font-bold text-gray-500 mt-3 mb-8">Project Screenshots</h1>
+                    <h1 class="text-lg font-bold text-gray-500 mt-3 mb-4">Project Screenshots</h1>
                     <x-image-display :images="$job->screenshots" />
                 @endif
             </div>

@@ -3,7 +3,7 @@
         Get in Touch
     </x-slot:heading>
 
-    <div class="bg-white shadow-xl rounded-xl p-8 md:p-12 lg:p-16 mb-8 max-w-4xl mx-auto">
+    <div class="border rounded-xl p-8 md:p-12 lg:p-16 mb-8 max-w-4xl mx-auto">
         <p class="text-lg text-gray-700 leading-relaxed mb-10 text-center md:text-left">
             Have a question, a project idea, or just want to say hello? We'd love to hear from you! Fill out the form
             below or reach out directly using the contact details provided.

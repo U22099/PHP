@@ -23,9 +23,10 @@
                 </svg>
                 Edit Profile
             </x-button>
-            <form method="POST" action="/logout">
+            <form method="POST" action="/logout" class="flex lg:justify-end lg:self-end">
                 @csrf
-                <x-button type="submit" class="bg-transparent !text-gray-800 !border-gray-400 !shadow-none">
+                <x-button type="submit"
+                    class="bg-transparent hover:!border-indigo-400 !transition-colors !duration-200 !text-gray-800 !border-gray-400 !shadow-none lg:self-end">
                     <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                         fill="currentColor">
                         <path fill-rule="evenodd"

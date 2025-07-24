@@ -26,7 +26,7 @@
             .finally(() => {
                 this.loading = false;
             });
-    }
+    },
 }" class="space-y-6">
     <template x-if="posts.length === 0">
         <p class="text-center text-gray-600 text-lg">No posts found at the moment</p>

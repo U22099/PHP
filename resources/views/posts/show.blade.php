@@ -31,6 +31,10 @@
                         @endforeach
                     </div>
                 @endif
+
+                @if (count($post->images) > 0)
+                    <x-image-display :images="$post->images" />
+                @endif
             </div>
 
             <!-- Actions (Like, Comment, Share) - Same as index -->

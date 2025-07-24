@@ -27,7 +27,7 @@
         this.allImagesOpen = false;
         this.open = false;
     },
-}" @keydown.escape.window="open = false" class="relative w-full h-full">
+}" @keydown.escape.window="open = false" class="relative w-full h-full mt-4">
     {{-- Image Gallery Grid --}}
     <div x-show="allImages.length > 0" class="grid gap-2 w-full lg:max-w-xl mx-auto"
         :class="{
@@ -53,37 +53,38 @@
         No images to display yet.
     </div>
 
-    <div x-show="open" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95"
-        class="fixed inset-0 z-50 flex items-center justify-center w-full h-full p-2" x-cloak>
-        <div class="relative max-h-[90vh] w-full h-full lg:w-1/2 lg:h-[50vh] flex flex-col bg-black/90 p-4 rounded-md"
-            @click.outside="closeModal()">
-            <button @click="closeModal()"
-                class="absolute top-0 right-0 text-white text-4xl font-bold cursor-pointer hover:text-gray-300 pr-4"
-                aria-label="Close">
-                &times;
-            </button>
+    <template x-if="open">
+        <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+            class="fixed inset-0 z-50 flex items-center justify-center w-full h-full p-2" x-cloak>
+            <div
+                class="relative max-h-[90vh] w-full h-full lg:w-1/2 lg:h-[50vh] flex flex-col bg-black/90 p-4 rounded-md">
+                <button @click="closeModal()"
+                    class="absolute top-0 right-0 text-white text-4xl font-bold cursor-pointer hover:text-gray-300 pr-4"
+                    aria-label="Close">
+                    &times;
+                </button>
 
-            <template x-if="!allImagesOpen">
-                <div class="flex flex-col items-center justify-center h-full w-full">
-                    <img :src="currentImageSrc" :alt="currentImageAlt" class="w-full h-60 object-contain mx-auto">
-                    <p x-text="currentImageAlt" class="mt-4 text-center text-gray-300 text-sm md:text-base"></p>
-                </div>
-            </template>
-
-            <template x-if="allImagesOpen">
-                <div class="flex flex-col h-full w-full">
-                    <p x-text="currentImageAlt" class="text-center text-gray-300 text-sm"></p>
-
-                    <div class="flex flex-wrap gap-2 w-full h-full overflow-y-scroll mt-4">
-                        <template x-for="(image, index) in allImages" :key="index">
-                            <img :src="image" :alt="image"
-                                class="w-full lg:w-[48%] h-60 object-contain">
-                        </template>
+                <template x-if="!allImagesOpen">
+                    <div class="flex flex-col items-center justify-center h-full w-full">
+                        <img :src="currentImageSrc" :alt="currentImageAlt" class="w-full h-60 object-contain mx-auto">
+                        <p x-text="currentImageAlt" class="mt-4 text-center text-gray-300 text-sm md:text-base"></p>
                     </div>
-            </template>
+                </template>
+
+                <template x-if="allImagesOpen">
+                    <div class="flex flex-col h-full w-full">
+                        <p x-text="currentImageAlt" class="text-center text-gray-300 text-sm"></p>
+
+                        <div class="flex flex-wrap gap-2 w-full h-full overflow-y-scroll mt-4">
+                            <template x-for="(image, index) in allImages" :key="index">
+                                <img :src="image" :alt="image"
+                                    class="w-full lg:w-[48%] h-60 object-contain">
+                            </template>
+                        </div>
+                </template>
+            </div>
         </div>
-    </div>
+    </template>
 </div>

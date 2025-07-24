@@ -1,8 +1,8 @@
 <x-profile.layout>
     <div x-data="{
-        currentTab: '{{ $user->role === 'freelancer' ? 'projects' : 'posts' }}',
-        showEditProfileModal: false,
-        showProjectFormModal: false,
+        currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
+        showEditProfileModal: JSON.parse('{{ !request()->has('error') ? 'false' : (request()->get('error') === 'profile-form-error' ? 'true' : 'false') }}'),
+        showProjectFormModal: JSON.parse('{{ !request()->has('error') ? 'false' : (request()->get('error') === 'project-form-error' ? 'true' : 'false') }}'),
         editingProject: null,
         openAddProjectModal() {
             this.editingProject = null;
@@ -62,7 +62,7 @@
                                     onclick="window.location.href = '/jobs/{{ $job->id }}';">
                                     <h3 class="text-xl font-bold text-gray-800">{{ $job->title }}</h3>
                                     <p class="text-gray-600 text-sm mt-1">{{ $job->description }}</p>
-                                    <p class="text-gray-700 font-medium mt-2">Budget: {{ $job->budget }}</p>
+                                    <p class="text-gray-700 font-medium mt-2">Budget: {{ $job->salary }}</p>
                                 </div>
                             @endforeach
                         @endif

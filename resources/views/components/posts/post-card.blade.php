@@ -14,7 +14,6 @@
     </div>
 
     <div class="mb-4">
-        {{-- <x-image-display type="post" :images="[]" x-bind:images="post.images" /> --}}
         <p class="text-gray-800 prose leading-relaxed text-base line-clamp-3" x-html="post.body"></p>
         <template x-if="post.body.length > 250">
             <a :href="`{{ url('/posts') }}/${post.id}`"
@@ -23,11 +22,14 @@
         </template>
 
         <template x-if="post.tag_names_for_display && post.tag_names_for_display.length > 0">
-            <div class="mt-2 flex flex-wrap gap-1">
+            <div class="mt-1 flex flex-wrap gap-1">
                 <template x-for="(tag, tagIndex) in post.tag_names_for_display" :key="tagIndex">
                     <span class="font-bold text-blue-600 text-sm">#<span x-text="tag"></span></span>
                 </template>
             </div>
+        </template>
+        <template x-if="post.images.length > 0">
+            <x-posts.post-image-display />
         </template>
     </div>
 
