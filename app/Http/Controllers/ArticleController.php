@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Tags;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -36,7 +37,7 @@ class ArticleController extends Controller
         ]);
 
         $article = Article::create([
-            'user_id' => rand(1, 5),
+            'user_id' => Auth::user()->id,
             'title' => request('title'),
             'body' => request('body'),
         ]);

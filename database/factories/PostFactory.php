@@ -31,7 +31,7 @@ class PostFactory extends Factory
         $numberOfImages = rand(0, 4);
 
         for ($i = 0; $i < $numberOfImages; $i++) {
-            $images[] = 'https://i.pravatar.cc/300?img=' . rand(1,100);
+            $images[] = 'https://i.pravatar.cc/300?img=' . rand(1,70);
         }
 
         return $images;

@@ -40,14 +40,9 @@
                     <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
                             aria-hidden="true">&rarr;</span></x-nav-link>
                 @endguest
-
                 @auth
-                    {{-- <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
-                            aria-hidden="true">&rarr;</span></x-nav-link> --}}
-                    <form method="POST" action="/logout">
-                        @csrf
-                        <x-button type="submit">Logout</x-button>
-                    </form>
+                    <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
+                            aria-hidden="true">&rarr;</span></x-nav-link>
                 @endauth
             </div>
 

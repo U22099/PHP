@@ -44,7 +44,6 @@ class PostController extends Controller
         $posts->through(function ($post) {
             $post->can_update = Auth::check() ? Auth::user()->can('update', $post) : false;
             $post->created_at_human = $post->created_at->diffForHumans();
-            $post->body_excerpt = Str::limit($post->body, 250, '...');
             $post->user_data_for_display = $post->user ? $post->user->toArray() : null;
             $post->tag_names_for_display = $post->tags ? $post->tags->pluck('name')->toArray() : [];
             $post->comments_count = $post->comments_count ?? 0;

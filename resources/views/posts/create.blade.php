@@ -4,8 +4,8 @@
         Create New Post
     </x-slot:heading>
 
-    <div class="max-w-xl mx-auto py-8">
-        <form method="POST" action="{{ route('posts.store') }}" class="bg-white shadow-md rounded-lg p-6">
+    <div class="max-w-xl mx-auto py-4 p-2">
+        <form method="POST" action="{{ route('posts.store') }}" class="border rounded-lg p-6">
             @csrf
 
             <div class="mb-6">
@@ -13,7 +13,7 @@
                     mind?</label>
                 <div class="mt-2">
                     <textarea id="body" name="body" rows="6"
-                        class="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        class="block w-full rounded-md p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 border"
                         required placeholder="Share your thoughts here...">{{ old('body') }}</textarea>
                 </div>
                 @error('body')

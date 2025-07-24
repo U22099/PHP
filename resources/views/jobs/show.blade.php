@@ -49,6 +49,10 @@
                         Responsibilities include collaborative problem-solving, efficient project execution, and
                         continuous learning within a supportive environment. Join us and shape the future!</p>
                 @endif
+                @if (!empty($job->screenshots))
+                    <h1 class="text-lg font-bold text-gray-500 mt-3 mb-8">Project Screenshots</h1>
+                    <x-image-display :images="$job->screenshots" />
+                @endif
             </div>
             <p class="mt-4 text-gray-500 text-sm italic">
                 *Specific responsibilities and qualifications may be detailed above or upon application.

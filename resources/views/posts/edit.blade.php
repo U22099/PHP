@@ -4,8 +4,8 @@
         Edit Post
     </x-slot:heading>
 
-    <div class="max-w-xl mx-auto py-8">
-        <form method="POST" action="{{ route('posts.update', $post) }}" class="bg-white shadow-md rounded-lg p-6">
+    <div class="max-w-xl mx-auto py-4 p-2">
+        <form method="POST" action="{{ route('posts.update', $post) }}" class="border rounded-lg p-6">
             @csrf
             @method('PATCH')
 
@@ -13,7 +13,7 @@
                 <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Edit your post...</label>
                 <div class="mt-2">
                     <textarea id="body" name="body" rows="6"
-                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:text-sm sm:leading-6 p-2"
+                        class="block w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:text-sm sm:leading-6 p-2 border"
                         required placeholder="Share your thoughts here...">{{ old('body', $post->body) }}</textarea>
                 </div>
                 @error('body')

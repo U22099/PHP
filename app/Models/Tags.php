@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
+use App\Models\Projects;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,5 +29,10 @@ class Tags extends Model
     public function jobs()
     {
         return $this->belongsToMany(Job::class, relatedPivotKey: 'job_listing_id');
+    }
+
+    public function projects()
+    {
+        return $this->belongsToMany(Projects::class);
     }
 }

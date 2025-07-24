@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('salary');
-            $table->json('screenshots');
+            $table->json('screenshots')->default("[]");
             $table->text('description');
             $table->timestamps();
         });

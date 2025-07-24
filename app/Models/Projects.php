@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Models\Tags;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 
-class Projects extends Pivot
+class Projects extends Model
 {
     use HasFactory;
 

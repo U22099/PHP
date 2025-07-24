@@ -42,9 +42,9 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('project_tags', function (Blueprint $table) {
+        Schema::create('projects_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Projects::class, 'project_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Projects::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Tags::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
@@ -59,6 +59,6 @@ return new class extends Migration {
         Schema::dropIfExists('job_tags');
         Schema::dropIfExists('article_tags');
         Schema::dropIfExists('post_tags');
-        Schema::dropIfExists('project_tags');
+        Schema::dropIfExists('projects_tags');
     }
 };

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,7 +32,7 @@ class ProjectsFactory extends Factory
         $numberOfImages = rand(1, 5);
 
         for ($i = 0; $i < $numberOfImages; $i++) {
-            $images[] = 'https://i.pravatar.cc/300?img=' . $this->faker->ean13();
+            $images[] = 'https://i.pravatar.cc/300?img=' . rand(1, 70);
         }
 
         return $images;

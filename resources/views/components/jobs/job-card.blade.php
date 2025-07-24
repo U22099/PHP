@@ -19,13 +19,15 @@
             </div>
         </div>
 
-        @if ($job->description)
-            {!! nl2br(e(Str::limit($job->description, 300))) !!}
-        @else
-            <p class="mt-2 text-gray-600 text-sm">
-                A great opportunity for talented individuals. Click to learn more!
-            </p>
-        @endif
+        <div class="prose text-gray-800 line-clamp-3"
+            @if ($job->description) 
+                {!! nl2br(e($job->description, 300)) !!}
+            @else
+                <p class="mt-2 text-gray-600 text-sm">
+                    A great opportunity for talented individuals. Click to learn more!
+                </p> 
+            @endif
+        </div>
 
         @if ($job->tags->isNotEmpty())
             {{-- Only show tags if there are any --}}

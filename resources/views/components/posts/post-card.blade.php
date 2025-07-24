@@ -14,9 +14,8 @@
     </div>
 
     <div class="mb-4">
-
-        <x-image-display type="post" />
-        <p class="text-gray-800 prose leading-relaxed text-base" x-html="post.body_excerpt"></p>
+        {{-- <x-image-display type="post" :images="[]" x-bind:images="post.images" /> --}}
+        <p class="text-gray-800 prose leading-relaxed text-base line-clamp-3" x-html="post.body"></p>
         <template x-if="post.body.length > 250">
             <a :href="`{{ url('/posts') }}/${post.id}`"
                 class="text-indigo-600 hover:text-indigo-800 text-sm font-medium mt-1 inline-block">Read
