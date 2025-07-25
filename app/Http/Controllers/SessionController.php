@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -19,6 +20,12 @@ class SessionController extends Controller
             'email' => ['email', 'string', 'max:255'],
             'password' => ['string', 'min:6']
         ]);
+
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user->email_verified_at) {
+            return redirect('/register/verify?getCode=true&email=' . $user->email);
+        }
 
         if (!Auth::attempt($attributes)) {
             throw ValidationException::withMessages([

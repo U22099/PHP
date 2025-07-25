@@ -7,7 +7,7 @@
         <p class="text-gray-600 text-sm mb-2 line-clamp-2">{{ $project->description }}</p>
         <a href="{{ $project->link }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
             View Project Link
-            <x-heroicon-o-link   class="inline-block w-4 h-4 ml-1 -mt-0.5" />
+            <x-heroicon-o-link class="inline-block w-4 h-4 ml-1 -mt-0.5" />
         </a>
 
 

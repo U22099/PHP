@@ -1,14 +1,17 @@
 @props(['images' => []])
 
 <script>
-    let images = @json($images) || [];
+    function imageDecode(images) {
+        return JSON.parse(images)
+    }
 </script>
 <div x-data="{
     open: false,
     currentImageSrc: '',
     currentImageAlt: '',
     allImagesOpen: false,
-    allImages: images || [],
+    allImages: [],
+
     openModal(src, alt) {
         this.currentImageSrc = src;
         this.currentImageAlt = alt;
@@ -27,7 +30,12 @@
         this.allImagesOpen = false;
         this.open = false;
     },
-}" @keydown.escape.window="open = false" class="relative w-full h-full mt-4">
+
+    init() {
+        this.allImages = @json($images);
+    },
+}" @keydown.escape.window="open = false" x-init="init()"
+    class="relative w-full h-full mt-4">
     {{-- Image Gallery Grid --}}
     <div x-show="allImages.length > 0" class="grid gap-2 w-full lg:max-w-xl mx-auto"
         :class="{

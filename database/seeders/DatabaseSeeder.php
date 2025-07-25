@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'nifemiolaniyi4@gmail.com',
             'image' => 'https://i.pravatar.cc/300?img=' . rand(1, 100),
             'role' => 'freelancer',
-            'email_verified_at' => now(),
+            'email_verified_at' => null,
             'password' => Hash::make('helloworld'),
             'remember_token' => Str::random(10),
         ]);
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'u22099dandev4@gmail.com',
             'image' => 'https://i.pravatar.cc/300?img=' . rand(1, 100),
             'role' => 'client',
-            'email_verified_at' => now(),
+            'email_verified_at' => null,
             'password' => Hash::make('helloworld'),
             'remember_token' => Str::random(10),
         ]);

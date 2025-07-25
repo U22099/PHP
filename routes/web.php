@@ -15,7 +15,6 @@ use App\Models\Post;
 use App\Models\Projects;
 use illuminate\Support\Arr;
 
-
 Route::get('/', function () {
     return view('homepage');
 });
@@ -29,6 +28,9 @@ Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
 Route::get('/register', [RegisterUserController::class, 'create'])->name('register');
+Route::get('/register/verify', [RegisterUserController::class, 'verify'])->name('auth.verify');
+Route::post('/register/verify', [RegisterUserController::class, 'verifyOtp'])->name('auth.register.verify');
+Route::post('/register/verify/{user}', [RegisterUserController::class, 'sendVerificationCode'])->name('auth.verify.resend');
 Route::post('/register', [RegisterUserController::class, 'store']);
 
 // Jobs Route
