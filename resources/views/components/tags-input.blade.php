@@ -1,5 +1,3 @@
-<!-- resources/views/components/tag-input.blade.php -->
-
 @props([
     'name', // The name for the hidden input array (e.g., 'tags')
     'label' => 'Tags', // The label for the input field
@@ -95,9 +93,7 @@
                     <button type="button" @click="removeTag(tag)"
                         class="-mr-0.5 ml-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-indigo-400 hover:bg-indigo-200 hover:text-indigo-500 focus:bg-indigo-500 focus:text-white focus:outline-none">
                         <span class="sr-only">Remove tag</span>
-                        <svg class="h-2 w-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-                            <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
-                        </svg>
+                        <x-heroicon-o-x-mark class="h-2 w-2" />
                     </button>
                 </span>
             </template>

@@ -31,18 +31,43 @@
 
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex md:gap-8 lg:gap-12 md:text-lg flex-grow justify-end items-center">
-                <x-nav-link href="/" :active="request()->is('/')">Homepage</x-nav-link>
-                <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')">Jobs</x-nav-link>
-                <x-nav-link href="/articles" :active="request()->routeIs('articles.*')">Articles</x-nav-link>
-                <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">Posts</x-nav-link>
-                <x-nav-link href="/contact" :active="request()->is('contact')">Contact Developer</x-nav-link>
+                <x-nav-link href="/" :active="request()->is('/')">
+                    <x-slot:icon><x-heroicon-o-home class="h-5 w-5" /></x-slot:icon> {{-- Added Home icon --}}
+                    Homepage
+                </x-nav-link>
+                <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')">
+                    <x-slot:icon><x-heroicon-o-briefcase class="h-5 w-5" /></x-slot:icon>
+                    {{-- Added Briefcase icon --}}
+                    Jobs
+                </x-nav-link>
+                <x-nav-link href="/articles" :active="request()->routeIs('articles.*')">
+                    <x-slot:icon><x-heroicon-o-book-open class="h-5 w-5" /></x-slot:icon>
+                    {{-- Added Book Open icon --}}
+                    Articles
+                </x-nav-link>
+                <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">
+                    <x-slot:icon><x-heroicon-o-document-text class="h-5 w-5" /></x-slot:icon>
+                    {{-- Added Document Text icon --}}
+                    Posts
+                </x-nav-link>
+                <x-nav-link href="/contact" :active="request()->is('contact')">
+                    <x-slot:icon><x-heroicon-o-envelope class="h-5 w-5" /></x-slot:icon>
+                    {{-- Added Envelope icon --}}
+                    Contact Developer
+                </x-nav-link>
                 @guest
-                    <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
-                            aria-hidden="true">&rarr;</span></x-nav-link>
+                    <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-arrow-right-on-rectangle class="h-5 w-5" /></x-slot:icon>
+                        {{-- Added Login icon --}}
+                        Log in <span aria-hidden="true">&rarr;</span>
+                    </x-nav-link>
                 @endguest
                 @auth
-                    <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
-                            aria-hidden="true">&rarr;</span></x-nav-link>
+                    <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-user class="h-5 w-5" /></x-slot:icon>
+                        {{-- Added User icon --}}
+                        Profile <span aria-hidden="true">&rarr;</span>
+                    </x-nav-link>
                 @endauth
             </div>
 
@@ -53,16 +78,9 @@
                     aria-controls="mobile-menu" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <!-- Icon when menu is closed -->
-                    <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
+                    <x-heroicon-o-bars-3 x-show="!open" class="h-6 w-6" /> {{-- Replaced Bars 3 SVG --}}
                     <!-- Icon when menu is open (X icon) -->
-                    <svg x-show="open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                    <x-heroicon-o-x-mark x-show="open" class="h-6 w-6" /> {{-- Replaced X Mark SVG --}}
                 </button>
             </div>
         </nav>
@@ -78,30 +96,52 @@
             <button @click="open = false" type="button"
                 class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400 hover:text-white">
                 <span class="sr-only">Close menu</span>
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                    aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <x-heroicon-o-x-mark class="h-6 w-6" /> {{-- Replaced X Mark SVG --}}
             </button>
         </div>
         <div class="mt-6 flow-root">
             <div class="-my-6 divide-y divide-gray-700 px-6">
                 <div class="space-y-2 py-6 flex gap-4 flex-col">
-                    <x-nav-link href="/" :active="request()->is('/')" @click="open = false">Homepage</x-nav-link>
-                    <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')" @click="open = false">Jobs</x-nav-link>
-                    <x-nav-link href="/articles" :active="request()->routeIs('articles.*')" @click="open = false">Articles</x-nav-link>
-                    <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">Posts</x-nav-link>
-                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">Contact Developer</x-nav-link>
+                    <x-nav-link href="/" :active="request()->is('/')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-home class="h-6 w-6" /></x-slot:icon>
+                        {{-- Added Home icon --}}
+                        Homepage
+                    </x-nav-link>
+                    <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-briefcase class="h-6 w-6" /></x-slot:icon>
+                        {{-- Added Briefcase icon --}}
+                        Jobs
+                    </x-nav-link>
+                    <x-nav-link href="/articles" :active="request()->routeIs('articles.*')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-book-open class="h-6 w-6" /></x-slot:icon>
+                        {{-- Added Book Open icon --}}
+                        Articles
+                    </x-nav-link>
+                    <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-document-text class="h-6 w-6" /></x-slot:icon>
+                        {{-- Added Document Text icon --}}
+                        Posts
+                    </x-nav-link>
+                    <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">
+                        <x-slot:icon><x-heroicon-o-envelope class="h-6 w-6" /></x-slot:icon>
+                        {{-- Added Envelope icon --}}
+                        Contact Developer
+                    </x-nav-link>
                 </div>
                 <div class="py-6">
                     @guest
-                        <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">Log in <span
-                                aria-hidden="true">&rarr;</span></x-nav-link>
+                        <x-nav-link href="/login" :active="request()->is('login')" @click="open = false">
+                            <x-slot:icon><x-heroicon-o-arrow-right-on-rectangle class="h-6 w-6" /></x-slot:icon> {{-- Added Login icon --}}
+                            Log in <span aria-hidden="true">&rarr;</span>
+                        </x-nav-link>
                     @endguest
 
                     @auth
-                        <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">Profile <span
-                                aria-hidden="true">&rarr;</span></x-nav-link>
+                        <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">
+                            <x-slot:icon><x-heroicon-o-user class="h-6 w-6" /></x-slot:icon>
+                            {{-- Added User icon --}}
+                            Profile <span aria-hidden="true">&rarr;</span>
+                        </x-nav-link>
                     @endauth
                 </div>
             </div>

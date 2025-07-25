@@ -1,6 +1,6 @@
 <?php
 
-namespace AppPolicies;
+namespace App\Policies;
 
 use AppModelsUser;
 use Illuminate\Support\Facades\Auth;

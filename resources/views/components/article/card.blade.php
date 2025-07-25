@@ -1,4 +1,3 @@
-<!-- resources/views/components/article/card.blade.php -->
 @props(['article'])
 
 <div class="rounded-lg p-6 flex flex-col justify-start items-start border border-gray-200 hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer">
