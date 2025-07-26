@@ -1,9 +1,8 @@
 <x-profile.layout>
 
     <x-slot:title>
-        Profile: {{ $user->firstname . ' ' . $user->lastname }}
+       {{ $user->firstname . ' ' . $user->lastname }}
     </x-slot:title>
-
     <div x-data="{
         currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
         showEditProfileModal: JSON.parse('{{ !request()->has('error') ? 'false' : (request()->get('error') === 'profile-form-error' ? 'true' : 'false') }}'),
@@ -45,7 +44,7 @@
                 <template x-if="currentTab === 'jobs'">
                     <x-profile.section title="My Posted Jobs">
                         <x-button type="link" href="/jobs/create">
-                             <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                            <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
                             Post New Job
                         </x-button>
                         {{-- Assuming $user->jobs if you added that relationship --}}
@@ -69,7 +68,7 @@
             <template x-if="currentTab === 'posts'">
                 <x-profile.section title="My Posts">
                     <x-button type="link" href="/posts/create">
-                         <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                        <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
                         Create New Post
                     </x-button>
                     @if ($user->posts->isEmpty())
@@ -86,7 +85,7 @@
             <template x-if="currentTab === 'articles'">
                 <x-profile.section title="My Articles">
                     <x-button type="link" href="/articles/create">
-                         <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                        <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
                         Write New Article
                     </x-button>
                     @if ($user->articles->isEmpty())

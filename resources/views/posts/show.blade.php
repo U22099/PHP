@@ -34,8 +34,7 @@
                         @endforeach
                     </div>
                 @endif
-
-                @if (count($post->images) > 0)
+                @if (!empty($post->images))
                     <x-image-display :images="$post->images" />
                 @endif
             </div>
@@ -48,7 +47,7 @@
                     <span>Like ({{ $post->likes_count ?? 0 }})</span>
                 </button>
                 <span class="flex items-center space-x-1 text-green-600"> {{-- Active comment count --}}
-                     <x-heroicon-o-chat-bubble-left class="h-5 w-5" />
+                    <x-heroicon-o-chat-bubble-left class="h-5 w-5" />
                     <span>Comment ({{ $post->comments_count ?? $post->comments->count() }})</span>
                 </span>
                 <button

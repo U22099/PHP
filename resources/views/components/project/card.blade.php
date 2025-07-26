@@ -13,7 +13,6 @@
 
         @if (!empty($project->images))
             <div class="mt-4">
-
                 <x-image-display type="project" :images="$project->images" />
             </div>
         @endif
