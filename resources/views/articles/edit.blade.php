@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Edit Article: {{ $article->title }}
+    </x-slot:title>
+
     <x-slot:heading>
         Edit Article
     </x-slot:heading>

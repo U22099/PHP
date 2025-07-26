@@ -1,4 +1,3 @@
-<!-- resources/views/components/post/card.blade.php -->
 @props(['post'])
 
 <div class="rounded-lg p-6 flex flex-col justify-start items-start border border-gray-200 hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer"
@@ -10,7 +9,6 @@
     @if (!empty($post->images))
         <div class="mt-4">
             <h4 class="text-sm font-semibold text-gray-700 mb-2">Attached Images:</h4>
-            {{-- Pass the PHP $post->images directly to the component --}}
             <x-image-display :images="$post->images" />
         </div>
     @endif

@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        View Article: {{ $article->title }}
+    </x-slot:title>
     <x-slot:heading>
         {{ $article->title }}
     </x-slot:heading>

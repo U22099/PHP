@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot:title>
+        Articles
+    </x-slot:title>
     <x-slot:heading>
         Recent Articles
     </x-slot:heading>

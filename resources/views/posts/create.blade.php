@@ -1,5 +1,8 @@
-<!-- resources/views/posts/create.blade.php -->
 <x-layout>
+    <x-slot:title>
+        Create New Post
+    </x-slot:title>
+
     <x-slot:heading>
         Create New Post
     </x-slot:heading>

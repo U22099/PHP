@@ -1,40 +1,6 @@
 @props(['images' => []])
 
-<script>
-    function imageDecode(images) {
-        return JSON.parse(images)
-    }
-</script>
-<div x-data="{
-    open: false,
-    currentImageSrc: '',
-    currentImageAlt: '',
-    allImagesOpen: false,
-    allImages: [],
-
-    openModal(src, alt) {
-        this.currentImageSrc = src;
-        this.currentImageAlt = alt;
-        this.open = true;
-    },
-    openAllImages() {
-        if (this.allImages.length > 0) {
-            this.currentImageAlt = 'Gallery Images';
-            this.open = true;
-            this.allImagesOpen = true;
-        }
-    },
-    closeModal() {
-        this.currentImageSrc = '';
-        this.currentImageAlt = '';
-        this.allImagesOpen = false;
-        this.open = false;
-    },
-
-    init() {
-        this.allImages = @json($images);
-    },
-}" @keydown.escape.window="open = false" x-init="init()"
+<div x-data="image_display" @keydown.escape.window="open = false" x-init='init(@json($images))'
     class="relative w-full h-full mt-4">
     {{-- Image Gallery Grid --}}
     <div x-show="allImages.length > 0" class="grid gap-2 w-full lg:max-w-xl mx-auto"
@@ -96,3 +62,35 @@
         </div>
     </template>
 </div>
+<script>
+    Alpine.data("image_display", () => ({
+        open: false,
+        currentImageSrc: "",
+        currentImageAlt: "",
+        allImagesOpen: false,
+        allImages: [],
+
+        openModal(src, alt) {
+            this.currentImageSrc = src;
+            this.currentImageAlt = alt;
+            this.open = true;
+        },
+        openAllImages() {
+            if (this.allImages.length > 0) {
+                this.currentImageAlt = "Gallery Images";
+                this.open = true;
+                this.allImagesOpen = true;
+            }
+        },
+        closeModal() {
+            this.currentImageSrc = "";
+            this.currentImageAlt = "";
+            this.allImagesOpen = false;
+            this.open = false;
+        },
+
+        init(inputImages) {
+            this.allImages = inputImages;
+        },
+    }));
+</script>

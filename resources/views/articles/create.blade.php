@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Create New Article
+    </x-slot:title>
+
     <x-slot:heading>
         Create Article
     </x-slot:heading>

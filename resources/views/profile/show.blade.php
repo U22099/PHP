@@ -1,4 +1,9 @@
 <x-profile.layout>
+
+    <x-slot:title>
+        Profile: {{ $user->firstname . ' ' . $user->lastname }}
+    </x-slot:title>
+
     <div x-data="{
         currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
         showEditProfileModal: JSON.parse('{{ !request()->has('error') ? 'false' : (request()->get('error') === 'profile-form-error' ? 'true' : 'false') }}'),

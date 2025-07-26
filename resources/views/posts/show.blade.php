@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        View Post: {{ $post->id }}
+    </x-slot:title>
+
     <x-slot:heading>
         Post Details
     </x-slot:heading>

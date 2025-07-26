@@ -1,7 +1,12 @@
 <x-layout>
+    <x-slot:title>
+        Jobs
+    </x-slot:title>
+    
     <x-slot:heading>
         Available Positions
     </x-slot:heading>
+
     <x-slot:headerbutton>
         @can('create', \App\Models\Job::class)
             <x-button type="link" href="/jobs/create" class="capitalize">

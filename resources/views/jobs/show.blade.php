@@ -1,7 +1,12 @@
 <x-layout>
+    <x-slot:title>
+        Jobs: {{ $job->title }}
+    </x-slot:title>
+
     <x-slot:heading>
         {{ $job->title }}
     </x-slot:heading>
+
     <x-slot:headerbutton>
         @can('update', $job)
             <x-button type="link" href="/jobs/{{ $job->id }}/edit" class="capitalize">

@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        {{ config('app.name') }}: Log In
+    </x-slot:title>
+
     <x-slot:heading>
         Log In
     </x-slot:heading>

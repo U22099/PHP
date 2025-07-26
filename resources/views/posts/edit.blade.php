@@ -1,5 +1,8 @@
-<!-- resources/views/posts/edit.blade.php -->
 <x-layout>
+    <x-slot:title>
+        Edit Post: {{ $post->id }}
+    </x-slot:title>
+
     <x-slot:heading>
         Edit Post
     </x-slot:heading>

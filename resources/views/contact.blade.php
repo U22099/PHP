@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Contact Us
+    </x-slot:title>
+
     <x-slot:heading>
         Get in Touch
     </x-slot:heading>

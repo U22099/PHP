@@ -1,6 +1,6 @@
-<!-- resources/views/jobs/create.blade.php -->
-
 <x-layout>
+    {{ $job->title }}
+
     <x-slot:heading>
         Edit Job
     </x-slot:heading>

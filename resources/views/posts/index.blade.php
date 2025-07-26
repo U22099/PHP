@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Posts Feed
+    </x-slot:title>
+
     <x-slot:heading>
         Posts Feed
     </x-slot:heading>

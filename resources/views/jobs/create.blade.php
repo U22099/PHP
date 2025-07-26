@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Create New Job
+    </x-slot:title>
+
     <x-slot:heading>
         Create Job
     </x-slot:heading>

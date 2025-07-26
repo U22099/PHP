@@ -97,7 +97,7 @@
         </div>
 
         <div class="footer">
-            <p>&copy; {{ date('Y') }} BidMax. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
             <p>If you have any questions, please contact our support team.</p>
         </div>
     </div>
