@@ -2,7 +2,7 @@
 
 <div class="divide-y divide-gray-100">
     <a href="/jobs/{{ $job->id }}"
-        class="group block py-6 px-4 hover:bg-gray-50 transition-colors duration-200 ease-in-out border-b border-gray-100 last:border-b-0">
+        class="group block py-6 px-4 rounded-md hover:bg-gray-100 transition-colors duration-200 ease-in-out border-b border-gray-200">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h3 class="text-xl font-semibold text-indigo-500 group-hover:text-indigo-700 leading-tight mb-2 sm:mb-0">
                 {{ $job->title }}
@@ -14,21 +14,28 @@
                 </span>
                 <span
                     class="inline-flex items-center rounded-md bg-green-50 px-3 py-1 text-base font-medium text-green-700 ring-1 ring-inset ring-green-600/20 flex-shrink-0">
-                    {{ $job->salary }}
+                    {{ $job->currency->symbol }}
+                    <span>
+                        @if ($job->min_budget === $job->max_budget)
+                            {{ Number::abbreviate($job->min_budget, 1) }}
+                        @else
+                            {{ Number::abbreviate($job->min_budget, 1) }} -
+                            {{ Number::abbreviate($job->max_budget, 1) }}
+                        @endif
+                    </span>
+                    <span class="ml-2">in {{ $job->time_budget }} Days</span>
                 </span>
             </div>
         </div>
-
-        <div class="prose text-gray-800 line-clamp-3"
-            @if ($job->description) 
+        <div class="prose text-gray-800 line-clamp-3">
+            @if ($job->description)
                 {!! nl2br(e($job->description, 300)) !!}
             @else
                 <p class="mt-2 text-gray-600 text-sm">
                     A great opportunity for talented individuals. Click to learn more!
-                </p> 
+                </p>
             @endif
         </div>
-
         @if ($job->tags->isNotEmpty())
             {{-- Only show tags if there are any --}}
             <div class="mt-4 flex flex-wrap gap-2">

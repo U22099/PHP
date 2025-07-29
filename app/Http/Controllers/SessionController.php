@@ -23,7 +23,7 @@ class SessionController extends Controller
 
         $user = User::where('email', $request->input('email'))->first();
 
-        if (!$user->email_verified_at) {
+        if ($user && !$user->email_verified_at) {
             return redirect('/register/verify?getCode=true&email=' . $user->email);
         }
 

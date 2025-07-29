@@ -2,7 +2,7 @@
     <x-slot:title>
         Jobs
     </x-slot:title>
-    
+
     <x-slot:heading>
         Available Positions
     </x-slot:heading>
@@ -15,7 +15,7 @@
         @endcan
     </x-slot:headerbutton>
 
-    <div class="container mx-auto pt-2 not-even:py-8 px-2 sm:px-4 lg:px-8">
+    <div class="pt-2 not-even:py-8 px-2 sm:px-4 lg:px-8">
         <div class="flex flex-col-reverse gap-4 lg:grid lg:grid-cols-12 lg:gap-8">
             <div class="lg:col-span-8 lg:mt-0 mt-8">
                 @forelse ($jobs as $job)
@@ -30,7 +30,7 @@
                     {{ $jobs->links() }}
                 </div>
             </div>
-            <div class="lg:col-span-4">
+            <div class="lg:col-span-4"> {{-- lg:pe-2 lg:h-[70vh] lg:overflow-y-scroll --}}
                 <x-jobs.job-filter-sidebar :allTags="$allTags" />
             </div>
         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Bids;
+use App\Models\Currency;
 use App\Models\Employer;
 use App\Models\Tags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,16 +20,29 @@ class Job extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'salary',
+        'min_budget',
+        'max_budget',
+        'time_budget',
+        'currency_id',
         'description',
         'screenshots'
     ];
 
     protected $casts = ['screenshots' => 'array'];
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function bids()
+    {
+        return $this->hasMany(Bids::class, foreignKey: 'job_listing_id');
     }
 
     public function tags()

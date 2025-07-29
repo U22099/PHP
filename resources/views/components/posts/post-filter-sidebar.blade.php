@@ -71,7 +71,7 @@
     <!-- Filter by Tags -->
     <div class="mb-6 hidden lg:block">
         <label class="block text-sm font-medium text-gray-700 mb-1">Hashtags</label>
-        <div class="mt-2 flex flex-wrap gap-2 max-h-[250px] overflow-y-scroll">
+        <div class="mt-2 flex flex-wrap gap-2 max-h-[150px] overflow-y-scroll">
             <template x-for="tag in allAvailableTags" :key="tag">
                 <button type="button" @click="toggleTag(tag); applyFilters();"
                     :class="{

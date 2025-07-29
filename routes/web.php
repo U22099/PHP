@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ContactDevController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -9,18 +10,21 @@ use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
 use App\Models\Article;
+use App\Models\Bids;
 use App\Models\Comments;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
-use illuminate\Support\Arr;
 
 Route::get('/', function () {
     return view('homepage');
 });
+
 Route::get('/contact', function () {
     return view('contact');
 });
+
+Route::post('/contact', [ContactDevController::class, 'sendMsg']);
 
 // Auth Route
 Route::get('/login', [SessionController::class, 'create'])->name('login');
@@ -59,6 +63,31 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
         ->name('jobs.destroy')
         ->can('delete', 'job');
+
+    // Bids
+    Route::get('/jobs/{job}/bids', [JobController::class, 'bids_list'])
+        ->name('jobs.bids_list')
+        ->can('viewAny', Bids::class);
+
+    Route::post('/jobs/{job}/bids', [JobController::class, 'store_bid'])
+        ->name('jobs.store_bid')
+        ->can('create', Bids::class);
+
+    Route::get('/jobs/{job}/bids/{bid}', [JobController::class, 'show_bid'])
+        ->name('jobs.show_bid')
+        ->can('view', Bids::class);
+
+    Route::get('/jobs/{job}/bids/{bid}', [JobController::class, 'edit_bid'])
+        ->name('jobs.edit_bid')
+        ->can('update', 'bid');
+
+    Route::patch('/jobs/{job}/bids/{bid}', [JobController::class, 'update_bid'])
+        ->name('jobs.update_bid')
+        ->can('update', 'bid');
+
+    Route::patch('/jobs/{job}/bids/{bid}/status', [JobController::class, 'update_bid_status'])
+        ->name('jobs.update_bid_status')
+        ->can('updateStatus', 'bid');
 });
 
 // Articles Route

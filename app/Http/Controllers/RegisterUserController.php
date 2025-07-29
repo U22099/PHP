@@ -21,7 +21,8 @@ class RegisterUserController extends Controller
     {
         $email = $request->input('email');
         $user = User::where('email', $email)->first();
-        if ($request->input('getCode')) {
+
+        if ($user && $request->input('getCode')) {
             return $this->sendVerificationCode($user);
         }
 
