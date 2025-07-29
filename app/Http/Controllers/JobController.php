@@ -196,7 +196,7 @@ class JobController extends Controller
     // Bids
     public function bids_list(Job $job)
     {
-        return view('jobs.bids-list', ['bids' => $job->bids()->with('user', 'job')->get()]);
+        return view('jobs.bids-list', ['bids' => $job->bids()->with('user', 'job')->get(), 'title' => $job->title]);
     }
 
     public function show_bid(Bid $bid)
