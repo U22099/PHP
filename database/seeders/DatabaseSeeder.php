@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Bids;
 use App\Models\Comments;
 use App\Models\Currency;
+use App\Models\FreelancerDetails;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
@@ -23,7 +24,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
+        User::factory()->count(10)->create()->each(function ($user) {
+            if ($user->role === 'client')
+                return;
+
+            FreelancerDetails::factory()->create([
+                'user_id' => $user->id
+            ]);
+        });
         Tags::factory()->count(20)->create();
         Currency::factory()->count(20)->create();
 
@@ -63,6 +71,10 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('helloworld'),
             'remember_token' => Str::random(10),
+        ]);
+
+        FreelancerDetails::factory()->create([
+            'user_id' => $testFreelancer->id
         ]);
 
         $testClient = User::create([

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,26 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('freelancer_details', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->string('professional_name')->nullable();
+            $table->text('professional_summary')->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->json('skills')->nullable();
+            $table->string('portfolio_link')->nullable();
+            $table->integer('years_of_experience')->nullable();
+            $table->text('education')->nullable();
+            $table->text('certifications')->nullable();
+            $table->json('languages')->nullable();
+            $table->enum('availability', ['Full-time', 'Part-time', 'Hourly'])->nullable();
+            $table->enum('response_time', ['Within an hour', 'Within a few hours', 'Within a day'])->nullable();
+            $table->string('linkedin_profile')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -49,6 +70,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('freelancer_details');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

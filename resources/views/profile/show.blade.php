@@ -1,7 +1,7 @@
 <x-profile.layout>
 
     <x-slot:title>
-       {{ $user->firstname . ' ' . $user->lastname }}
+        {{ $user->firstname . ' ' . $user->lastname }}
     </x-slot:title>
     <div x-data="{
         currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
@@ -15,6 +15,14 @@
     }" class="pb-10">
         {{-- Profile Header --}}
         <x-profile.header :user="$user" />
+
+        {{-- Freelancer Details Card (conditionally displayed for freelancers) --}}
+        @if ($user->role === 'freelancer')
+            <div class="my-4">
+                <x-freelancer.profile-card :freelancerDetails="$user->freelancer_details" />
+            </div>
+        @endif
+
         <x-profile.navigation :user-role="$user->role" />
 
         {{-- Main Content Area (conditionally displayed based on currentTab) --}}
@@ -113,6 +121,21 @@
                 </div>
             </div>
         </template>
+
+        {{-- Edit Freelancer Details Modal 
+        <template x-if="showFreelancerModal">
+            <div class="fixed inset-0 bg-black/50 z-50 flex items-start lg:items-center justify-center p-4 overflow-y-scroll"
+                x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
+                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" x-cloak>
+                <div class="border bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
+                    <button @click="showFreelancerModal = false"
+                        class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+                    <h3 class="text-xl font-bold mb-4">Edit Freelancer Details</h3>
+                    <x-freelancer.edit-profile-form :freelancerDetails="$user->freelancer_details" />
+                </div>
+            </div>
+        </template> --}}
 
         <template x-if="showProjectFormModal">
             <div class="fixed inset-0 bg-black/50 z-50 flex items-start lg:items-center justify-center p-4 overflow-y-scroll"

@@ -2,7 +2,7 @@
 
 <form method="POST" action="{{ route('profile.update') }}">
     @csrf
-    @method('PATCH')
+    @method('PUT')
 
     <div class="space-y-4">
         {{-- First Name --}}

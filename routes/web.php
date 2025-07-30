@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContactDevController;
+use App\Http\Controllers\FreelancerDetailsController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\SessionController;
 use App\Models\Article;
 use App\Models\Bids;
 use App\Models\Comments;
+use App\Models\FreelancerDetails;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
@@ -20,11 +22,8 @@ Route::get('/', function () {
     return view('homepage');
 });
 
-Route::get('/contact', function () {
-    return view('contact');
-});
-
-Route::post('/contact', [ContactDevController::class, 'sendMsg']);
+Route::get('/contact', [ContactDevController::class, 'show'])->name('contact.show');
+Route::post('/contact', [ContactDevController::class, 'sendMsg'])->name('contact.send');
 
 // Auth Route
 Route::get('/login', [SessionController::class, 'create'])->name('login');
@@ -56,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('jobs.edit')
         ->can('update', 'job');
 
-    Route::patch('/jobs/{job}', [JobController::class, 'update'])
+    Route::put('/jobs/{job}', [JobController::class, 'update'])
         ->name('jobs.update')
         ->can('update', 'job');
 
@@ -81,11 +80,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('jobs.edit_bid')
         ->can('update', 'bid');
 
-    Route::patch('/jobs/{job}/bids/{bid}', [JobController::class, 'update_bid'])
+    Route::put('/jobs/{job}/bids/{bid}', [JobController::class, 'update_bid'])
         ->name('jobs.update_bid')
         ->can('update', 'bid');
 
-    Route::patch('/jobs/{job}/bids/{bid}/status', [JobController::class, 'update_bid_status'])
+    Route::put('/jobs/{job}/bids/{bid}/status', [JobController::class, 'update_bid_status'])
         ->name('jobs.update_bid_status')
         ->can('updateStatus', 'bid');
 });
@@ -109,7 +108,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('articles.edit')
         ->can('update', 'article');
 
-    Route::patch('/articles/{article}', [ArticleController::class, 'update'])
+    Route::put('/articles/{article}', [ArticleController::class, 'update'])
         ->name('articles.update')
         ->can('update', 'article');
 
@@ -136,7 +135,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('posts.edit')
         ->can('update', 'post');
 
-    Route::patch('/posts/{post}', [PostController::class, 'update'])
+    Route::put('/posts/{post}', [PostController::class, 'update'])
         ->name('posts.update')
         ->can('update', 'post');
 
@@ -152,7 +151,15 @@ Route::middleware(['auth'])->group(function () {
 // Profile
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/freelancer', [FreelancerDetailsController::class, 'show'])
+        ->name('freelancer.details.show');
+    Route::get('/profile/freelancer/edit', [FreelancerDetailsController::class, 'edit'])
+        ->name('freelancer.details.edit')
+        ->can('edit', FreelancerDetails::class);
+    Route::put('/profile/freelancer', [FreelancerDetailsController::class, 'update'])
+        ->name('freelancer.details.update')
+        ->can('edit', FreelancerDetails::class);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -171,7 +178,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('projects.edit')
         ->can('update', 'project');
 
-    Route::patch('/projects/{project}', [ProjectsController::class, 'update'])
+    Route::put('/projects/{project}', [ProjectsController::class, 'update'])
         ->name('projects.update')
         ->can('update', 'project');
 

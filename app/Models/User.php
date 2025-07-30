@@ -10,6 +10,7 @@ use App\Models\Projects;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use \App\Models\FreelancerDetails;
 
 class User extends Authenticatable
 {
@@ -70,5 +71,10 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->hasMany(Projects::class);
+    }
+
+    public function freelancer_details()
+    {
+        return $this->hasOne(FreelancerDetails::class);
     }
 }

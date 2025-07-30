@@ -12,7 +12,12 @@ use Illuminate\Validation\ValidationException;
 
 class ContactDevController extends Controller
 {
-    function sendMsg(Request $request)
+    public function show()
+    {
+        view('contact');
+    }
+
+    public function sendMsg(Request $request)
     {
         $request->validate([
             'name' => 'required|string',

@@ -4,9 +4,10 @@
     <h3 class="text-2xl font-bold text-gray-900 mb-4">Edit Your Bid for {{ $job->title }}</h3>
 
     @can('update', $bid)
-        <form action="{{ route('jobs.update_bid', ['job' => $job->id, 'bid' => $bid->id]) }}" method="POST" class="flex flex-col gap-2">
+        <form action="{{ route('jobs.update_bid', ['job' => $job->id, 'bid' => $bid->id]) }}" method="POST"
+            class="flex flex-col gap-2">
             @csrf
-            @method('PATCH')
+            @method('PUT')
             <x-form-field class="w-full" label="Bid Amount" fieldname="bid_amount"
                 value="{{ old('bid_amount', $bid->bid_amount) }}" type="number" required>
                 <x-slot:icon>
@@ -27,8 +28,8 @@
                 @enderror
             </x-form-field>
 
-            <x-form-field class="w-full" rows='5' label="Bid Message" fieldname="bid_message"
-                :textarea="true" required>{{ old('bid_message', $bid->bid_message) }}</x-form-field>
+            <x-form-field class="w-full" rows='5' label="Bid Message" fieldname="bid_message" :textarea="true"
+                required>{{ old('bid_message', $bid->bid_message) }}</x-form-field>
             @error('bid_message')
                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
             @enderror

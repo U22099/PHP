@@ -26,7 +26,7 @@
                 <form id="mass-reject-form" method="POST" action="#">
                     {{-- {{ route('jobs.mass_update_bid_status', ['job' => $bids->first()->job->id]) }} --}}
                     @csrf
-                    @method('PATCH')
+                    @method('PUT')
                     {{-- Hidden input to send selected bid IDs --}}
                     <input type="hidden" name="bid_ids" :value="selectedBids.join(',')">
                     <input type="hidden" name="bid_status" value="rejected">
@@ -100,7 +100,7 @@
                                             action="{{ route('jobs.update_bid_status', ['job' => $bid->job->id, 'bid' => $bid->id]) }}"
                                             method="POST" class="w-full sm:w-auto">
                                             @csrf
-                                            @method('PATCH')
+                                            @method('PUT')
                                             <input type="hidden" name="bid_status"
                                                 value="{{ $bid->bid_status === 'interviewing' ? 'acccepted' : 'interviewing' }}">
                                             <button type="submit"
@@ -115,7 +115,7 @@
                                             action="{{ route('jobs.update_bid_status', ['job' => $bid->job->id, 'bid' => $bid->id]) }}"
                                             method="POST" class="w-full sm:w-auto">
                                             @csrf
-                                            @method('PATCH')
+                                            @method('PUT')
                                             <input type="hidden" name="bid_status" value="rejected">
                                             <button type="submit"
                                                 class="inline-flex items-center justify-center px-4 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-full">

@@ -3,7 +3,7 @@
 <form method="POST" x-bind:action="editingProject ? '/projects/' + editingProject.id : '/projects'" class="space-y-4">
     @csrf
     @if ($edit)
-        @method('PATCH')
+        @method('PUT')
     @endif
 
     <div>

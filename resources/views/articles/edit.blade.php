@@ -9,7 +9,7 @@
 
     <form method="POST" action="/articles/{{ $article->id }}">
         @csrf
-        @method('PATCH')
+        @method('PUT')
 
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
@@ -17,7 +17,8 @@
                 <p class="mt-1 text-sm leading-6 text-gray-600">This information will be displayed publicly.</p>
 
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <x-form-field rootClass="sm:col-span-4" class="w-full" fieldname="title" placeholder="How to build a laravel app" data="{{ $article->title }}" required>
+                    <x-form-field rootClass="sm:col-span-4" class="w-full" fieldname="title"
+                        placeholder="How to build a laravel app" data="{{ $article->title }}" required>
                         @error('title')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
@@ -40,7 +41,8 @@
                     </div>
 
                     <div class="col-span-full">
-                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', $article->tags->pluck('name')->toArray())" :available-tags="$availableTags" placeholder="Add tags" />
+                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', $article->tags->pluck('name')->toArray())" :available-tags="$availableTags"
+                            placeholder="Add tags" />
                         @error('tags')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
