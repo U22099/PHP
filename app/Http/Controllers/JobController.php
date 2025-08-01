@@ -8,6 +8,7 @@ use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Mews\Purifier\Facades\Purifier;
 
 class JobController extends Controller
 {
@@ -107,7 +108,7 @@ class JobController extends Controller
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
-            'description' => request('description'),
+            'description' => str_replace('"', "'", Purifier::clean(request('description'))),
             'user_id' => Auth::user()->id
         ]);
 
@@ -163,7 +164,7 @@ class JobController extends Controller
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
-            'description' => request('description'),
+            'description' => str_replace('"', "'", Purifier::clean(request('description'))),
             'currency_id' => request('currency_id'),
         ]);
 

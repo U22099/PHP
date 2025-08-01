@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 
 class ArticleController extends Controller
 {
@@ -38,7 +39,7 @@ class ArticleController extends Controller
         $article = Article::create([
             'user_id' => Auth::user()->id,
             'title' => request('title'),
-            'body' => request('body'),
+            'body' => str_replace('"', "'", Purifier::clean(request('body'))),
         ]);
 
         if (request()->has('tags')) {
@@ -82,7 +83,7 @@ class ArticleController extends Controller
 
         $article->updateOrFail([
             'title' => request('title'),
-            'body' => request('body'),
+            'body' => str_replace('"', "'", Purifier::clean(request('body'))),
         ]);
 
         if (request()->has('tags')) {

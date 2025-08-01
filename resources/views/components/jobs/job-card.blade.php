@@ -3,6 +3,11 @@
 <div class="divide-y divide-gray-100">
     <a href="/jobs/{{ $job->id }}"
         class="group block py-6 px-4 rounded-md hover:bg-gray-100 transition-colors duration-200 ease-in-out border-b border-gray-200">
+        <div class="flex justify-end w-full">
+            <h3 class="text-xl font-semibold text-indigo-500 group-hover:text-indigo-700 leading-tight mb-2 sm:mb-0">
+                Bids: {{ $job->bids->count() }}
+            </h3>
+        </div>
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h3 class="text-xl font-semibold text-indigo-500 group-hover:text-indigo-700 leading-tight mb-2 sm:mb-0">
                 {{ $job->title }}
@@ -29,7 +34,7 @@
         </div>
         <div class="prose text-gray-800 line-clamp-3">
             @if ($job->description)
-                {!! nl2br(e($job->description, 300)) !!}
+                {!! $job->description !!}
             @else
                 <p class="mt-2 text-gray-600 text-sm">
                     A great opportunity for talented individuals. Click to learn more!

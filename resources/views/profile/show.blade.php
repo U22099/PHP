@@ -61,8 +61,19 @@
                                 <div class="rounded-lg p-6 flex flex-col justify-start items-start border border-gray-200 hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer"
                                     onclick="window.location.href = '/jobs/{{ $job->id }}';">
                                     <h3 class="text-xl font-bold text-gray-800">{{ $job->title }}</h3>
-                                    <p class="text-gray-600 text-sm mt-1">{{ $job->description }}</p>
-                                    <p class="text-gray-700 font-medium mt-2">Budget: {{ $job->salary }}</p>
+                                    <div class="text-gray-600 text-sm mt-1 line-clamp-3">{!! $job->description !!}</div>
+                                    <p class="text-gray-700 font-medium mt-2">Budget: {{ $job->currency->symbol }}
+                                        <span>
+                                            @if ($job->min_budget === $job->max_budget)
+                                                {{ Number::abbreviate($job->min_budget, 1) }}
+                                            @else
+                                                {{ Number::abbreviate($job->min_budget, 1) }} -
+                                                {{ Number::abbreviate($job->max_budget, 1) }}
+                                            @endif
+                                        </span>
+                                    </p>
+                                    <p class="text-gray-700 font-medium mt-2">Bids: {{ $job->bids->count() }}
+                                    </p>
                                 </div>
                             @endforeach
                         @endif

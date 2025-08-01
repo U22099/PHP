@@ -94,7 +94,7 @@
 
         {{-- Editable Area --}}
         <div contenteditable="true" x-ref="editor" @input="updateContent()"
-            {{ $attributes->merge(['class' => 'prose max-w-none p-2 outline-none min-h-[100px] list-auto']) }}>
+            {{ $attributes->merge(['class' => 'prose max-w-none p-2 outline-none min-h-[100px] list-auto overflow-y-scroll']) }}>
         </div>
     </div>
     {{ $slot }}

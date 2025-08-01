@@ -24,8 +24,8 @@
                             class="text-xl font-semibold text-indigo-600 group-hover:text-indigo-700 transition-colors duration-200 mb-2 leading-tight">
                             {{ $article->title }}
                         </h3>
-                        <p class="text-gray-600 text-base leading-relaxed flex-grow mb-4">
-                            {{ Str::limit($article->body, 100) }}
+                        <p class="text-gray-600 text-base leading-relaxed flex-grow mb-4 line-clamp-5">
+                            {!! $article->body !!}
                         </p>
                     </a>
                     @if ($article->tags->isNotEmpty())

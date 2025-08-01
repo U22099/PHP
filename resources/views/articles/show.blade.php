@@ -29,12 +29,7 @@
 
         <!-- article Body -->
         <div class="prose prose-lg max-w-none text-gray-800 leading-relaxed mb-10 text-justify">
-            {{--
-                IMPORTANT: Use {!! $article->body !!} ONLY if you trust the source or have
-                sanitized HTML. Otherwise, use {{ nl2br(e($article->body)) }}
-                to render line breaks and safely escape HTML.
-            --}}
-            {!! nl2br(e($article->body)) !!}
+            {!! $article->body !!}
         </div>
 
         <!-- Tags Section -->

@@ -7,6 +7,7 @@ use App\Models\Stacks;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Mews\Purifier\Facades\Purifier;
 use \Illuminate\Support\Facades\Validator;
 
 class ProjectsController extends Controller
@@ -74,7 +75,7 @@ class ProjectsController extends Controller
 
             $project = Projects::create([
                 'title' => $validatedData['title'],
-                'description' => $validatedData['description'],
+                'description' => str_replace('"', "'", Purifier::clean($validatedData['description'])),
                 'link' => $validatedData['link'],
                 'images' => $request->input('images') ?? [],
                 'user_id' => Auth::user()->id,
@@ -129,7 +130,7 @@ class ProjectsController extends Controller
 
             $project->updateOrFail([
                 'title' => $validatedData['title'],
-                'description' => $validatedData['description'],
+                'description' => Purifier::clean($validatedData['description']),
                 'link' => $validatedData['link'],
                 'images' => $request->input('images') ?? [],
                 'user_id' => Auth::user()->id,

@@ -5,7 +5,7 @@
     <div class="flex-grow mb-2"
         @click="window.location.href = '/{{ Auth::user()->id === $user_id ? 'profile' : Auth::user()->username }}/projects/{{ $project->id }}';">
         <h3 class="text-xl font-bold text-gray-800 mb-1">{{ $project->title }}</h3>
-        <div class="text-gray-600 text-sm mb-2 line-clamp-2">{!! $project->description !!}</div>
+        <div class="text-gray-600 text-sm mb-2 line-clamp-3">{!! $project->description !!}</div>
         <a href="{{ $project->link }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
             View Project Link
             <x-heroicon-o-link class="inline-block w-4 h-4 ml-1 -mt-0.5" />
