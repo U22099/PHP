@@ -34,8 +34,9 @@
     </div>
 
     <div class="flex items-center justify-between text-gray-500 border-t border-gray-200 pt-4 mt-4">
-        <button
-            class="flex items-center space-x-1 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
+        <button @click="like(post.id)"
+            :class="{'text-blue-600': post.liked_by_user, 'hover:text-blue-600': !post.liked_by_user}"
+            class="flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
             <x-heroicon-o-hand-thumb-up class="h-5 w-5" />
             <span x-text="`Like (${post.likes_count || 0})`"></span>
         </button>

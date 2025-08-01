@@ -14,7 +14,6 @@
     </x-slot:headerbutton>
 
     <div class="mt-8 flow-root">
-
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($articles as $article)
                 <div
@@ -24,9 +23,9 @@
                             class="text-xl font-semibold text-indigo-600 group-hover:text-indigo-700 transition-colors duration-200 mb-2 leading-tight">
                             {{ $article->title }}
                         </h3>
-                        <p class="text-gray-600 text-base leading-relaxed flex-grow mb-4 line-clamp-5">
+                        <div class="text-gray-600 text-base leading-relaxed flex-grow mb-4 line-clamp-4">
                             {!! $article->body !!}
-                        </p>
+                        </div>
                     </a>
                     @if ($article->tags->isNotEmpty())
                         <div class="px-6 pb-4 pt-2 border-t border-gray-100 flex flex-wrap gap-2 text-sm">

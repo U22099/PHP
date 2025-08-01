@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactDevController;
 use App\Http\Controllers\FreelancerDetailsController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RegisterUserController;
@@ -153,6 +154,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/comments/{post}', [CommentsController::class, 'store'])
         ->name('comments.store')
         ->can('create', Comments::class);
+
+    // Likes
+    Route::post('/posts/{post}/like', [PostLikeController::class, 'store'])->name('posts.like');
 });
 
 // Profile

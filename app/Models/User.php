@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Models\Article;
 use App\Models\Job;
 use App\Models\Post;
+use App\Models\PostLike;
 use App\Models\Projects;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -76,5 +77,10 @@ class User extends Authenticatable
     public function freelancer_details()
     {
         return $this->hasOne(FreelancerDetails::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(PostLike::class);
     }
 }
