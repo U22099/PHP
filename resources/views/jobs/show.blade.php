@@ -50,7 +50,7 @@
                 @endif
                 @if (!empty($job->screenshots))
                     <h1 class="text-lg font-bold text-gray-500 mt-3 mb-4">Project Screenshots</h1>
-                    <x-image-display :images="$job->screenshots" />
+                    <x-image-gallery :images="$job->screenshots" />
                 @endif
             </div>
             <p class="mt-4 text-gray-500 text-sm italic">

@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        {{ config('app.name') }}: Email Verification
+        Email Verification
     </x-slot:title>
     <div x-data="{
         errorVerificationCodeExpired: '{{ $errors->first('verification_code_expired') }}',

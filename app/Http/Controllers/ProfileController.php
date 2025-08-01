@@ -14,13 +14,25 @@ use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
+    public function show_user($username)
+    {
+        $user = User::where('username', $username)->firstOrFail()->load([
+            'projects' => fn($q) => $q->latest(),
+            'posts' => fn($q) => $q->latest(),
+            'articles' => fn($q) => $q->latest(),
+            'jobs' => fn($q) => $q->latest(),
+        ]);
+
+        return view('profile.show', [...compact('user')]);
+    }
+
     public function show()
     {
         $user = Auth::user()->load([
-            'projects',
-            'posts',
-            'articles',
-            'jobs',
+            'projects' => fn($q) => $q->latest(),
+            'posts' => fn($q) => $q->latest(),
+            'articles' => fn($q) => $q->latest(),
+            'jobs' => fn($q) => $q->latest(),
         ]);
 
         $allTags = Tags::whereHas('projects')->orderBy('name')->get();

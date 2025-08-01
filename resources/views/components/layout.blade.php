@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     @isset($title)
-        <title>{{ $title }}</title>
+        <title>{{ $title }} | {{ config('app.name') }}</title>
     @endisset
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
@@ -32,7 +32,7 @@
 
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex md:gap-8 lg:gap-12 md:text-lg flex-grow justify-end items-center">
-                <x-nav-link href="/" :active="request()->is('/')">
+                <x-nav-link href="/" :active="request()->is('/') || (Auth::check() ? request()->routeIs('posts.*') : false)">
                     <x-slot:icon><x-heroicon-o-home class="h-5 w-5" /></x-slot:icon> {{-- Added Home icon --}}
                     Homepage
                 </x-nav-link>
@@ -46,11 +46,13 @@
                     {{-- Added Book Open icon --}}
                     Articles
                 </x-nav-link>
-                <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">
-                    <x-slot:icon><x-heroicon-o-document-text class="h-5 w-5" /></x-slot:icon>
-                    {{-- Added Document Text icon --}}
-                    Posts
-                </x-nav-link>
+                @guest
+                    <x-nav-link href="/posts" :active="request()->routeIs('posts.*')">
+                        <x-slot:icon><x-heroicon-o-document-text class="h-5 w-5" /></x-slot:icon>
+                        {{-- Added Document Text icon --}}
+                        Posts
+                    </x-nav-link>
+                @endguest
                 <x-nav-link href="/contact" :active="request()->is('contact')">
                     <x-slot:icon><x-heroicon-o-envelope class="h-5 w-5" /></x-slot:icon>
                     {{-- Added Envelope icon --}}
@@ -103,7 +105,7 @@
         <div class="mt-6 flow-root">
             <div class="-my-6 divide-y divide-gray-700 px-6">
                 <div class="space-y-2 py-6 flex gap-4 flex-col">
-                    <x-nav-link href="/" :active="request()->is('/')" @click="open = false">
+                    <x-nav-link href="/" :active="request()->is('/') || (Auth::check() ? request()->routeIs('posts.*') : false)" @click="open = false">
                         <x-slot:icon><x-heroicon-o-home class="h-6 w-6" /></x-slot:icon>
                         {{-- Added Home icon --}}
                         Homepage
@@ -118,11 +120,13 @@
                         {{-- Added Book Open icon --}}
                         Articles
                     </x-nav-link>
-                    <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">
-                        <x-slot:icon><x-heroicon-o-document-text class="h-6 w-6" /></x-slot:icon>
-                        {{-- Added Document Text icon --}}
-                        Posts
-                    </x-nav-link>
+                    @guest
+                        <x-nav-link href="/posts" :active="request()->routeIs('posts.*')" @click="open = false">
+                            <x-slot:icon><x-heroicon-o-document-text class="h-6 w-6" /></x-slot:icon>
+                            {{-- Added Document Text icon --}}
+                            Posts
+                        </x-nav-link>
+                    @endguest
                     <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">
                         <x-slot:icon><x-heroicon-o-envelope class="h-6 w-6" /></x-slot:icon>
                         {{-- Added Envelope icon --}}

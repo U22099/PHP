@@ -9,7 +9,7 @@
     @if (!empty($post->images))
         <div class="mt-4">
             <h4 class="text-sm font-semibold text-gray-700 mb-2">Attached Images:</h4>
-            <x-image-display :images="$post->images" />
+            <x-image-gallery :images="$post->images" />
         </div>
     @endif
 

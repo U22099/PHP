@@ -9,7 +9,17 @@ use Illuminate\Validation\Validation\Exception;
 
 class FreelancerDetailsController extends Controller
 {
-    public function show(){
+    public function show_user(FreelancerDetails $freelancerDetails)
+    {
+        $freelancerDetails->load('user');
+
+        return view('freelancer.show', [
+            'freelancerDetails' => $freelancerDetails
+        ]);
+    }
+
+    public function show()
+    {
         $freelancerDetails = Auth::user()->freelancer_details ?? new FreelancerDetails();
 
         return view('freelancer.show', [
@@ -17,14 +27,15 @@ class FreelancerDetailsController extends Controller
         ]);
     }
 
-    public function edit(){
+    public function edit()
+    {
         $freelancerDetails = Auth::user()->freelancer_details ?? new FreelancerDetails();
 
         return view('freelancer.edit', [
             'freelancerDetails' => $freelancerDetails
         ]);
     }
-    
+
     public function update(Request $request)
     {
         try {

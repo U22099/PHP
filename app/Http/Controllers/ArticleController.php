@@ -19,7 +19,6 @@ class ArticleController extends Controller
     public function create()
     {
         $availableTags = Tags::whereHas('articles')
-            ->orWhereHas('jobs')
             ->pluck('name')
             ->toArray();
         return view('articles.create', [
@@ -67,7 +66,6 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $availableTags = Tags::whereHas('articles')
-            ->orWhereHas('jobs')
             ->pluck('name')
             ->toArray();
         return view('articles.edit', ['article' => $article, 'availableTags' => $availableTags]);

@@ -45,7 +45,7 @@
             },
             init(data) {
                 this.content = data;
-                $refs.editor.innerHTML = data;
+                this.$refs.editor.innerHTML = data;
             }
         }" x-init="init(`{!! old($fieldname) ?? ($data ?? '') !!}`)">
 

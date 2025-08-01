@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        {{ config('app.name') }}: Register
+        Register
     </x-slot:title>
 
     <x-slot:heading>

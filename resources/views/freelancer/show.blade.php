@@ -10,20 +10,21 @@
     </x-slot:heading>
 
     <x-slot:headerbutton>
-        @if (Auth::user()->id === $freelancerDetails->user_id)
-            <x-button type="link" href="/profile">
-                Go Back
-            </x-button>
-        @endif
+        <x-button type="link"
+            href="{{ Auth::user()->id === $freelancerDetails->id ? '/profile/' : '/' . $freelancerDetails->user->username }}">
+            Go Back
+        </x-button>
     </x-slot:headerbutton>
     <div class="bg-white border rounded-lg px-4 py-5 sm:p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-2xl leading-6 font-bold text-gray-600">
                 Freelancer Details
             </h3>
-            <x-button type="link" href="/profile/freelancer/edit">
-                Edit
-            </x-button>
+            @if (Auth::user()->id === $freelancerDetails->user_id)
+                <x-button type="link" href="/profile/freelancer/edit">
+                    Edit
+                </x-button>
+            @endif
         </div>
         <div class="border-t border-gray-200 pt-4">
             <dl class="grid grid-cols-1 gap-x-2 gap-y-4 sm:grid-cols-2">

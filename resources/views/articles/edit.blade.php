@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        Edit Article: {{ $article->title }}
+        Edit Article:- {{ $article->title }}
     </x-slot:title>
 
     <x-slot:heading>
@@ -41,8 +41,8 @@
                     </div>
 
                     <div class="col-span-full">
-                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', $article->tags->pluck('name')->toArray())" :available-tags="$availableTags"
-                            placeholder="Add tags" />
+                        <x-searchable-input name="tags" label="Articles Tags" placeholder="Add Article Tags..."
+                            :initialItems="old('tags', $article->tags->pluck('name')->toArray())" :availableItems="$availableTags" placeholder="Add tags" />
                         @error('tags')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror

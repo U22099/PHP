@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Tags;
+use App\Models\Stacks;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,8 +27,8 @@ class Projects extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tags()
+    public function stacks()
     {
-        return $this->belongsToMany(Tags::class);
+        return $this->belongsToMany(Stacks::class);
     }
 }

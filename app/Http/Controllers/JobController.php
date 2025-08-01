@@ -80,8 +80,7 @@ class JobController extends Controller
 
     public function create()
     {
-        $availableTags = Tags::whereHas('articles')
-            ->orWhereHas('jobs')
+        $availableTags = Tags::whereHas('jobs')
             ->pluck('name')
             ->toArray();
 
@@ -139,8 +138,7 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        $availableTags = Tags::whereHas('articles')
-            ->orWhereHas('jobs')
+        $availableTags = Tags::whereHas('jobs')
             ->pluck('name')
             ->toArray();
 

@@ -39,8 +39,8 @@
                     </div>
 
                     <div class="col-span-full">
-                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', [])" :available-tags="$availableTags"
-                            placeholder="Add tags" />
+                        <x-searchable-input name="tags" label="Articles Tags" placeholder="Add Article Tags..."
+                            :initialItems="old('tags', [])" :availableItems="$availableTags" placeholder="Add tags" />
                         @error('tags')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror

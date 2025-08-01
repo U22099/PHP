@@ -3,13 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projects;
-use App\Models\Tags;
+use App\Models\Stacks;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Validator;
 
 class ProjectsController extends Controller
 {
+    public function show($project)
+    {
+        $user = Auth::user();
+        $project = Projects::where('user_id', $user->id)->where('id', $project)->first();
+
+        return view('projects.show', ['project' => $project]);
+    }
+
+    public function show_user($username, $project)
+    {
+        $user = User::where('username', $username)->first();
+        $project = Projects::where('user_id', $user->id)->where('id', $project)->first();
+
+        return view('projects.show', ['project' => $project]);
+    }
+
+    public function create(Projects $project)
+    {
+        $availableStacks = Stacks::whereHas('projects')
+            ->pluck('name')
+            ->toArray();
+
+        return view('projects.create', ['availableStacks' => $availableStacks]);
+    }
+
+    public function edit(Projects $project)
+    {
+        $availableStacks = Stacks::whereHas('projects')
+            ->pluck('name')
+            ->toArray();
+
+        return view('projects.edit', ['project' => $project, 'availableStacks' => $availableStacks]);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -17,45 +52,46 @@ class ProjectsController extends Controller
                 'title' => ['string', 'required', 'min:3'],
                 'description' => ['string', 'required'],
                 'link' => ['string', 'required', 'url'],
-                'images' => ['nullable'],
-                'tags' => ['array'],
-                'tags.*' => ['string', 'max:255']
-            ]);
-
-            $images = json_decode($request->input('images'), true);
-
-            $validator = Validator::make(['images' => $images], [
                 'images' => ['nullable', 'array'],
                 'images.*' => ['string', 'url'],
+                'stacks' => ['array'],
+                'stacks.*' => ['string', 'max:255']
             ]);
 
-            if ($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+            // $images = json_decode($request->input('images'), true);
+
+            // $validator = Validator::make(['images' => $images], [
+            //     'images' => ['required', 'array'],
+            //     'images.*' => ['string', 'url'],
+            // ]);
+
+            // if ($validator->fails()) {
+            //     return redirect()
+            //         ->back()
+            //         ->withErrors($validator)
+            //         ->withInput();
+            // }
 
             $project = Projects::create([
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'],
                 'link' => $validatedData['link'],
-                'images' => $images,
+                'images' => $request->input('images') ?? [],
                 'user_id' => Auth::user()->id,
             ]);
 
-            if ($request->has('tags')) {
-                $tagNames = $request->input('tags');
-                $tagIds = [];
+            if ($request->has('stacks')) {
+                $stackNames = $request->input('stacks');
+                $stackIds = [];
 
-                foreach ($tagNames as $tagName) {
-                    $tag = Tags::firstOrCreate(['name' => $tagName]);
-                    $tagIds[] = $tag->id;
+                foreach ($stackNames as $stackName) {
+                    $stack = Stacks::firstOrCreate(['name' => $stackName]);
+                    $stackIds[] = $stack->id;
                 }
 
-                $project->tags()->sync($tagIds);
+                $project->stacks()->sync($stackIds);
             } else {
-                $project->tags()->sync([]);
+                $project->stacks()->sync([]);
             }
 
             return redirect('/profile?tab=projects');
@@ -73,43 +109,42 @@ class ProjectsController extends Controller
                 'title' => ['string', 'required', 'min:3'],
                 'description' => ['string', 'required'],
                 'link' => ['string', 'required', 'url'],
-                'images' => ['nullable'],
-                'tags' => ['array'],
-                'tags.*' => ['string', 'max:255']
-            ]);
-
-            $images = json_decode($request->input('images'), true);
-
-            $validator = Validator::make(['images' => $images], [
                 'images' => ['nullable', 'array'],
                 'images.*' => ['string', 'url'],
+                'stacks' => ['array'],
+                'stacks.*' => ['string', 'max:255']
             ]);
 
-            if ($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+            // $validator = Validator::make(['images' => $images], [
+            //     'images' => ['required', 'array'],
+            //     'images.*' => ['string', 'url'],
+            // ]);
+
+            // if ($validator->fails()) {
+            //     return redirect()
+            //         ->back()
+            //         ->withErrors($validator)
+            //         ->withInput();
+            // }
 
             $project->updateOrFail([
                 'title' => $validatedData['title'],
                 'description' => $validatedData['description'],
                 'link' => $validatedData['link'],
-                'images' => $images,
+                'images' => $request->input('images') ?? [],
                 'user_id' => Auth::user()->id,
             ]);
 
-            if ($request->has('tags')) {
-                $tagNames = $request->input('tags');
-                $tagIds = [];
-                foreach ($tagNames as $tagName) {
-                    $tag = Tags::firstOrCreate(['name' => $tagName]);
-                    $tagIds[] = $tag->id;
+            if ($request->has('stacks')) {
+                $stackNames = $request->input('stacks');
+                $stackIds = [];
+                foreach ($stackNames as $stackName) {
+                    $stack = Stacks::firstOrCreate(['name' => $stackName]);
+                    $stackIds[] = $stack->id;
                 }
-                $project->tags()->sync($tagIds);
+                $project->stacks()->sync($stackIds);
             } else {
-                $project->tags()->sync([]);
+                $project->stacks()->sync([]);
             }
             return redirect('/profile?tab=projects');
         } catch (ValidationException $e) {

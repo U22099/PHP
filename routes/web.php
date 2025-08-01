@@ -17,23 +17,30 @@ use App\Models\FreelancerDetails;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('homepage');
-});
+Route::get('/', function (Request $request) {
+    if (!Auth::check()) {
+        return view('homepage');
+    } else {
+        $controller = new PostController();
+        return $controller->index($request);
+    }
+})->name('homepage');
 
 Route::get('/contact', [ContactDevController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactDevController::class, 'sendMsg'])->name('contact.send');
 
 // Auth Route
 Route::get('/login', [SessionController::class, 'create'])->name('login');
-Route::post('/login', [SessionController::class, 'store']);
+Route::post('/login', [SessionController::class, 'store'])->middleware('throttle:10,1');
 Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
 
 Route::get('/register', [RegisterUserController::class, 'create'])->name('register');
 Route::get('/register/verify', [RegisterUserController::class, 'verify'])->name('auth.verify');
-Route::post('/register/verify', [RegisterUserController::class, 'verifyOtp'])->name('auth.register.verify');
-Route::post('/register/verify/{user}', [RegisterUserController::class, 'sendVerificationCode'])->name('auth.verify.resend');
+Route::post('/register/verify', [RegisterUserController::class, 'verifyOtp'])->name('auth.register.verify')->middleware('throttle:10,1');
+Route::post('/register/verify/{user}', [RegisterUserController::class, 'sendVerificationCode'])->name('auth.verify.resend')->middleware('throttle:10,1');
 Route::post('/register', [RegisterUserController::class, 'store']);
 
 // Jobs Route
@@ -151,37 +158,50 @@ Route::middleware(['auth'])->group(function () {
 // Profile
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+    Route::get('/{username}', [ProfileController::class, 'show_user'])->name('profile.show.user');
+
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::get('/profile/freelancer', [FreelancerDetailsController::class, 'show'])
         ->name('freelancer.details.show');
+
+    Route::get('/profile/freelancer/{freelancerDetails}', [FreelancerDetailsController::class, 'show_user'])
+        ->name('freelancer.details.show.user');
+
     Route::get('/profile/freelancer/edit', [FreelancerDetailsController::class, 'edit'])
         ->name('freelancer.details.edit')
         ->can('edit', FreelancerDetails::class);
+
     Route::put('/profile/freelancer', [FreelancerDetailsController::class, 'update'])
         ->name('freelancer.details.update')
         ->can('edit', FreelancerDetails::class);
 });
 
+// projects
 Route::middleware(['auth'])->group(function () {
-    Route::get('/projects/create', [ProjectsController::class, 'create'])
+    Route::get('/profile/projects/new', [ProjectsController::class, 'create'])
         ->name('projects.create')
         ->can('create', Projects::class);
 
-    Route::post('/projects', [ProjectsController::class, 'store'])
+    Route::post('/profile/projects', [ProjectsController::class, 'store'])
         ->name('projects.store')
         ->can('create', Projects::class);
 
-    Route::get('/projects/{project}', [ProjectsController::class, 'show'])
+    Route::get('/profile/projects/{project}', [ProjectsController::class, 'show'])
         ->name('projects.show');
 
-    Route::get('/projects/{project}/edit', [ProjectsController::class, 'edit'])
+    Route::get('/profile/projects/{project}/edit', [ProjectsController::class, 'edit'])
         ->name('projects.edit')
         ->can('update', 'project');
 
-    Route::put('/projects/{project}', [ProjectsController::class, 'update'])
+    Route::put('/profile/projects/{project}', [ProjectsController::class, 'update'])
         ->name('projects.update')
         ->can('update', 'project');
 
-    Route::delete('/projects/{project}', [ProjectsController::class, 'destroy'])
+    Route::delete('/profile/projects/{project}', [ProjectsController::class, 'destroy'])
         ->name('projects.destroy');
 });
+
+Route::get('/{username}/projects/{project}', [ProjectsController::class, 'show_user'])
+    ->name('projects.show.user');

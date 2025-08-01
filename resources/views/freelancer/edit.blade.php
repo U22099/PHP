@@ -13,7 +13,6 @@
         <x-button type="link" href="/profile">
             Go Back
         </x-button>
-
     </x-slot:headerbutton>
     <div class="bg-white border rounded-lg px-4 py-5 sm:p-6">
         <form method="POST" action="/profile/freelancer" class="space-y-4">

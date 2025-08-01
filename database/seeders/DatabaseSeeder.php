@@ -11,6 +11,7 @@ use App\Models\FreelancerDetails;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
+use App\Models\Stacks;
 use App\Models\Tags;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ]);
         });
         Tags::factory()->count(20)->create();
+        Stacks::factory()->count(20)->create();
         Currency::factory()->count(20)->create();
 
         Post::factory()->count(50)->create()->each(function ($post) {
@@ -55,7 +57,7 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $client->id,
                     'currency_id' => Currency::find(rand(1, 20))->id,
                 ])->each(function ($job) {
-                    $tags = Tags::all()->random(rand(1, 3));
+                    $tags = Stacks::all()->random(rand(1, 3));
                     $job->tags()->attach($tags);
                 });
             }
@@ -107,7 +109,10 @@ class DatabaseSeeder extends Seeder
         Projects::factory()->count(rand(1, 5))->create([
             'user_id' => $testFreelancer->id,
             'link' => rand(0, 1) ? 'https://dan22099.vercel.app' : 'https://u22099.github.io/Portfolio2',
-        ]);
+        ])->each(function ($project) {
+            $stacks = Stacks::all()->random(rand(1, 8));
+            $project->stacks()->attach($stacks);
+        });
 
         Post::factory()->count(rand(1, 5))->create([
             'user_id' => $testClient->id
@@ -130,7 +135,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => $testClient->id,
             'currency_id' => Currency::find(rand(1, 20))->id,
         ])->each(function ($job) {
-            $tags = Tags::all()->random(rand(1, 3));
+            $tags = Stacks::all()->random(rand(1, 3));
             $job->tags()->attach($tags);
         });
 

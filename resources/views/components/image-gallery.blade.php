@@ -1,33 +1,33 @@
-@props(['images' => []])
+@props(['images' => [], 'image_height' => 'h-48'])
 
 <div x-data="{
-        open: false,
-        currentImageSrc: '',
-        currentImageAlt: '',
-        allImagesOpen: false,
-        allImages: [],
-        openModal(src, alt) {
-            this.currentImageSrc = src;
-            this.currentImageAlt = alt;
+    open: false,
+    currentImageSrc: '',
+    currentImageAlt: '',
+    allImagesOpen: false,
+    allImages: [],
+    openModal(src, alt) {
+        this.currentImageSrc = src;
+        this.currentImageAlt = alt;
+        this.open = true;
+    },
+    openAllImages() {
+        if (this.allImages.length > 0) {
+            this.currentImageAlt = 'Gallery Images';
             this.open = true;
-        },
-        openAllImages() {
-            if (this.allImages.length > 0) {
-                this.currentImageAlt = 'Gallery Images';
-                this.open = true;
-                this.allImagesOpen = true;
-            }
-        },
-        closeModal() {
-            this.currentImageSrc = '';
-            this.currentImageAlt = '';
-            this.allImagesOpen = false;
-            this.open = false;
-        },
-        init(inputImages) {
-            this.allImages = inputImages;
-        },
-    }" @keydown.escape.window="open = false" x-init='init(@json($images))'
+            this.allImagesOpen = true;
+        }
+    },
+    closeModal() {
+        this.currentImageSrc = '';
+        this.currentImageAlt = '';
+        this.allImagesOpen = false;
+        this.open = false;
+    },
+    init(inputImages) {
+        this.allImages = inputImages;
+    },
+}" @keydown.escape.window="open = false" x-init='init(@json($images))'
     class="relative w-full h-full mt-4">
     {{-- Image Gallery Grid --}}
     <div x-show="allImages.length > 0" class="grid gap-2 w-full lg:max-w-xl mx-auto"
@@ -36,7 +36,7 @@
             'grid-cols-2': allImages.length >= 2,
         }">
         <template x-for="(image, index) in allImages.slice(0, 4)" :key="index" class="w-full h-60">
-            <div class="relative aspect-square overflow-hidden rounded-lg cursor-pointer group bg-gray-100 flex items-center justify-center h-60 w-full"
+            <div class="relative aspect-square overflow-hidden rounded-lg cursor-pointer group bg-gray-100 flex items-center justify-center h-24 lg:{{ $image_height }} w-full"
                 @click="openModal(image, 'Gallery Image ' + (index + 1))">
                 <img :src="image" :alt="'Gallery Image ' + (index + 1)"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">

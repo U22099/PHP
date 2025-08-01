@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        {{ config('app.name') }}: Log In
+        Log In
     </x-slot:title>
 
     <x-slot:heading>
@@ -25,8 +25,7 @@
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                         @enderror
                     </x-form-field>
-                    <x-form-field type="password" fieldname="password"
-                        placeholder="password" required>
+                    <x-form-field type="password" fieldname="password" placeholder="password" required>
                         <x-slot:icon>
                             <button type="button" @click="togglePasswordVisibility()"
                                 class="text-gray-400 hover:text-gray-600 focus:outline-none">

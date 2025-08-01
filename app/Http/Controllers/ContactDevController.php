@@ -14,7 +14,7 @@ class ContactDevController extends Controller
 {
     public function show()
     {
-        view('contact');
+        return view('contact');
     }
 
     public function sendMsg(Request $request)

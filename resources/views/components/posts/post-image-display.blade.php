@@ -7,12 +7,13 @@
         }">
         <template x-for="(image, index) in post.images.slice(0, 4)" :key="index" class="w-full h-60">
             <div
-                class="relative aspect-square overflow-hidden rounded-lg cursor-pointer group bg-gray-100 flex items-center justify-center h-60 w-full">
+                class="relative aspect-square overflow-hidden rounded-lg cursor-pointer group bg-gray-100 flex items-center justify-center h-24 lg:h-48 w-full">
                 <img :src="image" :alt="'Gallery Image ' + (index + 1)"
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
 
                 <template x-if="post.images.length > 4 && index === 3">
-                    <div class="absolute inset-0 bg-black/60 text-white flex items-center justify-center font-bold text-lg cursor-pointer z-10">
+                    <div
+                        class="absolute inset-0 bg-black/60 text-white flex items-center justify-center font-bold text-lg cursor-pointer z-10">
                         +<span x-text="post.images.length - 4"></span> More
                     </div>
                 </template>

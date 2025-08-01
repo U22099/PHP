@@ -14,19 +14,21 @@
                 <p class="text-md font-medium text-indigo-700 capitalize">{{ $user->role }}</p>
             </div>
         </div>
-        <div class="flex lg:flex-col flex-row lg:space-y-3 lg:space-x-0 space-y-0 space-x-4">
-            <x-button @click="showEditProfileModal = true;">
-                <x-heroicon-s-pencil class="-ml-1 mr-2 h-5 w-5" />
-                Edit Profile
-            </x-button>
-            <form method="POST" action="/logout" class="flex lg:justify-end lg:self-end">
-                @csrf
-                <x-button type="submit"
-                    class="bg-transparent hover:!border-indigo-400 !transition-colors !duration-200 hover:!bg-transparent !text-gray-800 !border-gray-400 !shadow-none lg:self-end">
-                    <x-gravityui-arrow-right-from-square class="-ml-1 mr-2 h-5 w-5 text-gray-500" />
-                    Logout
+        @if (Auth::user()->id === $user->id)
+            <div class="flex lg:flex-col flex-row lg:space-y-3 lg:space-x-0 space-y-0 space-x-4">
+                <x-button @click="showEditProfileModal = true;">
+                    <x-heroicon-s-pencil class="-ml-1 mr-2 h-5 w-5" />
+                    Edit Profile
                 </x-button>
-            </form>
-        </div>
+                <form method="POST" action="/logout" class="flex lg:justify-end lg:self-end">
+                    @csrf
+                    <x-button type="submit"
+                        class="bg-transparent hover:!border-indigo-400 !transition-colors !duration-200 hover:!bg-transparent !text-gray-800 !border-gray-400 !shadow-none lg:self-end">
+                        <x-gravityui-arrow-right-from-square class="-ml-1 mr-2 h-5 w-5 text-gray-500" />
+                        Logout
+                    </x-button>
+                </form>
+            </div>
+        @endif
     </div>
 </div>

@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="col-span-full">
-                        <x-tags-input name="tags" label="Articles Tags" :initial-tags="old('tags', $job->tags->pluck('name')->toArray())" :available-tags="$availableTags"
+                        <x-searchable-input name="tags" label="Articles Tags" :initialItems="old('tags', $job->tags->pluck('name')->toArray())" :availableItems="$availableTags"
                             placeholder="Add tags" />
                         @error('tags')
                             <p class="text-red-500 text-xs mt-2">{{ $message }}</p>

@@ -35,7 +35,7 @@
                     </div>
                 @endif
                 @if (!empty($post->images))
-                    <x-image-display :images="$post->images" />
+                    <x-image-gallery :images="$post->images" />
                 @endif
             </div>
 
