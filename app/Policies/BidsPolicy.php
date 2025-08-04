@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Bids;
+use App\Models\Job;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,9 +21,9 @@ class BidsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Bids $bid): bool
+    public function view(User $user, Bids $bid, Job $job): bool
     {
-        return $bid->user->is($user) || ($bid->job && $bid->job->user->is($user));
+        return $bid->user->is($user) || ($bid->job_listing_id === $job->id && $job->user->is($user));
     }
 
     /**
@@ -44,9 +45,9 @@ class BidsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Bids $bid): bool
+    public function delete(User $user, Bids $bid, Job $job): bool
     {
-        return $bid->user->is($user) || ($bid->job && $bid->job->user->is($user));
+        return $user->role === 'freelancer' && $bid->user->is($user);
     }
 
     /**
@@ -65,8 +66,8 @@ class BidsPolicy
         return false;
     }
 
-    public function updateStatus(User $user, Bids $bid): bool
+    public function updateStatus(User $user, Bids $bid, Job $job): bool
     {
-        return $bid->job && $bid->job->user->is($user);
+        return $bid->job_listing_id === $job->id && $job->user->is($user);
     }
 }

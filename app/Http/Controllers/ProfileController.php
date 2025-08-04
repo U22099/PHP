@@ -33,11 +33,10 @@ class ProfileController extends Controller
             'posts' => fn($q) => $q->latest(),
             'articles' => fn($q) => $q->latest(),
             'jobs' => fn($q) => $q->latest(),
+            'bids' => fn($q) => $q->latest()->with('job.currency'),
         ]);
 
-        $allTags = Tags::whereHas('projects')->orderBy('name')->get();
-
-        return view('profile.show', [...compact('user'), 'availableTags' => 'allTags']);
+        return view('profile.show', [...compact('user')]);
     }
 
     public function update(Request $request)

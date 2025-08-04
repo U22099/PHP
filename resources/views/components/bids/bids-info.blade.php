@@ -27,20 +27,28 @@
     {{-- Bids Section --}}
     <div class="w-full">
         <h3 class="text-2xl font-bold text-gray-900 mb-2">Bids Overview</h3>
-        <p class="text-gray-600 mb-2">Total Bids: <span class="font-bold">{{ $job->bids->count() }}</span></p>
 
         @if ($job->bids->isNotEmpty())
             @php
-                $acceptedBids = $job->bids->where('status', 'accepted')->count();
-                $interviewingBids = $job->bids->where('status', 'interviewing')->count();
+                $acceptedBids = $job->bids->where('bid_status', 'accepted')->count();
+                $interviewingBids = $job->bids->where('bid_status', 'interviewing')->count();
             @endphp
-            <h4 class="text-gray-600 mb-2">Accepted Bids <span class="font-bold"> {{ $acceptedBids }}
+            <h4 class="text-gray-600 mb-2">Total Bids: <span class="font-bold">{{ $job->bids->count() }}</span></h4>
+            <h4 class="text-gray-600 mb-2">Average Bid: <span class="font-bold">
+                    {{ $job->currency->symbol }}{{ number_format($job->average_bid_amount) }}
+                </span></h4>
+            <h4 class="text-gray-600 mb-2">Accepted Bids: <span class="font-bold"> {{ $acceptedBids }}
                 </span></h4>
 
-            <h4 class="text-gray-600 mb-2">Interviewing <span class="font-bold">
+            <h4 class="text-gray-600 mb-2">Interviewing: <span class="font-bold">
                     {{ $interviewingBids }} </span></h4>
         @else
             <p class="text-gray-600">No bids have been placed yet.</p>
         @endif
     </div>
+
+    <x-button type="link" href="/jobs/{{ $job->id }}/bids"
+        class="capitalize w-full flex justify-center items-center mt-2">
+        View Proposals
+    </x-button>
 </div>

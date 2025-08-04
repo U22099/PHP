@@ -6,6 +6,7 @@ use App\Models\Job;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bids extends Model
 {
@@ -17,15 +18,15 @@ class Bids extends Model
         'bid_amount',
         'bid_message',
         'bid_time_budget',
-        'status'
+        'bid_status'
     ];
 
-    public function job()
+    public function job(): BelongsTo
     {
         return $this->belongsTo(Job::class, $foreignKey = 'job_listing_id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

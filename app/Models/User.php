@@ -3,15 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use \App\Models\FreelancerDetails;
 use App\Models\Article;
+use App\Models\Bids;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\Projects;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use \App\Models\FreelancerDetails;
 
 class User extends Authenticatable
 {
@@ -54,32 +57,37 @@ class User extends Authenticatable
         ];
     }
 
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function articles()
+    public function articles(): HasMany
     {
         return $this->hasMany(Article::class);
     }
 
-    public function jobs()
+    public function jobs(): HasMany
     {
         return $this->hasMany(Job::class);
     }
 
-    public function projects()
+    public function projects(): HasMany
     {
         return $this->hasMany(Projects::class);
     }
 
-    public function freelancer_details()
+    public function bids(): HasMany
+    {
+        return $this->hasMany(Bids::class);
+    }
+
+    public function freelancer_details(): HasOne
     {
         return $this->hasOne(FreelancerDetails::class);
     }
 
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(PostLike::class);
     }

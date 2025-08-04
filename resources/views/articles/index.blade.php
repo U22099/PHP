@@ -17,14 +17,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse ($articles as $article)
                 <div
-                    class="bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300 ease-in-out">
+                    class="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col group hover:shadow-xl transition-all duration-300 ease-in-out">
                     <a href="/articles/{{ $article->id }}" class="p-6 flex flex-col flex-grow">
                         <h3
                             class="text-xl font-semibold text-indigo-600 group-hover:text-indigo-700 transition-colors duration-200 mb-2 leading-tight">
                             {{ $article->title }}
                         </h3>
                         <div class="text-gray-600 text-base leading-relaxed flex-grow mb-4 line-clamp-4">
-                            {!! $article->body !!}
+                            {{ strip_tags($article->body) }}
                         </div>
                     </a>
                     @if ($article->tags->isNotEmpty())

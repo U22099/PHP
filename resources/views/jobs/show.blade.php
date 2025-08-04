@@ -8,32 +8,47 @@
     </x-slot:heading>
 
     <x-slot:headerbutton>
-        @can('update', $job)
-            <x-button type="link" href="/jobs/{{ $job->id }}/edit" class="capitalize">
-                Edit Job
-            </x-button>
-        @endcan
+        <div class="flex gap-2 items-center">
+            <div class="hidden lg:flex mr-2">
+                <x-button type="link" href="/jobs/{{ $job->id }}/bids" class="capitalize">
+                    View Proposals
+                </x-button>
+            </div>
+            @can('update', $job)
+                <x-button type="link" href="/jobs/{{ $job->id }}/edit" class="capitalize">
+                    Edit Job
+                </x-button>
+            @endcan
+        </div>
     </x-slot:headerbutton>
 
     {{-- Job Information --}}
     <div class="border rounded-xl p-8 md:p-10 lg:p-12">
         <!-- Employer and Salary Section -->
-        <div class="flex items-center justify-between mb-8 pb-6 border-b border-gray-100 w-full">
-            <div>
-                <span
-                    class="inline-flex items-center rounded-md bg-green-50 px-4 py-2 text-md lg:text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                    Pays {{ $job->currency->symbol }}
+        <div class="flex items-center mb-8 pb-6 border-b border-gray-100 w-full">
+            <span
+                class="flex flex-wrap sm:items-center rounded-md bg-green-50 px-4 py-2 text-md lg:text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                Pays {{ $job->currency->symbol }}
+                <span>
+                    @if ($job->min_budget === $job->max_budget)
+                        {{ Number::abbreviate($job->min_budget, 1) }}
+                    @else
+                        {{ Number::abbreviate($job->min_budget, 1) }} -
+                        {{ Number::abbreviate($job->max_budget, 1) }}
+                    @endif
+                </span>
+                <span class="ml-2">in
                     <span>
-                        @if ($job->min_budget === $job->max_budget)
-                            {{ Number::abbreviate($job->min_budget, 1) }}
-                        @else
-                            {{ Number::abbreviate($job->min_budget, 1) }} -
-                            {{ Number::abbreviate($job->max_budget, 1) }}
+                        {{ $job->time_budget }} {{ str('day')->plural($job->time_budget) }}
+                        @if ($job->time_budget > 7)
+                            <span class="text-gray-500 font-medium text-sm">
+                                (&#8776;
+                                {{ \Carbon\Carbon::now()->addDays($job->time_budget)->diffForHumans(null, true) }})
+                            </span>
                         @endif
                     </span>
-                    <span class="ml-2">in {{ $job->time_budget }} Days</span>
                 </span>
-            </div>
+            </span>
         </div>
 
         <!-- Job Description Section -->
@@ -76,8 +91,8 @@
 
     {{-- Bidding Section --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-8">
-        <x-jobs.create-bid :job="$job" />
-        <x-jobs.bids-info :job="$job" />
+        <x-bids.create-bid :job="$job" />
+        <x-bids.bids-info :job="$job" />
     </div>
 
 </x-layout>

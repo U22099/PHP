@@ -28,13 +28,13 @@
                             {{ Number::abbreviate($job->max_budget, 1) }}
                         @endif
                     </span>
-                    <span class="ml-2">in {{ $job->time_budget }} Days</span>
+                    <span class="ml-2">in {{ Illuminate\Support\Carbon::now()->addDays($job->time_budget)->diffForHumans(null, true)}}</span>
                 </span>
             </div>
         </div>
         <div class="prose text-gray-800 line-clamp-3">
             @if ($job->description)
-                {!! $job->description !!}
+                {{ strip_tags($job->description) }}
             @else
                 <p class="mt-2 text-gray-600 text-sm">
                     A great opportunity for talented individuals. Click to learn more!

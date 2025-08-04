@@ -17,14 +17,14 @@
             </div>
         @endif
 
-        <x-profile.navigation :user-role="$user->role" />
+        <x-profile.navigation :user="$user" />
 
         {{-- Main Content Area (conditionally displayed based on currentTab) --}}
         <div class="mt-6">
             {{-- My Projects Section (Freelancer Specific) --}}
-            @if ($user->role === 'freelancer')
+            @if ($user->role === 'freelancer' || Auth::user()->role === 'client')
                 <template x-if="currentTab === 'projects'">
-                    <x-profile.section title="My Projects">
+                    <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Projects">
                         @if (Auth::user()->id === $user->id)
                             <button @click="window.location.href = '/profile/projects/new'"
                                 class="mb-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
@@ -41,19 +41,37 @@
                         @endif
                     </x-profile.section>
                 </template>
+
+                @if (Auth::user()->id === $user->id)
+                    <template x-if="currentTab === 'bids'">
+                        <x-profile.section title="My Bids">
+                            <button @click="window.location.href = '/jobs?timeframe=today'"
+                                class="mb-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                                View Recent Jobs
+                            </button>
+                            @if ($user->bids->isEmpty())
+                                <p class="text-center p-4 text-gray-500 italic">No bids yet.</p>
+                            @else
+                                @foreach ($user->bids as $bid)
+                                    <x-bids.card :bid="$bid" />
+                                @endforeach
+                            @endif
+                        </x-profile.section>
+                    </template>
+                @endif
             @endif
 
             {{-- My Jobs Section (Client Specific - Placeholder) --}}
-            @if ($user->role === 'client')
+            @if ($user->role === 'client' || Auth::user()->role === 'freelancer')
                 <template x-if="currentTab === 'jobs'">
-                    <x-profile.section title="My Posted Jobs">
+                    <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Posted Jobs">
                         @if (Auth::user()->id === $user->id)
                             <x-button type="link" href="/jobs/create">
                                 <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
                                 Post New Job
                             </x-button>
                         @endif
-                        {{-- Assuming $user->jobs if you added that relationship --}}
                         @if (empty($user->jobs) || $user->jobs->isEmpty())
                             <p class="text-center p-4 text-gray-500 italic">No jobs posted yet.</p>
                         @else
@@ -61,8 +79,10 @@
                                 <div class="rounded-lg p-6 flex flex-col justify-start items-start border border-gray-200 hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer"
                                     onclick="window.location.href = '/jobs/{{ $job->id }}';">
                                     <h3 class="text-xl font-bold text-gray-800">{{ $job->title }}</h3>
-                                    <div class="text-gray-600 text-sm mt-1 line-clamp-3">{!! $job->description !!}</div>
-                                    <p class="text-gray-700 font-medium mt-2">Budget: {{ $job->currency->symbol }}
+                                    <div class="text-gray-600 text-sm mt-1 line-clamp-3">
+                                        {{ strip_tags($job->description) }}</div>
+                                    <p class="text-gray-700 font-medium mt-2 flex gap-0">Budget:
+                                        {{ $job->currency->symbol }}
                                         <span>
                                             @if ($job->min_budget === $job->max_budget)
                                                 {{ Number::abbreviate($job->min_budget, 1) }}
@@ -83,7 +103,7 @@
 
             {{-- My Posts Section (Common) --}}
             <template x-if="currentTab === 'posts'">
-                <x-profile.section title="My Posts">
+                <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Posts">
                     @if (Auth::user()->id === $user->id)
                         <x-button type="link" href="/posts/create">
                             <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
@@ -102,7 +122,7 @@
 
             {{-- My Articles Section (Common) --}}
             <template x-if="currentTab === 'articles'">
-                <x-profile.section title="My Articles">
+                <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Articles">
                     @if (Auth::user()->id === $user->id)
                         <x-button type="link" href="/articles/create">
                             <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />

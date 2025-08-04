@@ -10,7 +10,7 @@
             <div>
                 <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900">{{ $user->firstname }}
                     {{ $user->lastname }}</h1>
-                <p class="text-lg text-gray-600">@ {{ $user->username }}</p>
+                <p class="text-lg text-gray-600">&#64;{{ $user->username }}</p>
                 <p class="text-md font-medium text-indigo-700 capitalize">{{ $user->role }}</p>
             </div>
         </div>

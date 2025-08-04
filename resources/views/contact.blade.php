@@ -46,12 +46,12 @@
                         </x-alert>
                     @endif
                     <div class="flex justify-end">
-                        <button type="submit"
+                        <x-button type="submit"
                             disabled='{{ !Auth::user() || Auth::user()->last_dev_contact < Illuminate\Support\Carbon::now()->subWeek() }}'
-                            class="inline-flex items-center px-8 py-3 border border-transparent text-lg font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed">
+                            class="disabled:opacity-50 disabled:cursor-not-allowed">
                             Send Message
                             <x-heroicon-s-paper-airplane class="ml-3 -mr-1 h-5 w-5" />
-                        </button>
+                        </x-button>
                     </div>
                 </form>
             </div>

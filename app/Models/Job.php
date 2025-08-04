@@ -6,9 +6,12 @@ use App\Models\Bids;
 use App\Models\Currency;
 use App\Models\Employer;
 use App\Models\Tags;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Job extends Model
 {
@@ -30,23 +33,33 @@ class Job extends Model
 
     protected $casts = ['screenshots' => 'array'];
 
-    public function currency()
+    protected $withCount = ['bids'];
+
+    protected $appends = ['average_bid_amount'];
+
+    public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function bids()
+    public function bids(): HasMany
     {
         return $this->hasMany(Bids::class, foreignKey: 'job_listing_id');
     }
 
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tags::class, foreignPivotKey: 'job_listing_id');
+    }
+
+    public function getAverageBidAmountAttribute(): float
+    {
+        $average = $this->bids()->avg('bid_amount') ?? 0;
+        return ceil($average);
     }
 }

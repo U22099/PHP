@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\BidsController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContactDevController;
 use App\Http\Controllers\FreelancerDetailsController;
@@ -70,31 +71,37 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
         ->name('jobs.destroy')
         ->can('delete', 'job');
+});
 
-    // Bids
-    Route::get('/jobs/{job}/bids', [JobController::class, 'bids_list'])
-        ->name('jobs.bids_list')
+// Bids
+Route::middleware(['auth'])->group(function () {
+    Route::get('/jobs/{job}/bids', [BidsController::class, 'index'])
+        ->name('bids.index')
         ->can('viewAny', Bids::class);
 
-    Route::post('/jobs/{job}/bids', [JobController::class, 'store_bid'])
-        ->name('jobs.store_bid')
+    Route::post('/jobs/{job}/bids', [BidsController::class, 'store'])
+        ->name('bids.store')
         ->can('create', Bids::class);
 
-    Route::get('/jobs/{job}/bids/{bid}', [JobController::class, 'show_bid'])
-        ->name('jobs.show_bid')
-        ->can('view', Bids::class);
+    Route::get('/jobs/{job}/bids/{bid}', [BidsController::class, 'show'])
+        ->name('bids.show')
+        ->can('view', ['bid', 'job']);
 
-    Route::get('/jobs/{job}/bids/{bid}', [JobController::class, 'edit_bid'])
-        ->name('jobs.edit_bid')
+    Route::get('/jobs/{job}/bids/{bid}/edit', [BidsController::class, 'edit'])
+        ->name('bids.edit')
         ->can('update', 'bid');
 
-    Route::put('/jobs/{job}/bids/{bid}', [JobController::class, 'update_bid'])
-        ->name('jobs.update_bid')
+    Route::put('/jobs/{job}/bids/{bid}', [BidsController::class, 'update'])
+        ->name('bids.update')
         ->can('update', 'bid');
 
-    Route::put('/jobs/{job}/bids/{bid}/status', [JobController::class, 'update_bid_status'])
-        ->name('jobs.update_bid_status')
-        ->can('updateStatus', 'bid');
+    Route::delete('/jobs/{job}/bids/{bid}', [BidsController::class, 'delete'])
+        ->name('bids.delete')
+        ->can('delete', ['bid', 'job']);
+
+    Route::put('/jobs/{job}/bids/{bid}/status', [BidsController::class, 'update_status'])
+        ->name('bids.update_status')
+        ->can('updateStatus', ['bid', 'job']);
 });
 
 // Articles Route
