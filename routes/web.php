@@ -102,6 +102,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/jobs/{job}/bids/{bid}/status', [BidsController::class, 'update_status'])
         ->name('bids.update_status')
         ->can('updateStatus', ['bid', 'job']);
+
+    Route::put('/jobs/{job}/bids/status/reject', [BidsController::class, 'mass_reject'])
+        ->name('bids.mass_reject')
+        ->can('massRejectBids', 'job');
 });
 
 // Articles Route

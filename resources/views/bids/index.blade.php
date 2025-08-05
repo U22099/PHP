@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:heading>
+        Proposals
+    </x-slot:heading>
+
     <x-slot:headerbutton>
         <x-button type="link" href="/jobs/{{ $job->id }}" class="capitalize flex gap-1 items-center">
             <x-heroicon-o-arrow-left class="h-5 w-5 text-white" />
@@ -6,7 +10,6 @@
         </x-button>
     </x-slot:headerbutton>
 
-    {{-- Main container, now flat with a subtle border --}}
     <div x-data="{
         selectedBids: [],
         startSelection: false,
@@ -22,9 +25,20 @@
             </div>
         @endif
 
+        @php
+            $acceptedBids = $bids->where('bid_status', 'accepted');
+            $otherBids = $bids->where('bid_status', '!=', 'accepted');
+            $acceptedBidsCount = $acceptedBids->count();
+        @endphp
+
         @if ($user_bid)
-            <div class="pb-6 mb-3 border-b-2 border-indigo-500">
-                <h3 class="font-bold text-xl mb-2"> Your Bid <span>&#40;ranked #{{ $user_ranked }}&#41;</span></h3>
+            <div class="pb-6 mb-6 border-b-2 border-gray-200">
+                <h3 class="font-bold text-xl mb-2"> Your Bid
+                    @if ($user_ranked)
+                        <span>&#40;ranked
+                            #{{ $user_ranked - $acceptedBidsCount }}&#41;</span>
+                    @endif
+                </h3>
                 <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 flex flex-row items-center">
                     <x-bids.index-card :bid="$user_bid" :job="$job" />
                 </div>
@@ -33,19 +47,16 @@
 
         @if ($job->bids_count)
             @if ($job->user->is(Auth::user()))
-                {{-- Mass Reject Controls (visible only if there are bids and selections) --}}
                 <div x-show="selectedBids.length > 0" x-transition.opacity.duration.300ms
                     class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-md flex items-center justify-between">
                     <span class="font-medium text-sm md:text-base">
                         <span x-text="selectedBids.length"></span> bid<span x-show="selectedBids.length > 1">s</span>
                         selected.
                     </span>
-                    <form id="mass-reject-form" method="POST" action="#">
-                        {{-- {{ route('jobs.mass_update_bid_status', ['job' => $bids->first()->job->id]) }} --}}
+                    <form method="POST" action="{{ route('bids.mass_reject', ['job' => $job->id]) }}">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="bid_ids" :value="selectedBids.join(',')">
-                        <input type="hidden" name="bid_status" value="rejected">
+                        <input type="hidden" name="bids_ids" :value="selectedBids.join(',')">
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                             <x-heroicon-s-trash class="h-5 w-5 mr-2" aria-hidden="true" />
@@ -55,13 +66,8 @@
                 </div>
             @endif
 
-            @php
-                $acceptedBids = $bids->where('bid_status', 'accepted');
-                $otherBids = $bids->where('bid_status', '!=', 'accepted');
-            @endphp
-
-            @if ($acceptedBids->count())
-                <ul class="space-y-6 md:space-y-8 list-outside list-disc pb-6 mb-3 border-b-2 border-indigo-500">
+            @if ($acceptedBidsCount)
+                <ul class="space-y-6 md:space-y-8 list-outside list-disc pb-6 mb-6 border-b-2 border-gray-200">
                     @foreach ($acceptedBids as $bid)
                         <li class="relative">
                             {{-- Individual bid card --}}

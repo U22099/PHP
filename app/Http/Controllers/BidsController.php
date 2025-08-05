@@ -78,6 +78,31 @@ class BidsController extends Controller
         return redirect()->route('bids.index', ['job' => $job]);
     }
 
+    public function mass_reject(Request $request, Job $job)
+    {
+        $request->validate([
+            'bids_ids' => ['required', 'string'],
+        ]);
+
+        $idsString = $request->input('bids_ids');
+
+        $ids = explode(',', $idsString);
+
+        $cleanIds = collect($ids)
+            ->filter(function ($id) {
+                return is_numeric($id) && (int) $id > 0;
+            })
+            ->map(function ($id) {
+                return (int) $id;
+            })
+            ->unique()
+            ->toArray();
+
+        Bids::whereIn('id', $cleanIds)->update(['bid_status' => 'rejected']);
+
+        return redirect()->route('bids.index', ['job' => $job]);
+    }
+
     public function delete(Job $job, Bids $bid)
     {
         $bid->delete();

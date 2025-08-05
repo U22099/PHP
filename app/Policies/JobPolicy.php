@@ -9,59 +9,43 @@ use Illuminate\Support\Facades\Auth;
 
 class JobPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user): bool
     {
         return Auth::check();
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, Job $job): bool
     {
         return Auth::check();
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
         return $user->role == 'client';
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Job $job): bool
     {
         return $user->is($job->user);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Job $job): bool
     {
         return $user->is($job->user);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
     public function restore(User $user, Job $job): bool
     {
-        return $user->is($job->user);
+        return false;
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
     public function forceDelete(User $user, Job $job): bool
     {
-        return $user->is($job->user);
+        return false;
+    }
+
+    public function massRejectBids(User $user, Job $job): bool
+    {
+        return $job->user->is($user);
     }
 }

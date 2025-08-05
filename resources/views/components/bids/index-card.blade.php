@@ -34,10 +34,10 @@
         </div>
 
         {{-- Bid Details Grid --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-gray-700 mb-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-y-3 gap-x-6 text-gray-700 mb-5">
             <div class="flex flex-col">
                 <p class="font-medium text-sm text-gray-500 mb-1">Bid Amount:</p>
-                <p class="text-lg font-bold text-green-700 flex items-center gap-1">
+                <p class="text-lg font-bold text-green-600 flex items-center gap-1">
                     <x-grommet-money class="h-5 w-5 text-gray-400" />
                     <span>
                         {{ $job->currency->symbol }}{{ number_format($bid->bid_amount, 2) }}
@@ -56,6 +56,24 @@
                                 {{ \Carbon\Carbon::now()->addDays($bid->bid_time_budget)->diffForHumans(null, true) }})
                             </span>
                         @endif
+                    </span>
+                </p>
+            </div>
+            <div class="flex flex-col">
+                <p class="font-medium text-sm text-gray-500 mb-1">Bid Status:</p>
+                <p
+                    class="text-lg font-bold {{ $bid->bid_status === 'pending' ? 'text-gray-400' : ($bid->bid_status === 'interviewing' ? 'text-indigo-500' : ($bid->bid_status === 'accepted' ? 'text-green-600' : 'text-red-500')) }} flex items-center gap-1">
+                    @if ($bid->bid_status === 'pending')
+                        <x-rpg-hourglass class="h-5 w-5 text-gray-400" />
+                    @elseif($bid->bid_status === 'interviewing')
+                        <x-cri-chat class="h-5 w-5 text-indigo-500" />
+                    @elseif($bid->bid_status === 'accepted')
+                        <x-fas-award class="h-5 w-5 text-green-600" />
+                    @elseif($bid->bid_status === 'rejected')
+                        <x-fas-x class="h-5 w-5 text-red-400" />
+                    @endif
+                    <span>
+                        {{ strtoupper($bid->bid_status) }}
                     </span>
                 </p>
             </div>

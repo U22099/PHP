@@ -1,7 +1,24 @@
 @props(['bid'])
 
 <div
-    class="rounded-lg p-6 flex flex-col justify-start items-start border border-gray-200 hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer">
+    class="rounded-lg p-6 flex flex-col justify-start items-start border {{ $bid->bid_status === 'pending' ? 'border-gray-400 ' : ($bid->bid_status === 'interviewing' ? 'border-indigo-200 ' : ($bid->bid_status === 'accepted' ? 'border-green-400 ' : 'border-red-400 ')) }} hover:border-indigo-400 transition-colors duration-200 mt-2 cursor-pointer">
+    <div class="w-full flex justify-end">
+        <p
+            class="text-sm font-bold {{ $bid->bid_status === 'pending' ? 'text-gray-400' : ($bid->bid_status === 'interviewing' ? 'text-indigo-500' : ($bid->bid_status === 'accepted' ? 'text-green-600' : 'text-red-500')) }} flex items-center gap-1">
+            @if ($bid->bid_status === 'pending')
+                <x-rpg-hourglass class="h-5 w-5 text-gray-400" />
+            @elseif($bid->bid_status === 'interviewing')
+                <x-cri-chat class="h-5 w-5 text-indigo-500" />
+            @elseif($bid->bid_status === 'accepted')
+                <x-fas-award class="h-5 w-5 text-green-600" />
+            @elseif($bid->bid_status === 'rejected')
+                <x-fas-x class="h-5 w-5 text-red-400" />
+            @endif
+            <span>
+                {{ strtoupper($bid->bid_status) }}
+            </span>
+        </p>
+    </div>
     <div class="flex-grow mb-2" @click="window.location.href = '/jobs/{{ $bid->job->id }}';">
         <h3 class="text-xl font-bold text-gray-800 mb-1">{{ $bid->job->title }}</h3>
         <div class="text-gray-600 text-sm mb-2 line-clamp-3">{{ strip_tags($bid->job->description) }}</div>
