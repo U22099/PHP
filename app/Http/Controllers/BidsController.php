@@ -19,7 +19,7 @@ class BidsController extends Controller
 
         $bids = $job->bids()->where('bid_status', '!=', 'rejected')->with('user.freelancer_details:user_id,professional_name,country,city,availability,response_time')->oldest()->get();
 
-        $user_ranked = $user_bid ? $bids->search(fn($bid) => $bid->id === $user_bid->id) + 1 : false;
+        $user_ranked = $user_bid ? $bids->search(fn($bid) => $bid->id === $user_bid->id) : false;
 
         return view('bids.index', ['bids' => $bids, 'job' => $job, 'user_bid' => $user_bid, 'user_ranked' => $user_ranked]);
     }

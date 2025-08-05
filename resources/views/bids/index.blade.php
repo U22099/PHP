@@ -34,12 +34,13 @@
         @if ($user_bid)
             <div class="pb-6 mb-6 border-b-2 border-gray-200">
                 <h3 class="font-bold text-xl mb-2"> Your Bid
-                    @if ($user_ranked)
+                    @if ($user_ranked && $user_ranked !== 0)
                         <span>&#40;ranked
-                            #{{ $user_ranked - $acceptedBidsCount }}&#41;</span>
+                            #{{ $user_ranked - $acceptedBidsCount + 1 }}&#41;</span>
                     @endif
                 </h3>
-                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 flex flex-row items-center">
+                <div
+                    class="{{ $user_bid->bid_status === 'pending' ? 'bg-gray-50 border-gray-400 ' : ($user_bid->bid_status === 'interviewing' ? 'bg-indigo-50 border-indigo-200 ' : ($user_bid->bid_status === 'accepted' ? 'bg-green-50 border-green-400 ' : 'bg-red-50 border-red-400 ')) }} border rounded-lg p-4 md:p-6 flex flex-row items-center">
                     <x-bids.index-card :bid="$user_bid" :job="$job" />
                 </div>
             </div>
