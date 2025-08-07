@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
@@ -43,6 +44,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $appends = ['number_of_jobs_created_today', 'number_of_articles_created_today', 'number_of_posts_created_today', 'number_of_bids_created_today'];
 
     /**
      * Get the attributes that should be cast.
@@ -90,5 +93,25 @@ class User extends Authenticatable
     public function likes(): HasMany
     {
         return $this->hasMany(PostLike::class);
+    }
+
+    public function getNumberOfJobsCreatedTodayAttribute(): int
+    {
+        return $this->jobs()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
+    }
+
+    public function getNumberOfArticlesCreatedTodayAttribute(): int
+    {
+        return $this->articles()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
+    }
+
+    public function getNumberOfPostsCreatedTodayAttribute(): int
+    {
+        return $this->posts()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
+    }
+
+    public function getNumberOfBidsCreatedTodayAttribute(): int
+    {
+        return $this->bids()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
     }
 }

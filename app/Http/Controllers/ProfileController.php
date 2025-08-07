@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Models\Tags;
 use App\Models\User;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +21,7 @@ class ProfileController extends Controller
             'projects' => fn($q) => $q->latest(),
             'posts' => fn($q) => $q->latest(),
             'articles' => fn($q) => $q->latest(),
-            'jobs' => fn($q) => $q->latest(),
+            'jobs' => fn($q) => $q->latest()->with('currency'),
         ]);
 
         return view('profile.show', [...compact('user')]);
@@ -32,7 +33,7 @@ class ProfileController extends Controller
             'projects' => fn($q) => $q->latest(),
             'posts' => fn($q) => $q->latest(),
             'articles' => fn($q) => $q->latest(),
-            'jobs' => fn($q) => $q->latest(),
+            'jobs' => fn($q) => $q->latest()->with('currency'),
             'bids' => fn($q) => $q->latest()->with('job.currency'),
         ]);
 
@@ -45,23 +46,27 @@ class ProfileController extends Controller
             $user = Auth::user();
 
             $validatedData = $request->validate([
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
+                'firstname' => ['required', 'string', 'max:255'],
+                'lastname' => ['required', 'string', 'max:255'],
                 'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-                'image' => 'nullable|image|max:2048',
+                'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             ]);
 
             $user->fill($validatedData);
 
-            // Handle image upload if implemented
-            // if ($request->hasFile('image')) {
-            //     if ($user->image) {
-            //         Storage::disk('public')->delete($user->image);
-            //     }
-            //     $path = $request->file('image')->store('profile_images', 'public');
-            //     $user->image = $path;
-            // }
+            if ($request->hasFile('image')) {
+                $uploadedFile = $request->file('image');
+
+                if ($user->image_public_id) {
+                    Cloudinary::delete($user->image_public_id);
+                }
+                $uploadedImage = Cloudinary::upload($uploadedFile->getRealPath(), [
+                    'folder' => 'bidmax'
+                ]);
+                $user->image = $uploadedImage->getSecurePath();
+                $user->image_public_id = $uploadedImage->getPublicId();
+            }
 
             $user->save();
 

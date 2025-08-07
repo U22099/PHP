@@ -1,42 +1,45 @@
 @props(['user'])
 
-<form method="POST" action="{{ route('profile.update') }}">
+<form method="POST" enctype="multipart/form-data" action="{{ route('profile.update') }}">
     @csrf
-    @method('PUT')
+    @method('PATCH')
 
     <div class="space-y-4">
-        {{-- First Name --}}
-        <div>
-            <label for="firstname" class="block text-sm font-medium text-gray-700">First Name</label>
-            <input type="text" name="firstname" id="firstname" value="{{ old('firstname', $user->firstname) }}"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required>
+        <x-form-field class="w-full" fieldname="firstname" :data="$user->firstname" required>
+            <x-slot:icon>
+                <x-heroicon-o-user class="h-5 w-5 text-gray-400" />
+            </x-slot:icon>
             @error('firstname')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
             @enderror
-        </div>
+        </x-form-field>
 
-        {{-- Last Name --}}
-        <div>
-            <label for="lastname" class="block text-sm font-medium text-gray-700">Last Name</label>
-            <input type="text" name="lastname" id="lastname" value="{{ old('lastname', $user->lastname) }}"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required>
+        <x-form-field class="w-full" fieldname="lastname" :data="$user->lastname" required>
+            <x-slot:icon>
+                <x-heroicon-o-user class="h-5 w-5 text-gray-400" />
+            </x-slot:icon>
             @error('lastname')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
             @enderror
-        </div>
+        </x-form-field>
 
-        {{-- Username --}}
-        <div>
-            <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-            <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                required>
+        <x-form-field class="w-full" fieldname="username" :data="$user->username" required>
+            <x-slot:icon>
+                <x-heroicon-o-at-symbol class="h-5 w-5 text-gray-400" />
+            </x-slot:icon>
             @error('username')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
             @enderror
-        </div>
+        </x-form-field>
+
+        <x-form-field class="w-full" fieldname="email" :data="$user->email" required>
+            <x-slot:icon>
+                <x-heroicon-o-envelope class="h-5 w-5 text-gray-400" />
+            </x-slot:icon>
+            @error('email')
+                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+            @enderror
+        </x-form-field>
 
         {{-- Image Upload (Optional) --}}
         {{-- Uncomment and adjust if you handle image uploads with a file input --}}
@@ -62,19 +65,3 @@
         </div>
     </div>
 </form>
-
-{{-- Alpine.js for closing modal after successful form submission (if using full page reload) --}}
-@if (session('success'))
-    <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000);
-    showEditModal = false"
-        class="absolute bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
-        {{ session('success') }}
-    </div>
-@endif
-
-{{-- Listen for a custom 'close-modal' event to close the modal --}}
-<script>
-    document.addEventListener('close-modal', function() {
-        document.querySelector('[x-data]').__alpine.$data.showEditModal = false;
-    });
-</script>

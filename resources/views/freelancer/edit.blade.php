@@ -17,7 +17,7 @@
     <div class="bg-white border rounded-lg px-4 py-5 sm:p-6">
         <form method="POST" action="/profile/freelancer" class="space-y-4">
             @csrf
-            @method('PUT')
+            @method('PATCH')
             <x-form-field class="w-full" label="Professional Name" :data="$freelancerDetails->professional_name" fieldname="professional_name"
                 required>
                 <x-slot:icon>

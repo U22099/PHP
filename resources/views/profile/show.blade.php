@@ -22,9 +22,10 @@
         {{-- Main Content Area (conditionally displayed based on currentTab) --}}
         <div class="mt-6">
             {{-- My Projects Section (Freelancer Specific) --}}
-            @if ($user->role === 'freelancer' || Auth::user()->role === 'client')
+            @if ($user->role === 'freelancer')
                 <template x-if="currentTab === 'projects'">
-                    <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Projects">
+                    <x-profile.section
+                        title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Projects">
                         @if (Auth::user()->id === $user->id)
                             <button @click="window.location.href = '/profile/projects/new'"
                                 class="mb-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
@@ -63,14 +64,23 @@
             @endif
 
             {{-- My Jobs Section (Client Specific - Placeholder) --}}
-            @if ($user->role === 'client' || Auth::user()->role === 'freelancer')
+            @if ($user->role === 'client' && (Auth::user()->id !== $user->id ? Auth::user()->role !== $user->role : true))
                 <template x-if="currentTab === 'jobs'">
-                    <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Posted Jobs">
+                    <x-profile.section
+                        title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Posted Jobs">
                         @if (Auth::user()->id === $user->id)
-                            <x-button type="link" href="/jobs/create">
-                                <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
-                                Post New Job
-                            </x-button>
+                            @can('create', \App\Models\Job::class)
+                                <div class="flex w-full gap-2 items-end flex-wrap">
+                                    <x-button type="link" href="/jobs/create">
+                                        <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                                        Post New Job
+                                    </x-button>
+                                    <p
+                                        class="{{ $user->is_premium ? 'text-indigo-600' : 'text-gray-600' }} font-bold text-sm flex gap-1 items-end">
+                                        {{ !$user->is_premium ? env('JOBS_LIMIT_PER_DAY') - $user->number_of_jobs_created_today : svg('css-infinity') }}
+                                        free jobs remaining today</p>
+                                </div>
+                            @endcan
                         @endif
                         @if (empty($user->jobs) || $user->jobs->isEmpty())
                             <p class="text-center p-4 text-gray-500 italic">No jobs posted yet.</p>
@@ -92,7 +102,7 @@
                                             @endif
                                         </span>
                                     </p>
-                                    <p class="text-gray-700 font-medium mt-2">Bids: {{ $job->bids->count() }}
+                                    <p class="text-gray-700 font-medium mt-2">Bids: {{ $job->bids_count }}
                                     </p>
                                 </div>
                             @endforeach
@@ -105,10 +115,18 @@
             <template x-if="currentTab === 'posts'">
                 <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Posts">
                     @if (Auth::user()->id === $user->id)
-                        <x-button type="link" href="/posts/create">
-                            <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
-                            Create New Post
-                        </x-button>
+                        @can('create', \App\Models\Post::class)
+                            <div class="flex w-full gap-2 items-end flex-wrap">
+                                <x-button type="link" href="/posts/create">
+                                    <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                                    Create New Post
+                                </x-button>
+                                <p
+                                    class="{{ $user->is_premium ? 'text-indigo-600' : 'text-gray-600' }} font-bold text-sm flex gap-1 items-end">
+                                    {{ !$user->is_premium ? env('POSTS_LIMIT_PER_DAY') - $user->number_of_posts_created_today : svg('css-infinity') }}
+                                    free posts remaining today</p>
+                            </div>
+                        @endcan
                     @endif
                     @if ($user->posts->isEmpty())
                         <p class="text-center p-4 text-gray-500 italic">No posts published yet.</p>
@@ -122,12 +140,21 @@
 
             {{-- My Articles Section (Common) --}}
             <template x-if="currentTab === 'articles'">
-                <x-profile.section title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Articles">
+                <x-profile.section
+                    title="{{ Auth::user()->id !== $user->id ? $user->firstname . `'` : 'My' }} Articles">
                     @if (Auth::user()->id === $user->id)
-                        <x-button type="link" href="/articles/create">
-                            <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
-                            Write New Article
-                        </x-button>
+                        @can('create', \App\Models\Article::class)
+                            <div class="flex w-full gap-2 items-end flex-wrap">
+                                <x-button type="link" href="/articless/create">
+                                    <x-heroicon-s-plus class="-ml-1 mr-2 h-5 w-5" />
+                                    Create New Article
+                                </x-button>
+                                <p
+                                    class="{{ $user->is_premium ? 'text-indigo-600' : 'text-gray-600' }} font-bold text-sm flex gap-1 items-end">
+                                    {{ !$user->is_premium ? env('ARTICLES_LIMIT_PER_DAY') - $user->number_of_articless_created_today : svg('css-infinity') }}
+                                    free articles remaining today</p>
+                            </div>
+                        @endcan
                     @endif
                     @if ($user->articles->isEmpty())
                         <p class="text-center p-4 text-gray-500 italic">No articles written yet.</p>
@@ -156,6 +183,13 @@
                     </div>
                 </div>
             </template>
+            @if (session('success'))
+                <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000);
+                showEditProfileModal = false"
+                    class="absolute bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg">
+                    {{ session('success') }}
+                </div>
+            @endif
         @endif
     </div>
 </x-profile.layout>

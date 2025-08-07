@@ -21,7 +21,7 @@ class JobPolicy
 
     public function create(User $user): bool
     {
-        return $user->role == 'client';
+        return $user->role == 'client' && (!$user->is_premium && $user->number_of_jobs_created_today <= env('JOBS_LIMIT_PER_DAY'));
     }
 
     public function update(User $user, Job $job): bool

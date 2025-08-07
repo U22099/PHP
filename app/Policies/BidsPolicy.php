@@ -22,7 +22,7 @@ class BidsPolicy
 
     public function create(User $user): bool
     {
-        return $user->role === 'freelancer';
+        return ($user->role === 'freelancer') && (!$user->is_premium && $user->number_of_bids_created_today <= env('BIDS_LIMIT_PER_DAY'));
     }
 
     public function update(User $user, Bids $bid): bool

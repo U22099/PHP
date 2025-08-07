@@ -36,7 +36,7 @@
                     <x-slot:icon><x-heroicon-o-home class="h-5 w-5" /></x-slot:icon> {{-- Added Home icon --}}
                     Homepage
                 </x-nav-link>
-                <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')">
+                <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*') || request()->routeIs('bids.*')">
                     <x-slot:icon><x-heroicon-o-briefcase class="h-5 w-5" /></x-slot:icon>
                     {{-- Added Briefcase icon --}}
                     Jobs
@@ -53,7 +53,15 @@
                         Posts
                     </x-nav-link>
                 @endguest
-                <x-nav-link href="/contact" :active="request()->is('contact')">
+                @auth
+                    <x-nav-link href="/subscription" :active="request()->routeIs('subscription.*')">
+                        <x-slot:icon>
+                            <x-fluentui-premium-person-24-o class="h-5 w-5" />
+                        </x-slot:icon>
+                        Subscription
+                    </x-nav-link>
+                @endauth
+                <x-nav-link href="/contact" :active="request()->routeIs('contact.*')">
                     <x-slot:icon><x-heroicon-o-envelope class="h-5 w-5" /></x-slot:icon>
                     {{-- Added Envelope icon --}}
                     Contact Developer
@@ -127,6 +135,14 @@
                             Posts
                         </x-nav-link>
                     @endguest
+                    @auth
+                        <x-nav-link href="/subscription" :active="request()->routeIs('subscription.*')">
+                            <x-slot:icon>
+                                <x-fluentui-premium-person-24-o class="h-5 w-5" />
+                            </x-slot:icon>
+                            Subscription
+                        </x-nav-link>
+                    @endauth
                     <x-nav-link href="/contact" :active="request()->is('contact')" @click="open = false">
                         <x-slot:icon><x-heroicon-o-envelope class="h-6 w-6" /></x-slot:icon>
                         {{-- Added Envelope icon --}}

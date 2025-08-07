@@ -11,7 +11,9 @@
         <div class="flex flex-col-reverse gap-4 lg:grid lg:grid-cols-12 lg:gap-8">
             <!-- Main Content Area (Posts & Create Form) -->
             <div class="lg:col-span-8 lg:mt-0 mt-8">
-                <x-posts.create-post-form />
+                @can('create', \App\Models\Post::class)
+                    <x-posts.create-post-form />
+                @endcan
                 <x-posts.post-feed :posts="$posts" />
             </div>
 

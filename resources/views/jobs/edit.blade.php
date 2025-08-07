@@ -10,7 +10,7 @@
     <div class="bg-white border rounded-lg px-4 py-5 sm:p-6">
         <form method="POST" action="/jobs/{{ $job->id }}">
             @csrf
-            @method('PUT')
+            @method('PATCH')
 
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">

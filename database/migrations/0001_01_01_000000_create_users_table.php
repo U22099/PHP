@@ -17,12 +17,15 @@ return new class extends Migration {
             $table->string('lastname');
             $table->string('username');
             $table->string('image')->default('');
+            $table->string('image_public_id')->default('');
             $table->enum('role', ['client', 'freelancer'])->default('freelancer');
             $table->string('email')->unique();
             $table->string('verification_code')->nullable()->unique();
             $table->timestamp('verification_code_expires')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('is_premium')->default(false);
+            $table->timestamp('last_premium_subscription')->nullable()->default(null);
             $table->timestamp('last_dev_contact')->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();

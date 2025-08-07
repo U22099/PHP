@@ -14,7 +14,7 @@
 
             <form action="{{ route('projects.update', $project) }}" method="POST">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
 
                 {{-- Project Title --}}
                 <div class="mb-4">

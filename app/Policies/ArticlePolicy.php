@@ -11,7 +11,7 @@ class ArticlePolicy
 {
     public function create(User $user): bool
     {
-        return Auth::check();
+        return Auth::check() && (!$user->is_premium && $user->number_of_articles_created_today <= env('ARTICLES_LIMIT_PER_DAY'));
     }
 
     public function update(User $user, Article $article): bool

@@ -10,7 +10,7 @@
     <div class="max-w-xl mx-auto py-4 p-2">
         <form method="POST" action="{{ route('posts.update', $post) }}" class="border rounded-lg p-6">
             @csrf
-            @method('PUT')
+            @method('PATCH')
 
             <div class="mb-6">
                 <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Edit your post...</label>

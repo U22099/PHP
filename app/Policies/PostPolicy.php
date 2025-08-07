@@ -21,7 +21,7 @@ class PostPolicy
 
     public function create(User $user): bool
     {
-        return Auth::check();
+        return Auth::check() && (!$user->is_premium && $user->number_of_posts_created_today <= env('POSTS_LIMIT_PER_DAY'));
     }
 
     public function update(User $user, Post $post): bool

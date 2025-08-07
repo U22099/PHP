@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SubscriptionController;
 use App\Models\Article;
 use App\Models\Bids;
 use App\Models\Comments;
@@ -33,6 +34,8 @@ Route::get('/', function (Request $request) {
 
 Route::get('/contact', [ContactDevController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactDevController::class, 'sendMsg'])->name('contact.send');
+
+Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription.show');
 
 // Auth Route
 Route::get('/login', [SessionController::class, 'create'])->name('login');
@@ -64,7 +67,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('jobs.edit')
         ->can('update', 'job');
 
-    Route::put('/jobs/{job}', [JobController::class, 'update'])
+    Route::patch('/jobs/{job}', [JobController::class, 'update'])
         ->name('jobs.update')
         ->can('update', 'job');
 
@@ -91,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('bids.edit')
         ->can('update', 'bid');
 
-    Route::put('/jobs/{job}/bids/{bid}', [BidsController::class, 'update'])
+    Route::patch('/jobs/{job}/bids/{bid}', [BidsController::class, 'update'])
         ->name('bids.update')
         ->can('update', 'bid');
 
@@ -99,11 +102,11 @@ Route::middleware(['auth'])->group(function () {
         ->name('bids.delete')
         ->can('delete', ['bid', 'job']);
 
-    Route::put('/jobs/{job}/bids/{bid}/status', [BidsController::class, 'update_status'])
+    Route::patch('/jobs/{job}/bids/{bid}/status', [BidsController::class, 'update_status'])
         ->name('bids.update_status')
         ->can('updateStatus', ['bid', 'job']);
 
-    Route::put('/jobs/{job}/bids/status/reject', [BidsController::class, 'mass_reject'])
+    Route::patch('/jobs/{job}/bids/status/reject', [BidsController::class, 'mass_reject'])
         ->name('bids.mass_reject')
         ->can('massRejectBids', 'job');
 });
@@ -127,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('articles.edit')
         ->can('update', 'article');
 
-    Route::put('/articles/{article}', [ArticleController::class, 'update'])
+    Route::patch('/articles/{article}', [ArticleController::class, 'update'])
         ->name('articles.update')
         ->can('update', 'article');
 
@@ -154,7 +157,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('posts.edit')
         ->can('update', 'post');
 
-    Route::put('/posts/{post}', [PostController::class, 'update'])
+    Route::patch('/posts/{post}', [PostController::class, 'update'])
         ->name('posts.update')
         ->can('update', 'post');
 
@@ -176,7 +179,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/{username}', [ProfileController::class, 'show_user'])->name('profile.show.user');
 
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/profile/freelancer', [FreelancerDetailsController::class, 'show'])
         ->name('freelancer.details.show');
@@ -188,7 +191,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('freelancer.details.edit')
         ->can('edit', FreelancerDetails::class);
 
-    Route::put('/profile/freelancer', [FreelancerDetailsController::class, 'update'])
+    Route::patch('/profile/freelancer', [FreelancerDetailsController::class, 'update'])
         ->name('freelancer.details.update')
         ->can('edit', FreelancerDetails::class);
 });
@@ -210,7 +213,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('projects.edit')
         ->can('update', 'project');
 
-    Route::put('/profile/projects/{project}', [ProjectsController::class, 'update'])
+    Route::patch('/profile/projects/{project}', [ProjectsController::class, 'update'])
         ->name('projects.update')
         ->can('update', 'project');
 

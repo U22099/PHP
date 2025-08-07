@@ -7,7 +7,7 @@
                 <form action="{{ route('bids.update', ['job' => $job->id, 'bid' => $bid->id]) }}" method="POST"
                     class="flex flex-col gap-2">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
                     <x-form-field class="w-full" label="Bid Amount" fieldname="bid_amount" :data="$bid->bid_amount" type="number"
                         required>
                         <x-slot:icon>

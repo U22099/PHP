@@ -11,7 +11,7 @@ class ProjectsPolicy
 {
     public function create(User $user): bool
     {
-        return Auth::check();
+        return $user->role === "freelancer" && (!$user->is_premium && $user->projects()->count() <= env('PROJECTS_LIMIT_PER_USER'));
     }
 
     public function update(User $user, Projects $article): bool

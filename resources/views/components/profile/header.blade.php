@@ -8,10 +8,19 @@
                 src="{{ $user->image ? $user->image : 'https://ui-avatars.com/api/?name=' . urlencode($user->firstname . ' ' . $user->lastname) . '&color=FFFFFF&background=312e81' }}"
                 alt="{{ $user->username }}">
             <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900">{{ $user->firstname }}
-                    {{ $user->lastname }}</h1>
+                <h1 class="flex gap-1 items-center text-2xl md:text-3xl font-extrabold text-gray-900">
+                    {{ $user->firstname }}
+                    {{ $user->lastname }}
+                    @if ($user->is_premium)
+                        <x-heroicon-s-check-badge class="h-8 w-8 text-blue-500" />
+                    @endif
+                </h1>
                 <p class="text-lg text-gray-600">&#64;{{ $user->username }}</p>
                 <p class="text-md font-medium text-indigo-700 capitalize">{{ $user->role }}</p>
+                <p class="text-md font-medium {{ $user->is_premium ? 'text-indigo-600' : 'text-gray-600' }} capitalize">
+                    Plan: <a href="/subscription"
+                        class="font-bold underline">{{ $user->is_premium ? 'Premium User' : 'Basic Plan' }}</a>
+                </p>
             </div>
         </div>
         @if (Auth::user()->id === $user->id)

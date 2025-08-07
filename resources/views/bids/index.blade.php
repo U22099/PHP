@@ -56,7 +56,7 @@
                     </span>
                     <form method="POST" action="{{ route('bids.mass_reject', ['job' => $job->id]) }}">
                         @csrf
-                        @method('PUT')
+                        @method('PATCH')
                         <input type="hidden" name="bids_ids" :value="selectedBids.join(',')">
                         <button type="submit"
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
@@ -86,7 +86,8 @@
                 @foreach ($otherBids as $bid)
                     <li class="relative">
                         {{-- Individual bid card --}}
-                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 md:p-6 flex flex-row items-center">
+                        <div
+                            class="{{ $bid->bid_status === 'pending' ? 'bg-gray-50  border-gray-200' : ($bid->bid_status === 'interviewing' ? 'bg-indigo-50  border-indigo-200' : ($bid->bid_status === 'accepted' ? 'bg-green-50  border-green-200' : 'bg-red-50  border-red-200')) }} border rounded-lg p-4 md:p-6 flex flex-row items-center">
                             {{-- Checkbox for mass selection --}}
                             <div class="absolute top-4 left-4 sm:static sm:mr-4"
                                 x-show="startSelection || selectedBids.length > 0">

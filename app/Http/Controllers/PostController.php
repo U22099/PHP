@@ -12,7 +12,7 @@ class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Post::with(['user', 'tags']);
+        $query = Post::with(['user:id,username,role', 'tags']);
 
         if ($search = $request->get('search')) {
             $query->where(function ($q) use ($search) {

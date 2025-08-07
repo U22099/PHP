@@ -14,7 +14,7 @@
                         {{ $bid->user->firstname . ' ' . $bid->user->lastname }}</span>
                     <span class="flex items-center gap-1">
                         <span class="text-gray-400">&#64;{{ $bid->user->username }}</span>
-                        @if ($bid->user->email_verified_at)
+                        @if ($bid->user->is_premium)
                             <x-heroicon-s-check-badge class="h-5 w-5 text-blue-500" />
                         @endif
                     </span>
@@ -105,7 +105,7 @@
                 <form action="{{ route('bids.update_status', ['job' => $job->id, 'bid' => $bid->id]) }}" method="POST"
                     class="w-full sm:w-auto">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
                     <input type="hidden" name="bid_status"
                         value="{{ $bid->bid_status === 'interviewing' ? 'accepted' : 'interviewing' }}">
                     <button type="submit"
@@ -125,7 +125,7 @@
                 <form action="{{ route('bids.update_status', ['job' => $job->id, 'bid' => $bid->id]) }}" method="POST"
                     class="w-full sm:w-auto">
                     @csrf
-                    @method('PUT')
+                    @method('PATCH')
                     <input type="hidden" name="bid_status" value="rejected">
                     <button type="submit"
                         class="inline-flex items-center justify-center px-4 py-2 border border-red-600 text-sm font-medium rounded-md text-red-600 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 w-full">
