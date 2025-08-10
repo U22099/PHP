@@ -40,13 +40,15 @@ class FreelancerDetailsController extends Controller
     {
         try {
             $user = Auth::user();
+            
+
             $freelancerDetails = $user->freelancer_details ?? new FreelancerDetails();
             if (!$user->freelancer_details)
                 $freelancerDetails->user_id = $user->id;
 
             $validatedData = $request->validate([
                 'professional_name' => 'string|max:255',
-                'professional_summary' => 'string',
+                'professional_summary' => 'string:max:' . $maxSummaryLength,
                 'country' => 'string|max:255',
                 'city' => 'nullable|string|max:255',
                 'phone_number' => 'string|max:20',

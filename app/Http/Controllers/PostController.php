@@ -70,20 +70,30 @@ class PostController extends Controller
         return view('posts.create', ['availableTags' => $availableTags]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $maxBodyLength = Auth::user()->is_premium
+            ? env('POST_BODY_LIMIT_PER_USER_PREMIUM')
+            : env('POST_BODY_LIMIT_PER_USER');
+
         request()->validate([
-            'body' => ['required'],
+            'images' => ['sometimes', 'array'],
+            'images.*' => ['string', 'url'],
+            'publicIds' => ['sometimes', 'array', 'required_with:images'],
+            'publicIds.*' => ['string'],
+            'body' => ['string', 'required', 'max:' . $maxBodyLength],
         ]);
 
         $hashtags = [];
-        if (preg_match_all('/(#)([^\s]+)/', request('body'), $matches)) {
+        if (preg_match_all('/(#)([^\s]+)/', $request->input('body'), $matches)) {
             $hashtags = $matches[1];
         }
 
         $post = Post::create([
             'user_id' => Auth::user()->id,
-            'body' => preg_replace('/#\S+/', '', request('body')),
+            'body' => preg_replace('/#\S+/', '', $request->input('body')),
+            'images' => $request->input('images'),
+            'public_ids' => $request->input('publicIds'),
         ]);
 
         if (sizeof($hashtags) > 0) {
@@ -120,8 +130,16 @@ class PostController extends Controller
 
     public function update(Post $post)
     {
+        $maxBodyLength = Auth::user()->is_premium
+            ? env('POST_BODY_LIMIT_PER_USER_PREMIUM')
+            : env('POST_BODY_LIMIT_PER_USER');
+
         request()->validate([
-            'body' => ['string', 'required'],
+            'images' => ['sometimes', 'array'],
+            'images.*' => ['string', 'url'],
+            'publicIds' => ['sometimes', 'array', 'required_with:images'],
+            'publicIds.*' => ['string'],
+            'body' => ['string', 'required', 'max:' . $maxBodyLength],
         ]);
 
         $hashtags = [];
@@ -133,6 +151,8 @@ class PostController extends Controller
 
         $post->updateOrFail([
             'body' => preg_replace('/#\S+/', '', request('body')),
+            'images' => $request->input('images'),
+            'public_ids' => $request->input('publicIds'),
         ]);
 
         if (sizeof($hashtags) > 0) {

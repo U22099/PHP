@@ -20,10 +20,12 @@ class Post extends Model
     // The attributes that are mass assignable.
     protected $fillable = [
         'user_id',
-        'body'
+        'body',
+        'images',
+        'publicIds'
     ];
 
-    protected $casts = ['images' => 'array'];
+    protected $casts = ['images' => 'array', 'publicIds' => 'array'];
 
     protected $withCount = ['comments', 'likes'];
 

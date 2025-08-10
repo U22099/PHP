@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
-use AppModelsUser;
-use IlluminateAuthAccessResponse;
-use IlluminateSupportFacadesAuth;
 
 class UserPolicy
 {
@@ -22,6 +21,11 @@ class UserPolicy
     public function delete(User $user, User $model): bool
     {
         return $user->is($model);
+    }
+
+    public function uploadImage(User $user): bool
+    {
+        return $user->number_of_images_uploaded_today <= ($user->is_premium ? env('IMAGE_UPLOAD_LIMIT_PER_USER_PREMIUM') : env('IMAGE_UPLOAD_LIMIT_PER_USER'));
     }
 
     public function restore(User $user, User $model): bool

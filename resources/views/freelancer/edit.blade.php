@@ -28,7 +28,9 @@
                 @enderror
             </x-form-field>
             <x-form-field class="w-full" label="Professional Summary" :textarea="true" :data="$freelancerDetails->professional_summary"
-                fieldname="professional_summary" required>
+                :rows="5" :characterLimit="Auth::user()->is_premium
+                    ? env('PROFESSIONAL_SUMMARY_LIMIT_PER_USER_PREMIUM')
+                    : env('PROFESSIONAL_SUMMARY_LIMIT_PER_USER')" fieldname="professional_summary" required>
                 <x-slot:icon>
                     <x-heroicon-o-document-text class="h-5 w-5 text-gray-400" />
                 </x-slot:icon>

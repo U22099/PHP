@@ -21,8 +21,8 @@ class ContactDevController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email',
-            'message' => 'required|string',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string|max:1000',
         ]);
 
         if (!Auth::check()) {

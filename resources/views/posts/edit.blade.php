@@ -13,15 +13,32 @@
             @method('PATCH')
 
             <div class="mb-6">
-                <label for="body" class="block text-sm font-medium leading-6 text-gray-900">Edit your post...</label>
-                <div class="mt-2">
-                    <textarea id="body" name="body" rows="6"
-                        class="block w-full rounded-md py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:text-sm sm:leading-6 p-2 border"
-                        required placeholder="Share your thoughts here...">{{ old('body', $post->body) }}</textarea>
-                </div>
-                @error('body')
-                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                @enderror
+                <x-multi-image-upload label="Add Images" name="images" :initialUrls="old('images', $post->images)" :initialPublicIds="old('publicIds', $post->public_ids)"
+                    :isPremium="Auth::user()->is_premium">
+                    <div>
+                        @error('images')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('publicIds')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('images.*')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('publicIds.*')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </x-multi-image-upload>
+            </div>
+
+            <div class="mb-6">
+                <x-form-field rootClass="w-full" fieldname="body" label="Edit your post" :textarea="true"
+                    :rows="6" :characterLimit="Auth::user()->is_premium ? env('POST_BODY_LIMIT_PER_USER_PREMIUM') : env('POST_BODY_LIMIT_PER_USER')" placeholder="Share your thoughts here..." data="{{ $post->body }}" required>
+                    @error('body')
+                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                    @enderror
+                </x-form-field>
             </div>
 
             <div class="flex items-center justify-end gap-x-4">

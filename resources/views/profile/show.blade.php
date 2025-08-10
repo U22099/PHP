@@ -5,7 +5,7 @@
 
     <div x-data="{
         currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
-        showEditProfileModal: JSON.parse('{{ !request()->has('error') ? 'false' : (request()->get('error') === 'profile-form-error' ? 'true' : 'false') }}'),
+        showEditProfileModal: JSON.parse('{{ !session('error') ? 'false' : (session('error') === 'profile-form-error' ? 'true' : 'false') }}'),
     }" class="pb-10">
         {{-- Profile Header --}}
         <x-profile.header :user="$user" />
@@ -170,12 +170,12 @@
 
         @if (Auth::user()->id === $user->id)
             <template x-if="showEditProfileModal">
-                <div class="fixed inset-0 bg-black/50 z-50 flex items-start lg:items-center justify-center p-4 overflow-y-scroll"
+                <div class="fixed inset-0 bg-black/50 z-50 flex items-start justify-center overflow-y-scroll p-4"
                     x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
                     x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                     x-cloak>
-                    <div class="border bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
+                    <div class="border bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative my-4">
                         <button @click="showEditProfileModal = false"
                             class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
                         <h3 class="text-xl font-bold mb-4">Edit Profile</h3>

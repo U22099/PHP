@@ -92,24 +92,34 @@ class JobController extends Controller
 
     public function store(Request $request)
     {
+        $maxDescriptionLength = Auth::user()->is_premium
+            ? env('JOB_DESCRIPTION_LIMIT_PER_USER_PREMIUM')
+            : env('JOB_DESCRIPTION_LIMIT_PER_USER');
+
         $request->validate([
             'title' => ['required', 'min:3'],
             'min_budget' => ['integer', 'required'],
-            'max_budget' => ['integer', 'required'],
+            'max_budget' => ['integer', 'required', 'gte:min_budget'],
             'time_budget' => ['integer', 'required'],
             'currency_id' => ['string', 'required'],
-            'description' => ['string'],
+            'description' => ['string', 'required', 'max:' . $maxDescriptionLength],
+            'images' => ['sometimes', 'array'],
+            'images.*' => ['string', 'url'],
+            'publicIds' => ['sometimes', 'array', 'required_with:images'],
+            'publicIds.*' => ['string'],
             'tags' => ['array'],
             'tags.*' => ['string', 'max:255']
         ]);
 
         $job = Job::create([
+            'user_id' => Auth::user()->id,
             'title' => $request->input('title'),
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
             'description' => str_replace('"', "'", Purifier::clean(request('description'))),
-            'user_id' => Auth::user()->id
+            'images' => $request->input('screenshots'),
+            'public_ids' => $request->input('publicIds'),
         ]);
 
         if ($request->has('tags')) {
@@ -148,13 +158,21 @@ class JobController extends Controller
 
     public function update(Request $request, Job $job)
     {
+        $maxDescriptionLength = Auth::user()->is_premium
+            ? env('JOB_DESCRIPTION_LIMIT_PER_USER_PREMIUM')
+            : env('JOB_DESCRIPTION_LIMIT_PER_USER');
+
         $request->validate([
             'title' => ['required', 'min:3'],
             'min_budget' => ['integer', 'required'],
-            'max_budget' => ['integer', 'required'],
+            'max_budget' => ['integer', 'required', 'gte:min_budget'],
             'time_budget' => ['integer', 'required'],
             'currency_id' => ['string', 'required'],
-            'description' => ['string'],
+            'description' => ['string', 'required', 'max:' . $maxDescriptionLength],
+            'images' => ['sometimes', 'array'],
+            'images.*' => ['string', 'url'],
+            'publicIds' => ['sometimes', 'array', 'required_with:images'],
+            'publicIds.*' => ['string'],
             'tags' => ['array'],
             'tags.*' => ['string', 'max:255']
         ]);
@@ -164,8 +182,10 @@ class JobController extends Controller
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
-            'description' => str_replace('"', "'", Purifier::clean(request('description'))),
-            'currency_id' => request('currency_id'),
+            'description' => str_replace('"', "'", Purifier::clean($request->input('description'))),
+            'currency_id' => $request->input('currency_id'),
+            'images' => $request->input('screenshots'),
+            'public_ids' => $request->input('publicIds'),
         ]);
 
         if ($request->has('tags')) {

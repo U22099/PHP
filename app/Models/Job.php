@@ -28,10 +28,11 @@ class Job extends Model
         'time_budget',
         'currency_id',
         'description',
-        'screenshots'
+        'images',
+        'publicIds'
     ];
 
-    protected $casts = ['screenshots' => 'array'];
+    protected $casts = ['images' => 'array', 'publicIds' => 'array'];
 
     protected $withCount = ['bids'];
 

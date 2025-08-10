@@ -5,6 +5,12 @@
     @method('PATCH')
 
     <div class="space-y-4">
+        <x-image-upload label="Profile Picture" name="image" :isPremium="$user->is_premium" existingImage="{{ $user->image }}">
+            @error('image')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </x-image-upload>
+
         <x-form-field class="w-full" fieldname="firstname" :data="$user->firstname" required>
             <x-slot:icon>
                 <x-heroicon-o-user class="h-5 w-5 text-gray-400" />
@@ -40,18 +46,6 @@
                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
             @enderror
         </x-form-field>
-
-        {{-- Image Upload (Optional) --}}
-        {{-- Uncomment and adjust if you handle image uploads with a file input --}}
-        <div>
-            <label for="image" class="block text-sm font-medium text-gray-700">Profile Image</label>
-            <input type="file" name="image" id="image" accept="image/*"
-                class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-            @error('image')
-                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
 
         <div class="flex justify-end pt-4 border-t border-gray-200">
             <button type="button" @click="showEditProfileModal = false;"

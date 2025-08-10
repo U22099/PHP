@@ -12,16 +12,32 @@
             @csrf
 
             <div class="mb-6">
-                <label for="body" class="block text-sm font-medium leading-6 text-gray-900">What's on your
-                    mind?</label>
-                <div class="mt-2">
-                    <textarea id="body" name="body" rows="6"
-                        class="block w-full rounded-md p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 border"
-                        required placeholder="Share your thoughts here...">{{ old('body') }}</textarea>
-                </div>
-                @error('body')
-                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                @enderror
+                <x-multi-image-upload label="Add Images" name="images" :initialUrls="old('images')" :initialPublicIds="old('publicIds')"
+                    :isPremium="Auth::user()->is_premium">
+                    <div>
+                        @error('images')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('publicIds')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('images.*')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('publicIds.*')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </x-multi-image-upload>
+            </div>
+
+            <div class="mb-6">
+                <x-form-field rootClass="w-full" fieldname="body" label="What's on your mind?" :textarea="true"
+                    :rows="6" :characterLimit="Auth::user()->is_premium ? env('POST_BODY_LIMIT_PER_USER_PREMIUM') : env('POST_BODY_LIMIT_PER_USER')" placeholder="Share your thoughts here..." required>
+                    @error('body')
+                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                    @enderror
+                </x-form-field>
             </div>
 
             <div class="flex items-center justify-end gap-x-4">

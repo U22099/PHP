@@ -24,8 +24,10 @@
                             @enderror
                         </x-form-field>
 
-                        <x-markdown-editor rootClass="col-span-full" fieldname="body" label="Article Body"
-                            class="w-full h-[650px]">
+                        <x-markdown-editor rootClass="col-span-full" :characterLimit="Auth::user()->is_premium
+                            ? env('ARTICLE_BODY_LIMIT_PER_USER_PREMIUM')
+                            : env('ARTICLE_BODY_LIMIT_PER_USER')" fieldname="body"
+                            label="Article Body" class="w-full h-[650px]">
                             @error('body')
                                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                             @enderror

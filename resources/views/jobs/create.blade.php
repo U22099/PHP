@@ -62,19 +62,19 @@
                         </x-form-field>
 
                         <div class="col-span-full">
-                            <label for="description"
-                                class="block text-sm font-medium leading-6 text-gray-900">Description</label>
-                            <div class="mt-2">
-                                <textarea id="description" name="description" rows="4"
-                                    class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    required>{{ old('description') }}</textarea>
-                            </div>
-                            <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about the job
-                                requirements
-                                and responsibilities.</p>
-                            @error('description')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+                            <x-form-field rootClass="sm:col-span-2" fieldname="description" label="Job Description"
+                                :textarea="true" :rows="8" :characterLimit="Auth::user()->is_premium
+                                    ? env('JOB_DESCRIPTION_LIMIT_PER_USER_PREMIUM')
+                                    : env('JOB_DESCRIPTION_LIMIT_PER_USER')"
+                                placeholder="Write a few sentences about the job requirements and responsibilities."
+                                required>
+                                <x-slot:icon>
+                                    <x-heroicon-o-document-text class="h-5 w-5 text-gray-400" />
+                                </x-slot:icon>
+                                @error('description')
+                                    <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                                @enderror
+                            </x-form-field>
                         </div>
 
                         <div class="col-span-full">

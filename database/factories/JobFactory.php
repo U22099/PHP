@@ -23,7 +23,7 @@ class JobFactory extends Factory
             'max_budget' => $this->faker->numberBetween(150000, 3000000),
             'time_budget' => $this->faker->numberBetween(1, 30),
             'description' => $this->faker->paragraphs(rand(1, 15), true),
-            'screenshots' => $this->generateFakeImagesArray(),
+            'images' => $this->generateFakeImagesArray(),
         ];
     }
 

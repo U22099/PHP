@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->json('screenshots')->default('[]');
+            $table->json('images')->default('[]');
+            $table->json('public_ids')->default('[]');
             $table->text('description');
             $table->integer('min_budget');
             $table->integer('max_budget');

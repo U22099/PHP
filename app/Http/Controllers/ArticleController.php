@@ -29,9 +29,13 @@ class ArticleController extends Controller
 
     public function store()
     {
+        $maxBodyLength = Auth::user()->is_premium
+            ? env('ARTICLE_BODY_LIMIT_PER_USER_PREMIUM')
+            : env('ARTICLE_BODY_LIMIT_PER_USER');
+
         request()->validate([
             'title' => ['required', 'min:3'],
-            'body' => ['required'],
+            'body' => ['required', 'string', 'max:' . $maxBodyLength],
             'tags' => ['array'],
             'tags.*' => ['string', 'max:255']
         ]);
@@ -74,9 +78,13 @@ class ArticleController extends Controller
 
     public function update(Article $article)
     {
+        $maxBodyLength = Auth::user()->is_premium
+            ? env('ARTICLE_BODY_LIMIT_PER_USER_PREMIUM')
+            : env('ARTICLE_BODY_LIMIT_PER_USER');
+
         request()->validate([
-            'title' => ['string', 'required', 'min:3'],
-            'body' => ['string', 'required'],
+            'title' => ['required', 'min:3'],
+            'body' => ['required', 'string', 'max:' . $maxBodyLength],
             'tags' => ['array'],
             'tags.*' => ['string', 'max:255']
         ]);

@@ -26,9 +26,13 @@ class BidsController extends Controller
 
     public function store(Request $request, Job $job)
     {
+        $maxMessageLength = Auth::user()->is_premium
+            ? env('BID_MESSAGE_LIMIT_PER_USER_PREMIUM')
+            : env('BID_MESSAGE_LIMIT_PER_USER');
+
         $request->validate([
             'bid_amount' => ['required', 'numeric'],
-            'bid_message' => ['required', 'string'],
+            'bid_message' => ['required', 'string', 'max:' . $maxMessageLength],
             'bid_time_budget' => ['required', 'numeric'],
         ]);
 
@@ -50,9 +54,13 @@ class BidsController extends Controller
 
     public function update(Request $request, Job $job, Bids $bid)
     {
+        $maxMessageLength = Auth::user()->is_premium
+            ? env('BID_MESSAGE_LIMIT_PER_USER_PREMIUM')
+            : env('BID_MESSAGE_LIMIT_PER_USER');
+
         $request->validate([
             'bid_amount' => ['required', 'numeric'],
-            'bid_message' => ['required', 'string'],
+            'bid_message' => ['required', 'string', 'max:' . $maxMessageLength],
             'bid_time_budget' => ['required', 'numeric'],
         ]);
 

@@ -12,7 +12,7 @@ class CommentsController extends Controller
     public function store(Request $request, Post $post)
     {
         $request->validate([
-            'body' => ['required']
+            'body' => ['required', 'max:500']
         ]);
 
         Comments::create([

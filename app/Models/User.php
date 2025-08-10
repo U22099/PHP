@@ -6,10 +6,12 @@ namespace App\Models;
 use \App\Models\FreelancerDetails;
 use App\Models\Article;
 use App\Models\Bids;
+use App\Models\Images;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\PostLike;
 use App\Models\Projects;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -20,7 +22,7 @@ use Illuminate\Support\Carbon;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -31,8 +33,17 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'username',
+        'image',
+        'image_public_id',
+        'role',
         'email',
+        'verification_code',
+        'verification_code_expires',
+        'email_verified_at',
         'password',
+        'is_premium',
+        'last_premium_subscription',
+        'last_dev_contact',
     ];
 
     /**
@@ -45,7 +56,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $appends = ['number_of_jobs_created_today', 'number_of_articles_created_today', 'number_of_posts_created_today', 'number_of_bids_created_today'];
+    protected $appends = ['number_of_jobs_created_today', 'number_of_articles_created_today', 'number_of_posts_created_today', 'number_of_bids_created_today', 'number_of_images_uploaded_today'];
 
     /**
      * Get the attributes that should be cast.
@@ -56,7 +67,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed'
         ];
     }
 
@@ -95,6 +106,11 @@ class User extends Authenticatable
         return $this->hasMany(PostLike::class);
     }
 
+    public function image_uploads(): HasMany
+    {
+        return $this->hasMany(Images::class);
+    }
+
     public function getNumberOfJobsCreatedTodayAttribute(): int
     {
         return $this->jobs()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
@@ -113,5 +129,10 @@ class User extends Authenticatable
     public function getNumberOfBidsCreatedTodayAttribute(): int
     {
         return $this->bids()->where('created_at', '>=', Carbon::now()->startOfDay())->count();
+    }
+
+    public function getNumberOfImagesUploadedTodayAttribute(): int
+    {
+        return $this->image_uploads()->where('uploaded_at', '>=', Carbon::now()->startOfDay())->count();
     }
 }

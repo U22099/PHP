@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Images;
 use App\Models\Post;
 use App\Models\Project;
 use App\Models\Tags;
 use App\Models\User;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -42,37 +44,53 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        if (!Auth::user()->can('uploadImage')) {
+            throw ValidationException::withMessages(['image' => 'You have reached your image upload limit.']);
+        }
+
+        $user = Auth::user();
+        $rules = [
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', $user->is_premium ? 'max:4096' : 'max:2048'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
         try {
-            $user = Auth::user();
+            if ($validator->fails()) {
+                throw new ValidationException($validator);
+            }
 
-            $validatedData = $request->validate([
-                'firstname' => ['required', 'string', 'max:255'],
-                'lastname' => ['required', 'string', 'max:255'],
-                'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
-                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-                'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            ]);
-
+            $validatedData = $validator->validated();
             $user->fill($validatedData);
 
             if ($request->hasFile('image')) {
-                $uploadedFile = $request->file('image');
-
                 if ($user->image_public_id) {
-                    Cloudinary::delete($user->image_public_id);
+                    Storage::disk('cloudinary')->delete($user->image_public_id);
+                    $user->images()->where('public_id', $user->image_public_id)->delete();
                 }
-                $uploadedImage = Cloudinary::upload($uploadedFile->getRealPath(), [
-                    'folder' => 'bidmax'
+                $path = $request->file('image')->store('bidmax', 'cloudinary');
+
+                $user->image_public_id = $path;
+                $url = Storage::disk('cloudinary')->url($path);
+                $user->image = $url;
+
+                Images::create([
+                    'user_id' => $user->id,
+                    'image_url' => $url,
+                    'public_id' => $path
                 ]);
-                $user->image = $uploadedImage->getSecurePath();
-                $user->image_public_id = $uploadedImage->getPublicId();
             }
 
             $user->save();
 
             return back()->with('success', 'Profile updated successfully!');
         } catch (ValidationException $e) {
-            return redirect('/profile?error=profile-form-error')
+            return redirect('/profile')
+                ->with('error', 'profile-form-error')
                 ->withErrors($e->errors())
                 ->withInput();
         }

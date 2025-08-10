@@ -5,6 +5,7 @@ use App\Http\Controllers\BidsController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ContactDevController;
 use App\Http\Controllers\FreelancerDetailsController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
@@ -20,6 +21,7 @@ use App\Models\FreelancerDetails;
 use App\Models\Job;
 use App\Models\Post;
 use App\Models\Projects;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,24 +34,51 @@ Route::get('/', function (Request $request) {
     }
 })->name('homepage');
 
-Route::get('/contact', [ContactDevController::class, 'show'])->name('contact.show');
-Route::post('/contact', [ContactDevController::class, 'sendMsg'])->name('contact.send');
+Route::get('/contact', [ContactDevController::class, 'show'])
+    ->name('contact.show');
+Route::post('/contact', [ContactDevController::class, 'sendMsg'])
+    ->name('contact.send');
 
-Route::get('/subscription', [SubscriptionController::class, 'show'])->name('subscription.show');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/subscription', [SubscriptionController::class, 'show'])
+        ->name('subscription.show');
+});
 
 // Auth Route
-Route::get('/login', [SessionController::class, 'create'])->name('login');
-Route::post('/login', [SessionController::class, 'store'])->middleware('throttle:10,1');
-Route::post('/logout', [SessionController::class, 'destroy'])->name('logout');
+Route::post('/logout', [SessionController::class, 'destroy'])
+    ->name('logout')
+    ->middleware('auth');
 
-Route::get('/register', [RegisterUserController::class, 'create'])->name('register');
-Route::get('/register/verify', [RegisterUserController::class, 'verify'])->name('auth.verify');
-Route::post('/register/verify', [RegisterUserController::class, 'verifyOtp'])->name('auth.register.verify')->middleware('throttle:10,1');
-Route::post('/register/verify/{user}', [RegisterUserController::class, 'sendVerificationCode'])->name('auth.verify.resend')->middleware('throttle:10,1');
-Route::post('/register', [RegisterUserController::class, 'store']);
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [SessionController::class, 'create'])
+        ->name('login');
+
+    Route::post('/login', [SessionController::class, 'store'])
+        ->middleware('throttle:10,1');
+
+    Route::get('/register', [RegisterUserController::class, 'create'])
+        ->name('register')
+        ->can('create', User::class);
+
+    Route::post('/register', [RegisterUserController::class, 'store'])
+        ->name('register.store')
+        ->can('create', User::class);
+
+    Route::get('/register/verify', [RegisterUserController::class, 'verify'])
+        ->name('auth.verify');
+
+    Route::post('/register/verify', [RegisterUserController::class, 'verifyOtp'])
+        ->name('auth.register.verify')
+        ->middleware('throttle:10,1');
+
+    Route::post('/register/verify/{user}', [RegisterUserController::class, 'sendVerificationCode'])
+        ->name('auth.verify.resend')
+        ->middleware('throttle:10,1');
+});
 
 // Jobs Route
-Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs', [JobController::class, 'index'])
+    ->name('jobs.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/jobs/create', [JobController::class, 'create'])
@@ -112,7 +141,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Articles Route
-Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/articles', [ArticleController::class, 'index'])
+    ->name('articles.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/articles/create', [ArticleController::class, 'create'])
@@ -138,8 +168,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('articles.destroy')
         ->can('delete', 'article');
 });
+
 // Posts Route
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts', [PostController::class, 'index'])
+    ->name('posts.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/posts/create', [PostController::class, 'create'])
@@ -175,11 +207,14 @@ Route::middleware(['auth'])->group(function () {
 
 // Profile
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile.show');
 
-    Route::get('/{username}', [ProfileController::class, 'show_user'])->name('profile.show.user');
+    Route::get('/{username}', [ProfileController::class, 'show_user'])
+        ->name('profile.show.user');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 
     Route::get('/profile/freelancer', [FreelancerDetailsController::class, 'show'])
         ->name('freelancer.details.show');
@@ -223,3 +258,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/{username}/projects/{project}', [ProjectsController::class, 'show_user'])
     ->name('projects.show.user');
+
+// Image Upload and Delete Routes (API endpoints)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/image/upload', [ImageUploadController::class, 'upload'])->name('image.upload');
+    Route::delete('/image/delete', [ImageUploadController::class, 'delete'])->name('image.delete');
+});
