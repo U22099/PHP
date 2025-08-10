@@ -58,14 +58,14 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login', [SessionController::class, 'store'])
         ->middleware('throttle:10,1');
 
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'show'])
         ->name('password.request');
 
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
         ->name('password.email')
         ->middleware('throttle:10,1');
 
-    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'show'])
         ->name('password.reset');
 
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
