@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\BidsController;
 use App\Http\Controllers\CommentsController;
@@ -55,6 +57,19 @@ Route::middleware(['guest'])->group(function () {
 
     Route::post('/login', [SessionController::class, 'store'])
         ->middleware('throttle:10,1');
+
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])
+        ->name('password.request');
+
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])
+        ->name('password.email')
+        ->middleware('throttle:10,1');
+
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset');
+
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+        ->name('password.update');
 
     Route::get('/register', [RegisterUserController::class, 'create'])
         ->name('register')

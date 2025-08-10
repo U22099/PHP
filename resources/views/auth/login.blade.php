@@ -37,18 +37,21 @@
                                 </template>
                             </button>
                         </x-slot:icon>
-                        @error('password')
-                            <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                        @enderror
+                        <div class="flex flex-col w-full mt-2">
+                            <a href="/forgot-password" class="text-xs text-right font-semibold text-blue-500">Forgot
+                                Password?</a>
+                            @error('password')
+                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+                            @enderror
+                            <div>
                     </x-form-field>
                 </div>
             </div>
         </div>
         <div class="mt-6 flex flex-col items-center justify-end w-full">
             <x-button type="submit" class="w-full justify-center">Log In</x-button>
+            <a href="/register" class="text-xs font-semibold text-gray-400 mt-2">Don't have an account? <span
+                    class="text-blue-500">Register</span></a>
         </div>
-        <a href="/register" class="text-xs font-semibold text-gray-400">Don't have an account? <span
-                class="text-blue-500">Register</span></a>
-
     </form>
 </x-layout>
