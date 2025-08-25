@@ -83,7 +83,10 @@ class BidsController extends Controller
             'bid_status' => $request->input('bid_status'),
         ]);
 
-        return redirect()->route('bids.index', ['job' => $job]);
+        if ($request->input('bid_status') === 'interviewing')
+            return redirect('https://wa.me/' . $bid->user->freelancer_details->phone_number);
+        else
+            return redirect()->route('bids.index', ['job' => $job]);
     }
 
     public function mass_reject(Request $request, Job $job)

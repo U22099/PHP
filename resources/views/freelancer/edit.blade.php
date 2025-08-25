@@ -56,7 +56,7 @@
                     @enderror
                 </x-form-field>
             </div>
-            <x-form-field class="w-full" label="Phone Number" :data="$freelancerDetails->phone_number" fieldname="phone_number">
+            <x-form-field class="w-full" label="Phone Number (WhatsApp Only)" :data="$freelancerDetails->phone_number" fieldname="phone_number">
                 <x-slot:icon>
                     <x-heroicon-o-phone class="h-5 w-5 text-gray-400" />
                 </x-slot:icon>

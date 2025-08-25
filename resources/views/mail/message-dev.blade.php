@@ -107,6 +107,18 @@
             /* Preserve whitespace and line breaks */
         }
 
+        .button {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 16px;
+            padding: 12px;
+            background-color: #007bff;
+            border-radius: 8px;
+            color: white;
+        }
+
         .footer {
             text-align: center;
             font-size: 12px;
@@ -147,9 +159,11 @@
             <p>{{ $user_message }}</p>
         </div>
 
+        <a class="button" href="{{ 'https://wa.me/' . $user->freelancer_details->phone_number }}">Message Back</a>
+
         <div class="footer">
             <p>This is an automated notification. Please do not reply to this email.</p>
-            <p>&copy; {{ date('Y') }} Your Company Name. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
         </div>
     </div>
 </body>

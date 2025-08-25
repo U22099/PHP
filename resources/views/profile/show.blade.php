@@ -14,6 +14,15 @@
         @if (Auth::user()->id !== $user->id || $user->role === 'freelancer')
             <div class="my-4">
                 <x-freelancer.profile-card :freelancerDetails="$user->freelancer_details" />
+                @if ($user->freelancer_details->phone_number)
+                    <p class="text-black text-sm font-bold mt-2">*Please note that clients uses your PHONE NUMBER to
+                        message
+                        you, so ensure it is a valid WHATSAPP NUMBER</p>
+                @else
+                    <p class="bg-red-200 border-red-600 border p-3 rounded-lg text-red-600 text-sm font-bold mt-2">*You
+                        haven't set a WHATSAPP NUMBER...Please do that immediately, it is important as that is what
+                        clients uses to contact you.</p>
+                @endif
             </div>
         @endif
 

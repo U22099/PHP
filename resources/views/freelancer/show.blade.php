@@ -70,7 +70,7 @@
                 </div>
                 <div class="sm:col-span-1">
                     <dt class="text-xl font-bold text-gray-900">
-                        Phone Number
+                        Phone Number (WhatsApp Only)
                     </dt>
                     <dd class="mt-1 text-gray-600 break-all text-wrap">
                         {{ $freelancerDetails->phone_number ?? 'N/A' }}

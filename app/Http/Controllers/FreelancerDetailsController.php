@@ -51,7 +51,7 @@ class FreelancerDetailsController extends Controller
                 'professional_summary' => 'string:max:' . $maxSummaryLength,
                 'country' => 'string|max:255',
                 'city' => 'nullable|string|max:255',
-                'phone_number' => 'string|max:20',
+                'phone_number' => 'string|phone|max:20',
                 'skills' => 'string',
                 'portfolio_link' => 'nullable|url|max:255',
                 'years_of_experience' => 'integer|min:0',

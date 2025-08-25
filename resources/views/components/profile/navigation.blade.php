@@ -36,7 +36,7 @@
         @elseif ($user->role === 'client')
             <button @click="currentTab = 'jobs'"
                 :class="{ 'border-indigo-500 text-indigo-600': currentTab === 'jobs', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': currentTab !== 'jobs' }"
-                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ease-in-out flex-1 text-center flex items-center justify-center capitalize">
+                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ease-in-out flex-1 text-center flex items-center justify-center capitalize col-span-2 sm:col-span-1">
                 <x-heroicon-o-briefcase class="h-5 w-5 mr-2" />
                 {{ Auth::user()->id !== $user->id ? $user->firstname . "'" : 'My' }} Jobs
             </button>
