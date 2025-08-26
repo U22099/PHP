@@ -144,12 +144,20 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('helloworld'),
             'remember_token' => Str::random(10),
+            'is_premium' => true,
         ]);
+
         $this->command->info('   -> Test Freelancer <fg=cyan>u22099</> created.');
 
-        FreelancerDetails::factory()->create([
+        $testFreelancerDetails = FreelancerDetails::factory()->create([
             'user_id' => $testFreelancer->id
         ]);
+ 
+        for($i = 0; $i < rand(1,5); $i++) {
+            $stacks = Stacks::all()->random(rand(1, 8));
+            $testFreelancerDetails->stacks()->attach($stacks);
+        }
+
         $this->command->line('   -> Test Freelancer details added.');
 
         $testClient = User::create([

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\FreelancerDetails;
 use App\Models\Projects;
 use App\Models\Stacks;
 use Illuminate\Database\Migrations\Migration;
@@ -24,6 +25,13 @@ return new class extends Migration {
             $table->foreignIdFor(Stacks::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Schema::create('freelancer_details_stacks', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(FreelancerDetails::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Stacks::class)->constrained()->cascadeOnDelete();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -33,5 +41,6 @@ return new class extends Migration {
     {
         Schema::dropIfExists('stacks');
         Schema::dropIfExists('projects_stacks');
+        Schema::dropIfExists('users_stacks');
     }
 };

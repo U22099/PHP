@@ -11,6 +11,7 @@
         @auth
             <x-button type="link"
                 href="/{{ Auth::user()->id === $project->user_id ? 'profile' : $project->user->username }}?tabs=projects">
+                <x-heroicon-o-arrow-left class="h-5 w-5 ml-2 text-white" />
                 Go Back
             </x-button>
         @endauth

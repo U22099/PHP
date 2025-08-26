@@ -12,6 +12,7 @@
     <x-slot:headerbutton>
         <x-button type="link"
             href="{{ Auth::user()->id === $freelancerDetails->id ? '/profile/' : '/' . $freelancerDetails->user->username }}">
+            <x-heroicon-o-arrow-left class="h-5 w-5 ml-2 text-white" />
             Go Back
         </x-button>
     </x-slot:headerbutton>
@@ -116,6 +117,17 @@
                         {!! $freelancerDetails->certifications ?? 'N/A' !!}
                     </dd>
                 </div>
+                @if ($freelancerDetails->stacks)
+                    <div class="sm:col-span-2">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Stacks:</h3>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach ($freelancerDetails->stacks as $stack)
+                                <span
+                                    class="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">{{ $stack->name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
                 <div class="sm:col-span-2">
                     <dt class="text-xl font-bold text-gray-900">
                         Portfolio Link

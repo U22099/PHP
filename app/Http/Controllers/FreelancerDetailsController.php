@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FreelancerDetails;
+use App\Models\Stacks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validation\Exception;
@@ -11,7 +12,7 @@ class FreelancerDetailsController extends Controller
 {
     public function show_user(FreelancerDetails $freelancerDetails)
     {
-        $freelancerDetails->load('user');
+        $freelancerDetails->load('user', 'stacks');
 
         return view('freelancer.show', [
             'freelancerDetails' => $freelancerDetails
@@ -30,9 +31,12 @@ class FreelancerDetailsController extends Controller
     public function edit()
     {
         $freelancerDetails = Auth::user()->freelancer_details ?? new FreelancerDetails();
+        $availableStacks = Stacks::pluck('name')
+            ->toArray();
 
         return view('freelancer.edit', [
-            'freelancerDetails' => $freelancerDetails
+            'freelancerDetails' => $freelancerDetails,
+            'availableStacks' => $availableStacks
         ]);
     }
 
@@ -40,7 +44,6 @@ class FreelancerDetailsController extends Controller
     {
         try {
             $user = Auth::user();
-            
 
             $freelancerDetails = $user->freelancer_details ?? new FreelancerDetails();
             if (!$user->freelancer_details)
@@ -73,6 +76,20 @@ class FreelancerDetailsController extends Controller
 
             $freelancerDetails->fill($validatedData);
             $freelancerDetails->save();
+
+            if ($request->has('stacks')) {
+                $stackNames = $request->input('stacks');
+                $stackIds = [];
+
+                foreach ($stackNames as $stackName) {
+                    $stack = Stacks::firstOrCreate(['name' => $stackName]);
+                    $stackIds[] = $stack->id;
+                }
+
+                $freelancerDetails->stacks()->sync($stackIds);
+            } else {
+                $freelancerDetails->stacks()->sync([]);
+            }
 
             return redirect('/profile')->with('success', 'Freelancer details updated successfully!');
         } catch (ValidationException $e) {

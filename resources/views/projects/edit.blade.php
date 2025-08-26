@@ -49,8 +49,6 @@
                     @enderror
                 </div>
 
-                {{-- Images (You might need a more complex component for image uploads/management) --}}
-                {{-- For now, we'll just display the existing image paths --}}
                 <div class="mb-4">
                     <label class="block text-sm font-medium leading-6 text-gray-900 capitalize">Existing Images</label>
                     <div class="mt-2">
@@ -67,7 +65,6 @@
                             <p class="text-gray-500">No images uploaded yet.</p>
                         @endif
                     </div>
-                    {{-- You would typically have an input for new image uploads here --}}
                     @error('images')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror

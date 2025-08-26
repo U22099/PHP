@@ -5,7 +5,7 @@
 
     <x-slot:headerbutton>
         <x-button type="link" href="/jobs/{{ $job->id }}" class="capitalize flex gap-1 items-center">
-            <x-heroicon-o-arrow-left class="h-5 w-5 text-white" />
+            <x-heroicon-o-arrow-left class="h-5 w-5 ml-2 text-white" />
             Go Back
         </x-button>
     </x-slot:headerbutton>

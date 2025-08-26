@@ -24,6 +24,15 @@
                         clients uses to contact you.</p>
                 @endif
             </div>
+            <div class="mb-4 block bg-white rounded-lg border border-indigo-600 cursor-pointer p-4">
+                <x-custom-toggle fieldname="job-alerts" label="Job Alerts" :is_checked="false">
+                    <x-slot:icon>
+                        <x-heroicon-o-bell class="h-6 w-6 text-indigo-600" />
+                    </x-slot:icon>
+                </x-custom-toggle>
+
+                <p class="text-black text-xs font-bold mt-2">Job alerts gives you personified alert of jobs based on your stacks</p>
+            </div>
         @endif
 
         <x-profile.navigation :user="$user" />

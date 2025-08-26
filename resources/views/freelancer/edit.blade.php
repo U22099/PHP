@@ -11,6 +11,7 @@
 
     <x-slot:headerbutton>
         <x-button type="link" href="/profile">
+            <x-heroicon-o-arrow-left class="h-5 w-5 ml-2 text-white" />
             Go Back
         </x-button>
     </x-slot:headerbutton>
@@ -56,7 +57,8 @@
                     @enderror
                 </x-form-field>
             </div>
-            <x-form-field class="w-full" label="Phone Number (WhatsApp Only)" :data="$freelancerDetails->phone_number" fieldname="phone_number">
+            <x-form-field class="w-full" label="Phone Number (WhatsApp Only)" :data="$freelancerDetails->phone_number"
+                fieldname="phone_number">
                 <x-slot:icon>
                     <x-heroicon-o-phone class="h-5 w-5 text-gray-400" />
                 </x-slot:icon>
@@ -166,6 +168,13 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </x-form-field>
+            <div class="mb-4">
+                <x-searchable-input name="stacks" label="Your Stacks" placeholder="Add your Stacks..."
+                    :availableItems="$availableStacks" :initialItems="old('stacks', $freelancerDetails->stacks->pluck('name')->toArray())" />
+                @error('stacks')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
             <div class="flex justify-end mt-6">
                 <x-button type="submit">Save Changes</x-button>
             </div>

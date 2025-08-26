@@ -234,9 +234,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/freelancer', [FreelancerDetailsController::class, 'show'])
         ->name('freelancer.details.show');
 
-    Route::get('/profile/freelancer/{freelancerDetails}', [FreelancerDetailsController::class, 'show_user'])
-        ->name('freelancer.details.show.user');
-
     Route::get('/profile/freelancer/edit', [FreelancerDetailsController::class, 'edit'])
         ->name('freelancer.details.edit')
         ->can('edit', FreelancerDetails::class);
@@ -244,6 +241,9 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile/freelancer', [FreelancerDetailsController::class, 'update'])
         ->name('freelancer.details.update')
         ->can('edit', FreelancerDetails::class);
+
+    Route::get('/profile/freelancer/{freelancerDetails}', [FreelancerDetailsController::class, 'show_user'])
+        ->name('freelancer.details.show.user');
 });
 
 // projects
