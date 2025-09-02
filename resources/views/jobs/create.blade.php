@@ -84,6 +84,26 @@
                                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <div class="col-span-full">
+                            <x-multi-image-upload label="Add Images" name="images" :initialUrls="old('images')" :initialPublicIds="old('publicIds')"
+                                :isPremium="Auth::user()->is_premium">
+                                <div>
+                                    @error('images')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                    @error('publicIds')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                    @error('images.*')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                    @error('publicIds.*')
+                                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </x-multi-image-upload>
+                        </div>
                     </div>
                 </div>
             </div>

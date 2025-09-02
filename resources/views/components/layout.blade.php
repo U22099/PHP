@@ -27,15 +27,15 @@
 
 <body class="min-h-screen flex flex-col" x-data="{ open: false }">
     <!-- Navbar -->
-    <div class="bg-black text-white shadow-md">
+    <div class="bg-black text-white shadow-md sticky top-0 z-30 w-full">
         <nav class="mx-auto flex max-w-7xl items-center justify-between p-4 px-6 md:px-8" aria-label="Global">
-            <a href="/" class="font-bold text-xl flex-shrink-0">Laravel Test</a>
+            <a href="/" class="font-bold text-xl flex-shrink-0">{{ config('app.name') }}</a>
 
             <!-- Desktop Nav Links -->
             <div class="hidden md:flex md:gap-8 lg:gap-12 md:text-lg flex-grow justify-end items-center">
                 <x-nav-link href="/" :active="request()->is('/') || (Auth::check() ? request()->routeIs('posts.*') : false)">
                     <x-slot:icon><x-heroicon-o-home class="h-5 w-5" /></x-slot:icon> {{-- Added Home icon --}}
-                    Homepage
+                    Home
                 </x-nav-link>
                 <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*') || request()->routeIs('bids.*')">
                     <x-slot:icon><x-heroicon-o-briefcase class="h-5 w-5" /></x-slot:icon>
@@ -104,7 +104,7 @@
         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
         class="md:hidden fixed inset-0 z-50 bg-black bg-opacity-95 overflow-y-auto">
         <div class="flex items-center justify-between px-6 py-4">
-            <a href="/" class="font-bold text-xl text-white flex-shrink-0">Laravel Test</a>
+            <a href="/" class="font-bold text-xl text-white flex-shrink-0">{{ config('app.name') }}</a>
             <button @click="open = false" type="button"
                 class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400 hover:text-white">
                 <span class="sr-only">Close menu</span>
@@ -117,7 +117,7 @@
                     <x-nav-link href="/" :active="request()->is('/') || (Auth::check() ? request()->routeIs('posts.*') : false)" @click="open = false">
                         <x-slot:icon><x-heroicon-o-home class="h-6 w-6" /></x-slot:icon>
                         {{-- Added Home icon --}}
-                        Homepage
+                        Home
                     </x-nav-link>
                     <x-nav-link href="/jobs" :active="request()->routeIs('jobs.*')" @click="open = false">
                         <x-slot:icon><x-heroicon-o-briefcase class="h-6 w-6" /></x-slot:icon>

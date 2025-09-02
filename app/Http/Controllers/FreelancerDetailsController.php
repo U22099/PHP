@@ -4,15 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\FreelancerDetails;
 use App\Models\Stacks;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validation\Exception;
 
 class FreelancerDetailsController extends Controller
 {
-    public function show_user(FreelancerDetails $freelancerDetails)
+    public function show_user(String $username, FreelancerDetails $freelancerDetails)
     {
         $freelancerDetails->load('user', 'stacks');
+
+        if (!$freelancerDetails->user->is(User::where('username', $username)->first())) {
+            abort(403, "You are not authorized to view this freelancer's details");
+        }
 
         return view('freelancer.show', [
             'freelancerDetails' => $freelancerDetails

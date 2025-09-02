@@ -11,8 +11,8 @@
 
     <x-slot:headerbutton>
         <x-button type="link"
-            href="{{ Auth::user()->id === $freelancerDetails->id ? '/profile/' : '/' . $freelancerDetails->user->username }}">
-            <x-heroicon-o-arrow-left class="h-5 w-5 ml-2 text-white" />
+            href="{{ Auth::user()->id === $freelancerDetails->user_id ? '/profile' : '/' . $freelancerDetails->user->username }}">
+            <x-heroicon-o-arrow-left class="h-5 w-5 mr-2 text-white" />
             Go Back
         </x-button>
     </x-slot:headerbutton>

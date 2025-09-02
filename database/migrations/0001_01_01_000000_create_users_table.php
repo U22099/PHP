@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_premium')->default(false);
+            $table->boolean('job_alerts')->default(false);
             $table->timestamp('last_premium_subscription')->nullable()->default(null);
             $table->timestamp('last_dev_contact')->nullable()->default(null);
             $table->rememberToken();

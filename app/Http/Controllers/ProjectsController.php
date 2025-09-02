@@ -17,6 +17,10 @@ class ProjectsController extends Controller
         $user = Auth::user();
         $project = Projects::where('user_id', $user->id)->where('id', $project)->first();
 
+        if (empty($project)) {
+            return response('404 Not Found', 404);
+        }
+
         return view('projects.show', ['project' => $project]);
     }
 
@@ -24,6 +28,10 @@ class ProjectsController extends Controller
     {
         $user = User::where('username', $username)->first();
         $project = Projects::where('user_id', $user->id)->where('id', $project)->first();
+
+        if (empty($project)) {
+            return response('404 Not Found', 404);
+        }
 
         return view('projects.show', ['project' => $project]);
     }
@@ -53,25 +61,11 @@ class ProjectsController extends Controller
                 'title' => ['string', 'required', 'min:3'],
                 'description' => ['string', 'required'],
                 'link' => ['string', 'required', 'url'],
-                'images' => ['nullable', 'array'],
+                'images' => ['required', 'array'],
                 'images.*' => ['string', 'url'],
                 'stacks' => ['array'],
                 'stacks.*' => ['string', 'max:255']
             ]);
-
-            // $images = json_decode($request->input('images'), true);
-
-            // $validator = Validator::make(['images' => $images], [
-            //     'images' => ['required', 'array'],
-            //     'images.*' => ['string', 'url'],
-            // ]);
-
-            // if ($validator->fails()) {
-            //     return redirect()
-            //         ->back()
-            //         ->withErrors($validator)
-            //         ->withInput();
-            // }
 
             $project = Projects::create([
                 'title' => $validatedData['title'],
@@ -110,23 +104,11 @@ class ProjectsController extends Controller
                 'title' => ['string', 'required', 'min:3'],
                 'description' => ['string', 'required'],
                 'link' => ['string', 'required', 'url'],
-                'images' => ['nullable', 'array'],
+                'images' => ['required', 'array'],
                 'images.*' => ['string', 'url'],
                 'stacks' => ['array'],
                 'stacks.*' => ['string', 'max:255']
             ]);
-
-            // $validator = Validator::make(['images' => $images], [
-            //     'images' => ['required', 'array'],
-            //     'images.*' => ['string', 'url'],
-            // ]);
-
-            // if ($validator->fails()) {
-            //     return redirect()
-            //         ->back()
-            //         ->withErrors($validator)
-            //         ->withInput();
-            // }
 
             $project->updateOrFail([
                 'title' => $validatedData['title'],

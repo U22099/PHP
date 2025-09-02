@@ -1,6 +1,6 @@
 @props(['freelancerDetails'])
 
-<a href="{{ Auth::user()->id === $freelancerDetails->user_id ? '/profile/freelancer' : '/profile/freelancer/' . $freelancerDetails->id }}"
+<a href="{{ Auth::user()->id === $freelancerDetails->user_id ? '/profile/freelancer' : '/' . $freelancerDetails->user->username . '/freelancer/' . $freelancerDetails->id }}"
     class="block bg-white overflow-hidden rounded-lg border hover:border-indigo-600 transition-colors duration-200 ease-in-out cursor-pointer">
     <div class="px-4 py-5 sm:p-6">
         <div class="mb-4">

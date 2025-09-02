@@ -1,10 +1,9 @@
 <div class="border rounded-lg p-6">
     <div class="flex items-center mb-4">
-        <img class="h-10 w-10 rounded-full object-cover mr-3"
-            :src="`https://i.pravatar.cc/150?img=${post.user_data_for_display ? post.user_data_for_display.id : Math.floor(Math.random() * 70) + 1}`"
+        <img class="h-10 w-10 rounded-full object-cover mr-3" :src="post.user_data_for_display.image"
             :alt="post.user_data_for_display ? post.user_data_for_display.username : 'User'">
         <div>
-            <a :href="`#`" class="font-semibold text-gray-900 hover:underline"
+            <a :href="`/${post.user_data_for_display.username}`" class="font-semibold text-gray-900 hover:underline"
                 x-text="post.user_data_for_display ? post.user_data_for_display.username : 'Anonymous User'"></a>
             <p class="text-sm text-gray-500" x-text="post.created_at_human"></p>
             <p class="text-xs text-gray-500"
@@ -24,7 +23,8 @@
         <template x-if="post.tag_names_for_display && post.tag_names_for_display.length > 0">
             <div class="mt-1 flex flex-wrap gap-1">
                 <template x-for="(tag, tagIndex) in post.tag_names_for_display" :key="tagIndex">
-                    <span class="font-bold text-blue-600 text-sm">#<span x-text="tag"></span></span>
+                    <a :href="`/{{ Auth::check() ? 'posts/' : '' }}?tags[]=${tag}`"
+                        class="font-bold text-blue-600 text-sm">#<span x-text="tag"></span></a>
                 </template>
             </div>
         </template>
@@ -35,20 +35,22 @@
 
     <div class="flex items-center justify-between text-gray-500 border-t border-gray-200 pt-4 mt-4">
         <button @click="like(post.id)"
-            :class="{'text-blue-600': post.liked_by_user, 'hover:text-blue-600': !post.liked_by_user}"
+            :class="{ 'text-blue-600': post.liked_by_user, 'hover:text-blue-600': !post.liked_by_user }"
             class="flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
-            <x-heroicon-o-hand-thumb-up class="h-5 w-5" />
-            <span x-text="`Like (${post.likes_count || 0})`"></span>
+            <x-heroicon-o-hand-thumb-up class="h-6 w-6 md:h-5 md:w-5" />
+            <span class="hidden md:inline" x-text="`Like (${post.likes_count || 0})`"></span>
+            <span class="md:hidden" x-text="`(${post.likes_count || 0})`"></span>
         </button>
         <a :href="`{{ url('/posts') }}/${post.id}#comments`"
             class="flex items-center space-x-1 hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
-            <x-heroicon-o-chat-bubble-left class="h-5 w-5" />
-            <span x-text="`Comment (${post.comments_count || 0})`"></span>
+            <x-heroicon-o-chat-bubble-left class="h-6 w-6 md:h-5 md:w-5" />
+            <span class="hidden md:inline" x-text="`Comment (${post.comments_count || 0})`"></span>
+            <span class="md:hidden" x-text="`(${post.comments_count || 0})`"></span>
         </a>
         <button
             class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
-            <x-heroicon-o-share class="h-5 w-5" />
-            <span>Share</span>
+            <x-heroicon-o-share class="h-6 w-6 md:h-5 md:w-5" />
+            <span class="hidden md:inline">Share</span>
         </button>
     </div>
 

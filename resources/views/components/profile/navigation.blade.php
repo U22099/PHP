@@ -2,7 +2,7 @@
 
 <nav class="bg-white shadow-sm sm:rounded-lg overflow-hidden mb-6">
     <div
-        class="grid grid-cols-2 {{ $user->role === 'client' ? 'sm:grid-cols-3' : 'sm:grid-cols-4' }} border-b border-gray-200">
+        class="grid grid-cols-2 {{ $user->role === 'client' || Auth::user()->id !== $user->id ? 'sm:grid-cols-3' : 'sm:grid-cols-4' }} border-b border-gray-200">
         <button @click="currentTab = 'posts'"
             :class="{ 'border-indigo-500 text-indigo-600': currentTab === 'posts', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': currentTab !== 'posts' }"
             class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors duration-200 ease-in-out flex-1 text-center flex items-center justify-center capitalize">

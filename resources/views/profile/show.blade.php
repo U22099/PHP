@@ -10,29 +10,39 @@
         {{-- Profile Header --}}
         <x-profile.header :user="$user" />
 
-        {{-- Freelancer Details Card (conditionally displayed for freelancers) --}}
-        @if (Auth::user()->id !== $user->id || $user->role === 'freelancer')
+
+        @if ($user->role === 'freelancer')
             <div class="my-4">
                 <x-freelancer.profile-card :freelancerDetails="$user->freelancer_details" />
-                @if ($user->freelancer_details->phone_number)
-                    <p class="text-black text-sm font-bold mt-2">*Please note that clients uses your PHONE NUMBER to
-                        message
-                        you, so ensure it is a valid WHATSAPP NUMBER</p>
-                @else
-                    <p class="bg-red-200 border-red-600 border p-3 rounded-lg text-red-600 text-sm font-bold mt-2">*You
-                        haven't set a WHATSAPP NUMBER...Please do that immediately, it is important as that is what
-                        clients uses to contact you.</p>
+
+                @if (Auth::user()->id === $user->id)
+                    @if ($user->freelancer_details->phone_number)
+                        <p class="text-black text-sm font-bold mt-2">*Please note that clients uses your PHONE NUMBER to
+                            message
+                            you, so ensure it is a valid WHATSAPP NUMBER</p>
+                    @else
+                        <p class="bg-red-200 border-red-600 border p-3 rounded-lg text-red-600 text-sm font-bold mt-2">
+                            *You
+                            haven't set a WHATSAPP NUMBER...Please do that immediately, it is important as that is what
+                            clients uses to contact you.</p>
+                    @endif
                 @endif
             </div>
-            <div class="mb-4 block bg-white rounded-lg border border-indigo-600 cursor-pointer p-4">
-                <x-custom-toggle fieldname="job-alerts" label="Job Alerts" :is_checked="false">
-                    <x-slot:icon>
-                        <x-heroicon-o-bell class="h-6 w-6 text-indigo-600" />
-                    </x-slot:icon>
-                </x-custom-toggle>
+            @if (Auth::user()->id === $user->id)
+                <div
+                    class="{{ !$user->is_premium ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }} mb-4 block bg-white rounded-lg border border-indigo-600 cursor-pointer p-4">
+                    <x-custom-toggle fieldname="job-alerts" label="Job Alerts" :is_premium="$user->is_premium" :is_checked="$user->job_alerts"
+                        update_url="/profile/update_job_alerts">
+                        <x-slot:icon>
+                            <x-heroicon-o-bell class="h-6 w-6 text-indigo-600" />
+                        </x-slot:icon>
+                    </x-custom-toggle>
 
-                <p class="text-black text-xs font-bold mt-2">Job alerts gives you personified alert of jobs based on your stacks</p>
-            </div>
+                    <p class="text-black text-xs font-bold mt-2">Job alerts gives you personalised new job alerts based
+                        on
+                        your stacks</p>
+                </div>
+            @endif
         @endif
 
         <x-profile.navigation :user="$user" />

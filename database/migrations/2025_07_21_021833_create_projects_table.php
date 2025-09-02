@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description');
             $table->string('link');
             $table->json('images')->default('[]');
+            $table->json('public_ids')->default('[]');
             $table->timestamps();
         });
     }

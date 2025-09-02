@@ -17,14 +17,19 @@ use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
-    public function show_user($username)
+    public function show_user(String $username)
     {
+        
         $user = User::where('username', $username)->firstOrFail()->load([
             'projects' => fn($q) => $q->latest(),
             'posts' => fn($q) => $q->latest(),
             'articles' => fn($q) => $q->latest(),
             'jobs' => fn($q) => $q->latest()->with('currency'),
         ]);
+        
+        if(!Auth::user()->can('viewUser', $user)){
+            abort(403, 'You are not authorized to view this user profile.');
+        }
 
         return view('profile.show', [...compact('user')]);
     }
@@ -40,6 +45,28 @@ class ProfileController extends Controller
         ]);
 
         return view('profile.show', [...compact('user')]);
+    }
+
+    public function updateJobAlerts(Request $request)
+    {
+        try {
+            $request->validate([
+                'is_checked' => 'boolean'
+            ]);
+
+            $user = Auth::user();
+            $user->job_alerts = $request->input('is_checked');
+            $user->save();
+
+            return response()->json([
+                'job_alert' => $user->job_alerts,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => true,
+            ]);
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     public function update(Request $request)

@@ -28,7 +28,8 @@
                             {{ Number::abbreviate($job->max_budget, 1) }}
                         @endif
                     </span>
-                    <span class="ml-2">in {{ Illuminate\Support\Carbon::now()->addDays($job->time_budget)->diffForHumans(null, true)}}</span>
+                    <span class="ml-2">in
+                        {{ Illuminate\Support\Carbon::now()->addDays($job->time_budget)->diffForHumans(null, true) }}</span>
                 </span>
             </div>
         </div>
@@ -45,7 +46,7 @@
             {{-- Only show tags if there are any --}}
             <div class="mt-4 flex flex-wrap gap-2">
                 @foreach ($job->tags as $tag)
-                    <span
+                    <span onclick="window.location.href = '/jobs?tags[]={{ $tag->name }}'"
                         class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
                         {{ $tag->name }}
                     </span>

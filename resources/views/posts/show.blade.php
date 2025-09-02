@@ -15,7 +15,7 @@
                     src="https://i.pravatar.cc/150?img={{ $post->user->id ?? rand(1, 70) }}"
                     alt="{{ $post->user->username ?? 'User' }}">
                 <div>
-                    <a href="#"
+                    <a href="/profile/{{ $post->user->username }}"
                         class="font-bold text-lg text-gray-900 hover:underline">{{ $post->user->username ?? 'Anonymous User' }}</a>
                     <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                 </div>
@@ -28,9 +28,9 @@
                     {{-- Only show tags if there are any --}}
                     <div class="mt-1 flex flex-wrap gap-1">
                         @foreach ($post->tags as $tag)
-                            <span class="font-bold text-blue-600 prose leading-relaxed text-base">
-                                {{ $tag->name }}
-                            </span>
+                            <a href='/{{ Auth::check() ? 'posts/' : '' }}?tags[]={{ $tag->name }}' class="font-bold text-blue-600 prose leading-relaxed text-base">
+                                #{{ $tag->name }}
+                            </a>
                         @endforeach
                     </div>
                 @endif
@@ -43,17 +43,19 @@
             <div class="flex items-center justify-between text-gray-500 border-t border-gray-200 pt-4 mt-4">
                 <button
                     class="flex items-center space-x-1 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1">
-                    <x-heroicon-o-hand-thumb-up class="h-5 w-5" />
-                    <span>Like ({{ $post->likes_count ?? 0 }})</span>
+                    <x-heroicon-o-hand-thumb-up class="h-6 w-6 md:h-5 md:w-5" />
+                    <span class="hidden md:inline">Like ({{ $post->likes_count ?? 0 }})</span>
+                    <span class="md:hidden">({{ $post->likes_count ?? 0 }})</span>
                 </button>
-                <span class="flex items-center space-x-1 text-green-600"> {{-- Active comment count --}}
-                    <x-heroicon-o-chat-bubble-left class="h-5 w-5" />
-                    <span>Comment ({{ $post->comments_count ?? $post->comments->count() }})</span>
+                <span class="flex items-center space-x-1 text-green-600">
+                    <x-heroicon-o-chat-bubble-left class="h-6 w-6 md:h-5 md:w-5" />
+                    <span class="hidden md:inline">Comment ({{ $post->comments_count ?? $post->comments->count() }})</span>
+                    <span class="md:hidden">({{ $post->comments_count ?? $post->comments->count() }})</span>
                 </span>
                 <button
                     class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1">
-                    <x-heroicon-o-share class="h-5 w-5" />
-                    <span>Share</span>
+                    <x-heroicon-o-share class="h-6 w-6 md:h-5 md:w-5" />
+                    <span class="hidden md:inline">Share</span>
                 </button>
             </div>
 

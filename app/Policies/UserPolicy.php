@@ -28,6 +28,16 @@ class UserPolicy
         return $user->number_of_images_uploaded_today <= ($user->is_premium ? env('IMAGE_UPLOAD_LIMIT_PER_USER_PREMIUM') : env('IMAGE_UPLOAD_LIMIT_PER_USER'));
     }
 
+    public function updateJobAlerts(User $user): bool
+    {
+        return $user->is_premium;
+    }
+
+    public function viewUser(User $user, User $model): bool
+    {
+        return !$user->is($model);
+    }
+
     public function restore(User $user, User $model): bool
     {
         return false;

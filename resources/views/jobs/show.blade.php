@@ -79,10 +79,11 @@
                 <h3 class="text-xl font-semibold text-gray-900 mb-4">Key Skills Needed</h3>
                 <div class="flex flex-wrap gap-3">
                     @foreach ($job->tags as $tag)
-                        <span
+                        <a
+                            href="/jobs?tags[]={{ $tag->name }}"
                             class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-200">
                             {{ $tag->name }}
-                        </span>
+                        </a>
                     @endforeach
                 </div>
             </div>

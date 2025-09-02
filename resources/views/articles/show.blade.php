@@ -5,6 +5,7 @@
     <x-slot:heading>
         {{ $article->title }}
     </x-slot:heading>
+    
     <x-slot:headerbutton>
         @can('update', $article)
             <x-button type="link" href="/articles/{{ $article->id }}/edit" class="capitalize">

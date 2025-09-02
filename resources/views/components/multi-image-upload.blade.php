@@ -165,6 +165,25 @@
         </template>
     </div>
 
+    {{-- <div class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" x-show="imageUrls.length > 0">
+        <x-carousel :width="192">
+            <template x-for="(imageUrl, index) in imageUrls" :key="index">
+                <div class="relative group aspect-w-1 aspect-h-1 rounded-lg overflow-hidden border border-gray-200">
+                    <img :src="imageUrl" alt="Uploaded Image" class="object-cover w-full h-48">
+                    <button type="button" @click="deleteImage(imagePublicIds[index], index)"
+                        class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </template>
+        </x-carousel>
+    </div> --}}
+
     {{-- Hidden input to store image URLs for form submission --}}
     <template x-for="(imageUrl, index) in imageUrls" :key="'hidden-input-' + index">
         <input type="hidden" name="{{ $name }}[]" :value="imageUrl">

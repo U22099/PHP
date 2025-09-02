@@ -48,27 +48,24 @@
                     @enderror
                 </div>
 
-                {{-- Images (You might need a more complex component for image uploads/management) --}}
-                {{-- For now, we'll just display the existing image paths --}}
                 <div class="mb-4">
-                    <label class="block text-sm font-medium leading-6 text-gray-900 capitalize">Existing Images</label>
-                    <div class="mt-2">
-                        {{-- @if ($project->images)
-                            <x-carousel :width="192">
-                                @foreach ($project->images as $image)
-                                    <img src="{{ $image }}" alt="images"
-                                        class="w-48 h-full object-cover rounded-lg" />
-                                    <input type="text" name="images[]" id="images" value="{{ $image }}" hidden>
-                                @endforeach
-                            </x-carousel>
-                        @else
-                            <p class="text-gray-500">No images uploaded yet.</p>
-                        @endif --}}
-                    </div>
-                    {{-- You would typically have an input for new image uploads here --}}
-                    @error('images')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-multi-image-upload label="Add Images" name="images" :initialUrls="old('images')" :initialPublicIds="old('publicIds')"
+                        :isPremium="Auth::user()->is_premium">
+                        <div>
+                            @error('images')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('publicIds')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('images.*')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('publicIds.*')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </x-multi-image-upload>
                 </div>
 
                 <div class="mt-6 flex w-full justify-end">

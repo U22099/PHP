@@ -50,24 +50,23 @@
                 </div>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium leading-6 text-gray-900 capitalize">Existing Images</label>
-                    <div class="mt-2">
-                        @if ($project->images)
-                            <x-carousel :width="192">
-                                @foreach ($project->images as $image)
-                                    <img src="{{ $image }}" alt="images"
-                                        class="w-48 h-full object-cover rounded-lg" />
-                                    <input type="text" name="images[]" id="images" value="{{ $image }}"
-                                        hidden>
-                                @endforeach
-                            </x-carousel>
-                        @else
-                            <p class="text-gray-500">No images uploaded yet.</p>
-                        @endif
-                    </div>
-                    @error('images')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+                    <x-multi-image-upload label="Add Images" name="images" :initialUrls="old('images', $project->images)" :initialPublicIds="old('publicIds', $project->public_ids)"
+                        :isPremium="Auth::user()->is_premium">
+                        <div>
+                            @error('images')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('publicIds')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('images.*')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                            @error('publicIds.*')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </x-multi-image-upload>
                 </div>
 
                 <div class="mt-6 flex w-full justify-end">
