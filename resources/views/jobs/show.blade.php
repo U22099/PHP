@@ -56,7 +56,7 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-4">Job Description</h3>
             <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed mb-2 text-justify">
                 @if ($job->description)
-                    {!! nl2br(e($job->description)) !!}
+                    {{ $job->description }}
                 @else
                     <p>This exciting role offers a unique opportunity to contribute to a dynamic team. We are looking
                         for passionate individuals who are eager to grow, innovate, and make a significant impact.

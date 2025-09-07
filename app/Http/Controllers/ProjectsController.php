@@ -139,6 +139,15 @@ class ProjectsController extends Controller
 
     public function destroy(Projects $project)
     {
+        if (!empty($project->images)) {
+            foreach ($project->public_ids as $public_id) {
+                $deleted = Storage::disk('cloudinary')->delete($public_id);
+                if ($deleted) {
+                    Auth::user()->image_uploads()->where('public_id', $publicId)->delete();
+                }
+            }
+        }
+
         $project->delete();
 
         return redirect('/profile?tab=projects');

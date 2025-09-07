@@ -24,7 +24,7 @@
                             @enderror
                         </x-form-field>
 
-                        <div class="col-span-2">
+                        <div class="sm:col-span-2">
                             <x-currency-select />
                             @error('currency_id')
                                 <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
@@ -111,7 +111,7 @@
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <x-button type="link" href="/jobs"
                     class="text-sm font-semibold leading-6 text-gray-900">Cancel</x-button>
-                <x-button type="submit">Save</x-button>
+                <x-button type="submit">Create</x-button>
             </div>
         </form>
     </div>

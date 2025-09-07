@@ -7,6 +7,7 @@ use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -92,8 +93,8 @@ class PostController extends Controller
         $post = Post::create([
             'user_id' => Auth::user()->id,
             'body' => preg_replace('/#\S+/', '', $request->input('body')),
-            'images' => $request->input('images'),
-            'public_ids' => $request->input('publicIds'),
+            'images' => $request->input('images') ?? [],
+            'public_ids' => $request->input('publicIds') ?? [],
         ]);
 
         if (sizeof($hashtags) > 0) {
@@ -151,8 +152,8 @@ class PostController extends Controller
 
         $post->updateOrFail([
             'body' => preg_replace('/#\S+/', '', request('body')),
-            'images' => $request->input('images'),
-            'public_ids' => $request->input('publicIds'),
+            'images' => $request->input('images') ?? [],
+            'public_ids' => $request->input('publicIds') ?? [],
         ]);
 
         if (sizeof($hashtags) > 0) {
@@ -174,6 +175,15 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        if (!empty($post->images)) {
+            foreach ($post->public_ids as $public_id) {
+                $deleted = Storage::disk('cloudinary')->delete($public_id);
+                if ($deleted) {
+                    Auth::user()->image_uploads()->where('public_id', $publicId)->delete();
+                }
+            }
+        }
+
         $post->delete();
 
         return redirect('/posts');

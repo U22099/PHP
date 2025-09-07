@@ -87,7 +87,7 @@ class FreelancerDetailsController extends Controller
                 $stackIds = [];
 
                 foreach ($stackNames as $stackName) {
-                    $stack = Stacks::firstOrCreate(['name' => $stackName]);
+                    $stack = Stacks::firstOrCreate(['name' => strtolower(trim($stackName))]);
                     $stackIds[] = $stack->id;
                 }
 

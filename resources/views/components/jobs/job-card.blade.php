@@ -35,7 +35,7 @@
         </div>
         <div class="prose text-gray-800 line-clamp-3">
             @if ($job->description)
-                {{ strip_tags($job->description) }}
+                {{ $job->description }}
             @else
                 <p class="mt-2 text-gray-600 text-sm">
                     A great opportunity for talented individuals. Click to learn more!

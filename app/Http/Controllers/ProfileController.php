@@ -19,15 +19,14 @@ class ProfileController extends Controller
 {
     public function show_user(String $username)
     {
-        
         $user = User::where('username', $username)->firstOrFail()->load([
             'projects' => fn($q) => $q->latest(),
             'posts' => fn($q) => $q->latest(),
             'articles' => fn($q) => $q->latest(),
             'jobs' => fn($q) => $q->latest()->with('currency'),
         ]);
-        
-        if(!Auth::user()->can('viewUser', $user)){
+
+        if (!Auth::user()->can('viewUser', $user)) {
             abort(403, 'You are not authorized to view this user profile.');
         }
 
@@ -65,7 +64,7 @@ class ProfileController extends Controller
             return response()->json([
                 'error' => true,
             ]);
-            echo "Error: " . $e->getMessage();
+            echo 'Error: ' . $e->getMessage();
         }
     }
 
@@ -96,8 +95,10 @@ class ProfileController extends Controller
 
             if ($request->hasFile('image')) {
                 if ($user->image_public_id) {
-                    Storage::disk('cloudinary')->delete($user->image_public_id);
-                    $user->images()->where('public_id', $user->image_public_id)->delete();
+                    $deleted = Storage::disk('cloudinary')->delete($user->image_public_id);
+                    if ($deleted) {
+                        $user->images()->where('public_id', $user->image_public_id)->delete();
+                    }
                 }
                 $path = $request->file('image')->store('bidmax', 'cloudinary');
 

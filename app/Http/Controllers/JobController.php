@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewJobAlert;
 use App\Models\Bids;
 use App\Models\Job;
 use App\Models\Tags;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
-use Mews\Purifier\Facades\Purifier;
 
 class JobController extends Controller
 {
@@ -117,8 +120,9 @@ class JobController extends Controller
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
-            'description' => str_replace('"', "'", Purifier::clean(request('description'))),
-            'images' => $request->input('screenshots'),
+            'description' => str_replace('"', "'", request('description')),
+            'currency_id' => $request->input('currency_id'),
+            'images' => $request->input('images'),
             'public_ids' => $request->input('publicIds'),
         ]);
 
@@ -127,7 +131,7 @@ class JobController extends Controller
             $tagIds = [];
 
             foreach ($tagNames as $tagName) {
-                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tag = Tags::firstOrCreate(['name' => trim(strtolower($tagName))]);
                 $tagIds[] = $tag->id;
             }
 
@@ -136,10 +140,21 @@ class JobController extends Controller
             $job->tags()->sync([]);
         }
 
-        $job->currencies_id = request('currency_id');
         $job->save();
 
-        return redirect('/jobs');
+        $freelancers_emails = User::where('role', 'freelancer')->where('job_alerts', true)->where('is_premium', true)->whereHas('freelancer_details', function ($query) use ($job) {
+            foreach ($job->tags as $stack) {
+                $query->orWhereJsonContains('skills', $stack->name);
+            }
+        })->pluck('email')->toArray();
+
+        if (!empty($freelancers_emails)) {
+            Mail::to($freelancers_emails)->queue(
+                new NewJobAlert($job)
+            );  // cli cmd: php -d memory_limit=512M artisan queue:work
+        }
+
+        return redirect('/jobs/' . $job->id);
     }
 
     public function show(Job $job)
@@ -182,9 +197,9 @@ class JobController extends Controller
             'min_budget' => (int) $request->input('min_budget'),
             'max_budget' => (int) $request->input('max_budget'),
             'time_budget' => (int) $request->input('time_budget'),
-            'description' => str_replace('"', "'", Purifier::clean($request->input('description'))),
+            'description' => str_replace('"', "'", $request->input('description')),
             'currency_id' => $request->input('currency_id'),
-            'images' => $request->input('screenshots'),
+            'images' => $request->input('images'),
             'public_ids' => $request->input('publicIds'),
         ]);
 
@@ -193,7 +208,7 @@ class JobController extends Controller
             $tagIds = [];
 
             foreach ($tagNames as $tagName) {
-                $tag = Tags::firstOrCreate(['name' => $tagName]);
+                $tag = Tags::firstOrCreate(['name' => strtolower(trim($tagName))]);
                 $tagIds[] = $tag->id;
             }
 
@@ -207,6 +222,15 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        if (!empty($job->images)) {
+            foreach ($job->public_ids as $public_id) {
+                $deleted = Storage::disk('cloudinary')->delete($public_id);
+                if ($deleted) {
+                    Auth::user()->image_uploads()->where('public_id', $publicId)->delete();
+                }
+            }
+        }
+
         $job->delete();
 
         return redirect('/jobs');
