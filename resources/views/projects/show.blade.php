@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:title>
-        {{ $project->title }}
+        Project: {{ $project->title }}
     </x-slot:title>
 
     <x-slot:heading>
@@ -16,6 +16,22 @@
             </x-button>
         @endauth
     </x-slot:headerbutton>
+
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('projects.show.user', ['username' => $project->user->username, 'project' => $project->id]) }}">
+        <meta property="og:title" content="{{ $project->title }}">
+        <meta property="og:description" content="{{ Str::limit(strip_tags($project->description), 150) }}">
+        <meta property="og:image" content="{{ $project->images ? $project->images[0] : $project->user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $project->title }}">
+        <meta name="twitter:description" content="{{ Str::limit(strip_tags($project->description), 150) }}">
+        <meta name="twitter:image" content="{{ $project->images ? $project->images[0] : $project->user->image }}">
+        <meta name="twitter:image:width" content="1200">
+        <meta name="twitter:image:height" content="630">
+    @endsection
 
     <div class="w-full px-4 py-8">
         <div class="max-w-7xl mx-auto border rounded-lg overflow-hidden">

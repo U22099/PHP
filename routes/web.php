@@ -26,6 +26,10 @@ use App\Models\Projects;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+// Publicly Accessible Routes (for social media previews and general browsing)
+// Order is crucial: More specific routes before more general ones (like /{username}).
 
 Route::get('/', function (Request $request) {
     if (!Auth::check()) {
@@ -41,16 +45,23 @@ Route::get('/contact', [ContactDevController::class, 'show'])
 Route::post('/contact', [ContactDevController::class, 'sendMsg'])
     ->name('contact.send');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/subscription', [SubscriptionController::class, 'show'])
-        ->name('subscription.show');
-});
+// Index pages for public browsing
+Route::get('/jobs', [JobController::class, 'index'])
+    ->name('jobs.index');
+Route::get('/articles', [ArticleController::class, 'index'])
+    ->name('articles.index');
+Route::get('/posts', [PostController::class, 'index'])
+    ->name('posts.index');
 
-// Auth Route
-Route::post('/logout', [SessionController::class, 'destroy'])
-    ->name('logout')
-    ->middleware('auth');
+// Individual "show" pages for jobs, articles, posts (public for previews)
+Route::get('/jobs/{job}', [JobController::class, 'show'])
+    ->name('jobs.show');
+Route::get('/articles/{article}', [ArticleController::class, 'show'])
+    ->name('articles.show');
+Route::get('/posts/{post}', [PostController::class, 'show'])
+    ->name('posts.show');
 
+// Guest-only Authentication Routes
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [SessionController::class, 'create'])
         ->name('login');
@@ -91,17 +102,19 @@ Route::middleware(['guest'])->group(function () {
         ->middleware('throttle:10,1');
 });
 
-// Jobs Route
-Route::get('/jobs', [JobController::class, 'index'])
-    ->name('jobs.index');
-
+// Authenticated Routes
 Route::middleware(['auth'])->group(function () {
+    Route::get('/subscription', [SubscriptionController::class, 'show'])
+        ->name('subscription.show');
+
+    // Auth Route
+    Route::post('/logout', [SessionController::class, 'destroy'])
+        ->name('logout');
+
+    // Jobs Route (Authenticated actions)
     Route::get('/jobs/create', [JobController::class, 'create'])
         ->name('jobs.create')
         ->can('create', Job::class);
-
-    Route::get('/jobs/{job}', [JobController::class, 'show'])
-        ->name('jobs.show');
 
     Route::post('/jobs', [JobController::class, 'store'])
         ->name('jobs.store')
@@ -118,10 +131,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
         ->name('jobs.destroy')
         ->can('delete', 'job');
-});
 
-// Bids
-Route::middleware(['auth'])->group(function () {
+    // Bids (All bid actions are authenticated)
     Route::get('/jobs/{job}/bids', [BidsController::class, 'index'])
         ->name('bids.index')
         ->can('viewAny', Bids::class);
@@ -153,13 +164,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/jobs/{job}/bids/status/reject', [BidsController::class, 'mass_reject'])
         ->name('bids.mass_reject')
         ->can('massRejectBids', 'job');
-});
 
-// Articles Route
-Route::get('/articles', [ArticleController::class, 'index'])
-    ->name('articles.index');
-
-Route::middleware(['auth'])->group(function () {
+    // Articles Route (Authenticated actions)
     Route::get('/articles/create', [ArticleController::class, 'create'])
         ->name('articles.create')
         ->can('create', Article::class);
@@ -167,9 +173,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/articles', [ArticleController::class, 'store'])
         ->name('articles.store')
         ->can('create', Article::class);
-
-    Route::get('/articles/{article}', [ArticleController::class, 'show'])
-        ->name('articles.show');
 
     Route::get('/articles/{article}/edit', [ArticleController::class, 'edit'])
         ->name('articles.edit')
@@ -182,13 +185,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/articles/{article}', [ArticleController::class, 'destroy'])
         ->name('articles.destroy')
         ->can('delete', 'article');
-});
 
-// Posts Route
-Route::get('/posts', [PostController::class, 'index'])
-    ->name('posts.index');
-
-Route::middleware(['auth'])->group(function () {
+    // Posts Route (Authenticated actions)
     Route::get('/posts/create', [PostController::class, 'create'])
         ->name('posts.create')
         ->can('create', Post::class);
@@ -196,9 +194,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/posts', [PostController::class, 'store'])
         ->name('posts.store')
         ->can('create', Post::class);
-
-    Route::get('/posts/{post}', [PostController::class, 'show'])
-        ->name('posts.show');
 
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
         ->name('posts.edit')
@@ -211,22 +206,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])
         ->name('posts.destroy');
 
-    // Comments
+    // Comments & Likes (Authenticated actions)
     Route::post('/comments/{post}', [CommentsController::class, 'store'])
         ->name('comments.store')
         ->can('create', Comments::class);
 
-    // Likes
     Route::post('/posts/{post}/like', [PostLikeController::class, 'store'])->name('posts.like');
-});
 
-// Profile
-Route::middleware(['auth'])->group(function () {
+    // Profile (Authenticated User's OWN Profile Management)
     Route::get('/profile', [ProfileController::class, 'show'])
         ->name('profile.show');
-
-    Route::get('/{username}', [ProfileController::class, 'show_user'])
-        ->name('profile.show.user');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
@@ -246,12 +235,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('freelancer.details.update')
         ->can('edit', FreelancerDetails::class);
 
-    Route::get('/{username}/freelancer/{freelancerDetails}', [FreelancerDetailsController::class, 'show_user'])
-        ->name('freelancer.details.show.user');
-});
-
-// Projects
-Route::middleware(['auth'])->group(function () {
+    // Projects (Authenticated User's OWN Projects Management)
     Route::get('/profile/projects/new', [ProjectsController::class, 'create'])
         ->name('projects.create')
         ->can('create', Projects::class);
@@ -260,7 +244,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('projects.store')
         ->can('create', Projects::class);
 
-    Route::get('/profile/projects/{project}', [ProjectsController::class, 'show'])
+    Route::get('/profile/projects/{project}', [ProjectsController::class, 'show'])  // For logged-in user to manage their project
         ->name('projects.show');
 
     Route::get('/profile/projects/{project}/edit', [ProjectsController::class, 'edit'])
@@ -273,13 +257,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/profile/projects/{project}', [ProjectsController::class, 'destroy'])
         ->name('projects.destroy');
-});
 
-Route::get('/{username}/projects/{project}', [ProjectsController::class, 'show_user'])
-    ->name('projects.show.user');
-
-// Image Upload and Delete Routes (API endpoints)
-Route::middleware(['auth'])->group(function () {
+    // Image Upload and Delete Routes (API endpoints)
     Route::post('/image/upload', [ImageUploadController::class, 'upload'])->name('image.upload');
     Route::delete('/image/delete', [ImageUploadController::class, 'delete'])->name('image.delete');
 });
+
+// Public user profiles and their associated public resources
+Route::get('/{username}/freelancer', [FreelancerDetailsController::class, 'show_user'])
+    ->name('freelancer.details.show.user');
+Route::get('/{username}/projects/{project}', [ProjectsController::class, 'show_user'])
+    ->name('projects.show.user');
+Route::get('/{username}', [ProfileController::class, 'show_user'])
+    ->name('profile.show.user');

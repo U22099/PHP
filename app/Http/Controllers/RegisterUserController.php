@@ -87,7 +87,7 @@ class RegisterUserController extends Controller
 
             Auth::login($user);
 
-            return redirect('/profile')->with('success', 'Email verified successfully!');
+            return redirect()->intended('/profile')->with('success', 'Email verified successfully!');
         } else {
             return back()->withErrors(['verification_code' => 'Incorrect verification code.']);
         }

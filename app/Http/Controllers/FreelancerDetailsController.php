@@ -11,13 +11,16 @@ use Illuminate\Validation\Validation\Exception;
 
 class FreelancerDetailsController extends Controller
 {
-    public function show_user(String $username, FreelancerDetails $freelancerDetails)
+    public function show_user(String $username)
     {
-        $freelancerDetails->load('user', 'stacks');
-
-        if (!$freelancerDetails->user->is(User::where('username', $username)->first())) {
-            abort(403, "You are not authorized to view this freelancer's details");
+        $user = User::where('username', $username)->first();
+        
+        if($user->role !== 'freelancer'){
+            abort(403, "This profile is not a freelancer");
         }
+
+        $freelancerDetails = Freelancer::where('user_id', $user->id)->first();
+        $freelancerDetails->load('user', 'stacks');
 
         return view('freelancer.show', [
             'freelancerDetails' => $freelancerDetails

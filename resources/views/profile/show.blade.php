@@ -3,6 +3,22 @@
         {{ $user->firstname . ' ' . $user->lastname }}
     </x-slot:title>
 
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('profile.show.user', ['username' => $user->username]) }}">
+        <meta property="og:title" content="{{ $user->firstname . ' ' . $user->lastname }}">
+        <meta property="og:description" content="{{ Str::limit($user->freelancer_details->professional_summary, 150) }}">
+        <meta property="og:image" content="{{ $user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $user->firstname . ' ' . $user->lastname }}">
+        <meta name="twitter:description" content="{{ Str::limit($user->freelancer_details->professional_summary, 150) }}">
+        <meta name="twitter:image" content="{{ $user->image }}">
+        <meta name="twitter:image:width" content="1200">
+        <meta name="twitter:image:height" content="630">
+    @endsection
+
     <div x-data="{
         currentTab: '{{ request()->has('tab') ? request()->get('tab') : ($user->role === 'freelancer' ? 'projects' : 'jobs') }}',
         showEditProfileModal: JSON.parse('{{ !session('error') ? 'false' : (session('error') === 'profile-form-error' ? 'true' : 'false') }}'),

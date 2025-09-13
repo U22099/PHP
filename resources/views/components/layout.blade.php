@@ -8,6 +8,26 @@
     @isset($title)
         <title>{{ $title }} | {{ config('app.name') }}</title>
     @endisset
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('og_title', config('app.name'))">
+    <meta property="og:description" content="@yield('og_description', 'A platform for developers to connect, collaborate, and find amazing job opportunities.')">
+    <meta property="og:image" content="{{ asset('images/default-social-share.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@bidmax">
+    <meta name="twitter:creator" content="@u22099">
+    <meta name="twitter:title" content="@yield('og_title', config('app.name'))">
+    <meta name="twitter:description" content="@yield('og_description', 'A platform for developers to connect, collaborate, and find amazing job opportunities.')">
+    <meta name="twitter:image" content="{{ asset('images/default-social-share.jpg') }}">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+
+    @yield('social_meta_tags')
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">

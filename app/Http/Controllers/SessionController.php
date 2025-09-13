@@ -35,7 +35,7 @@ class SessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect('/');
+        return redirect()->intended('/');
     }
 
     public function destroy()

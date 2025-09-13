@@ -7,12 +7,29 @@
     </x-slot:heading>
     
     <x-slot:headerbutton>
+        <x-share-button :url="route('articles.show', $article)" from="article" class="inline-flex items-center rounded-xl gap-2 bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 ring-1 ring-inset ring-blue-200" />
         @can('update', $article)
             <x-button type="link" href="/articles/{{ $article->id }}/edit" class="capitalize">
                 Edit Article
             </x-button>
         @endcan
     </x-slot:headerbutton>
+
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('articles.show', $article) }}">
+        <meta property="og:title" content="{{ $article->user->username }}">
+        <meta property="og:description" content="{{ Str::limit($article->body, 150) }}">
+        <meta property="og:image" content="{{ $article->user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $article->user->username }}">
+        <meta name="twitter:description" content="{{ Str::limit($article->body, 150) }}">
+        <meta name="twitter:image" content="{{ $article->user->image }}">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+    @endsection
 
     <div class="border rounded-xl p-8 md:p-10 lg:p-12 mb-8">
         <!-- Author and Date Section -->

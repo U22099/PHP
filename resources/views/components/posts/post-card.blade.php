@@ -47,11 +47,7 @@
             <span class="hidden md:inline" x-text="`Comment (${post.comments_count || 0})`"></span>
             <span class="md:hidden" x-text="`(${post.comments_count || 0})`"></span>
         </a>
-        <button
-            class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
-            <x-heroicon-o-share class="h-6 w-6 md:h-5 md:w-5" />
-            <span class="hidden md:inline">Share</span>
-        </button>
+        <x-share-button from="post" class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1" />
     </div>
 
     @auth

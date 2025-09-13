@@ -22,6 +22,22 @@
         </div>
     </x-slot:headerbutton>
 
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('jobs.show', $job) }}">
+        <meta property="og:title" content="{{ $job->user->username }}">
+        <meta property="og:description" content="{{ Str::limit($job->description, 150) }}">
+        <meta property="og:image" content="{{ $job->images ? $job->images[0] : $job->user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $job->user->username }}">
+        <meta name="twitter:description" content="{{ Str::limit($job->description, 150) }}">
+        <meta name="twitter:image" content="{{ $job->images ? $job->images[0] : $job->user->image }}">
+    <meta name="twitter:image:width" content="1200">
+    <meta name="twitter:image:height" content="630">
+    @endsection
+
     {{-- Job Information --}}
     <div class="border rounded-xl p-8 md:p-10 lg:p-12">
         <!-- Employer and Salary Section -->
@@ -63,9 +79,9 @@
                         Responsibilities include collaborative problem-solving, efficient project execution, and
                         continuous learning within a supportive environment. Join us and shape the future!</p>
                 @endif
-                @if (!empty($job->screenshots))
+                @if (!empty($job->images))
                     <h1 class="text-lg font-bold text-gray-500 mt-3 mb-4">Project Screenshots</h1>
-                    <x-image-gallery :images="$job->screenshots" />
+                    <x-image-gallery :images="$job->images" />
                 @endif
             </div>
             <p class="mt-4 text-gray-500 text-sm italic">

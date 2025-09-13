@@ -6,7 +6,9 @@
     @auth
         @php
             $user_bid = $job->bids->where('user_id', Auth::id())->first();
-            if($user_bid) $user_bid->load('user');
+            if ($user_bid) {
+                $user_bid->load('user');
+            }
         @endphp
         @if ($user_bid)
             <p class="text-gray-600">You have already bidded for this job.</p>
@@ -56,8 +58,8 @@
                     @enderror
                 </x-form-field>
 
-                <x-time-input class="w-full" label="Time Budget" fieldname="bid_time_budget"
-                    data="{{ $job->time_budget }}" required>
+                <x-time-input class="w-full" label="Time Budget" fieldname="bid_time_budget" data="{{ $job->time_budget }}"
+                    required>
                     <x-slot:icon>
                         <x-fluentui-time-picker-20 class="h-5 w-5 text-gray-400" />
                     </x-slot:icon>
@@ -78,4 +80,7 @@
             <p class="text-gray-600">Only freelancers can place bids on jobs.</p>
         @endif
     @endauth
+    @guest
+        <x-button type="link" href="{{ route('login') }}">Log in</x-button>
+    @endguest
 </div>

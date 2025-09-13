@@ -23,6 +23,7 @@
                 </p>
             </div>
         </div>
+        {{-- <x-share-button url="{{ route('profile.show.user', ['username' => $user->username]) }}" from="profile" class="inline-flex items-center gap-2 px-3 py-1.5 border border-transparent text-md font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" /> --}}
         @if (Auth::user()->id === $user->id)
             <div class="flex lg:flex-col flex-row lg:space-y-3 lg:space-x-0 space-y-0 space-x-4">
                 <x-button @click="showEditProfileModal = true;">

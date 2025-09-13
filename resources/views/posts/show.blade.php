@@ -7,7 +7,42 @@
         Post Details
     </x-slot:heading>
 
-    <div class="max-w-3xl mx-auto px-3 py-8">
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('posts.show', $post) }}">
+        <meta property="og:title" content="{{ $post->user->username }}">
+        <meta property="og:description" content="{{ Str::limit($post->body, 150) }}">
+        <meta property="og:image" content="{{ $post->images ? $post->images[0] : $post->user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $post->user->username }}">
+        <meta name="twitter:description" content="{{ Str::limit($post->body, 150) }}">
+        <meta name="twitter:image" content="{{ $post->images ? $post->images[0] : $post->user->image }}">
+        <meta name="twitter:image:width" content="1200">
+        <meta name="twitter:image:height" content="630">
+    @endsection
+
+    <div class="max-w-3xl mx-auto px-3 py-8" x-data="{
+        liked_by_user: JSON.parse(`{{ $post->liked_by_user ? 'true' : 'false' }}`),
+        likes_count: {{ $post->likes->count() ?? 0 }},
+        like() {
+            this.likes_count += !this.liked_by_user ? 1 : -1;
+    
+            fetch(`/posts/{{ $post->id }}/like`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }).then(response => response.json()).then(data => {
+                this.liked_by_user = data.liked;
+                this.likes_count = data.this.likes_count;
+            }).catch(() => {
+                this.liked_by_user = !this.liked_by_user;
+                this.likes_count += this.liked_by_user ? 1 : -1;
+            });
+        }
+    }">
         <div class="border rounded-lg p-6">
             <!-- Profile Header -->
             <div class="flex items-center mb-4">
@@ -28,7 +63,8 @@
                     {{-- Only show tags if there are any --}}
                     <div class="mt-1 flex flex-wrap gap-1">
                         @foreach ($post->tags as $tag)
-                            <a href='/{{ Auth::check() ? 'posts/' : '' }}?tags[]={{ $tag->name }}' class="font-bold text-blue-600 prose leading-relaxed text-base">
+                            <a href='/{{ Auth::check() ? 'posts/' : '' }}?tags[]={{ $tag->name }}'
+                                class="font-bold text-blue-600 prose leading-relaxed text-base">
                                 #{{ $tag->name }}
                             </a>
                         @endforeach
@@ -41,22 +77,21 @@
 
             <!-- Actions (Like, Comment, Share) - Same as index -->
             <div class="flex items-center justify-between text-gray-500 border-t border-gray-200 pt-4 mt-4">
-                <button
-                    class="flex items-center space-x-1 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1">
+                <button @click="like()"
+                    :class="{ 'text-blue-600': liked_by_user, 'hover:text-blue-600': !liked_by_user }"
+                    class="flex items-center space-x-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded px-2 py-1 text-sm md:text-md">
                     <x-heroicon-o-hand-thumb-up class="h-6 w-6 md:h-5 md:w-5" />
-                    <span class="hidden md:inline">Like ({{ $post->likes_count ?? 0 }})</span>
-                    <span class="md:hidden">({{ $post->likes_count ?? 0 }})</span>
+                    <span class="hidden md:inline" x-text="`Like (${likes_count || 0})`"></span>
+                    <span class="md:hidden" x-text="`(${likes_count || 0})`"></span>
                 </button>
-                <span class="flex items-center space-x-1 text-green-600">
+                <a href="#comments" class="flex items-center space-x-1 text-green-600">
                     <x-heroicon-o-chat-bubble-left class="h-6 w-6 md:h-5 md:w-5" />
-                    <span class="hidden md:inline">Comment ({{ $post->comments_count ?? $post->comments->count() }})</span>
+                    <span class="hidden md:inline">Comment
+                        ({{ $post->comments_count ?? $post->comments->count() }})</span>
                     <span class="md:hidden">({{ $post->comments_count ?? $post->comments->count() }})</span>
-                </span>
-                <button
-                    class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1">
-                    <x-heroicon-o-share class="h-6 w-6 md:h-5 md:w-5" />
-                    <span class="hidden md:inline">Share</span>
-                </button>
+                </a>
+                <x-share-button url="{{ route('posts.show', $post) }}" from="post"
+                    class="flex items-center space-x-1 hover:text-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 rounded px-2 py-1" />
             </div>
 
             {{-- Optional: Edit/Delete buttons for owner --}}

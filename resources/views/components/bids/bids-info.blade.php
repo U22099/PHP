@@ -47,8 +47,12 @@
         @endif
     </div>
 
-    <x-button type="link" href="/jobs/{{ $job->id }}/bids"
-        class="capitalize w-full flex justify-center items-center mt-2">
-        View Proposals
-    </x-button>
+    <div class="flex flex-col gap-2">
+        <x-button type="link" href="/jobs/{{ $job->id }}/bids"
+            class="capitalize w-full flex justify-center items-center mt-2">
+            View Proposals
+        </x-button>
+        <x-share-button url="{{ route('jobs.show', $job) }}" from="job"
+            class="w-full flex justify-center items-center gap-2 px-3 py-1.5 border border-transparent text-md font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" />
+    </div>
 </div>

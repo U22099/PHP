@@ -6,10 +6,10 @@
         @click="window.location.href = '/{{ Auth::user()->id === $user_id ? 'profile' : Auth::user()->username }}/projects/{{ $project->id }}';">
         <h3 class="text-xl font-bold text-gray-800 mb-1">{{ $project->title }}</h3>
         <div class="text-gray-600 text-sm mb-2 line-clamp-3">{{ strip_tags($project->description) }}</div>
-        <a href="{{ $project->link }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+        <x-button type="link" href="{{ $project->link }}" target="_blank">
             View Project Link
             <x-heroicon-o-link class="inline-block w-4 h-4 ml-1 -mt-0.5" />
-        </a>
+        </x-button>
 
 
         @if (!empty($project->images))
@@ -26,11 +26,7 @@
                 <x-heroicon-o-pencil class="w-4 h-4 mr-1" />
                 Edit
             </button>
-            <button
-                class="inline-flex items-center px-3 py-1.5 border border-transparent text-md font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                <x-heroicon-o-share class="w-4 h-4 mr-1" />
-                Share
-            </button>
+            <x-share-button url="{{ route('projects.show.user', ['username' => Auth::user()->username, 'project' => $project->id]) }}" from="project" class="inline-flex items-center gap-2 px-3 py-1.5 border border-transparent text-md font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" />
             <form method="POST" action="/projects/{{ $project->id }}"
                 onsubmit="return confirm('Are you sure you want to delete this project?');">
                 @csrf

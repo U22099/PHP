@@ -2,7 +2,7 @@
 
 <x-layout>
     <x-slot:title>
-        Freelancer Profile: {{ $freelancerDetails->professional_name }}
+        {{ $freelancerDetails->user->firstname . ' ' . $freelancerDetails->user->lastname }}: {{ $freelancerDetails->professional_name }}
     </x-slot:title>
 
     <x-slot:heading>
@@ -16,6 +16,23 @@
             Go Back
         </x-button>
     </x-slot:headerbutton>
+
+    @section('social_meta_tags')
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ route('freelancer.details.show.user', ['username' => $freelancerDetails->user->username]) }}">
+        <meta property="og:title" content="{{ $freelancerDetails->user->firstname . ' ' . $freelancerDetails->user->lastname }}: {{ $freelancerDetails->professional_name }}">
+        <meta property="og:description" content="{{ Str::limit($freelancerDetails->user->freelancer_details->professional_summary, 150) }}">
+        <meta property="og:image" content="{{ $freelancerDetails->user->image }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:title" content="{{ $freelancerDetails->user->firstname . ' ' . $freelancerDetails->user->lastname }}: {{ $freelancerDetails->professional_name }}">
+        <meta name="twitter:description" content="{{ Str::limit($freelancerDetails->user->freelancer_details->professional_summary, 150) }}">
+        <meta name="twitter:image" content="{{ $freelancerDetails->user->image }}">
+        <meta name="twitter:image:width" content="1200">
+        <meta name="twitter:image:height" content="630">
+    @endsection
+
     <div class="bg-white border rounded-lg px-4 py-5 sm:p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-2xl leading-6 font-bold text-gray-600">
