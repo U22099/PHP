@@ -74,14 +74,6 @@
                         Posts
                     </x-nav-link>
                 @endguest
-                @auth
-                    <x-nav-link href="/subscription" :active="request()->routeIs('subscription.*')">
-                        <x-slot:icon>
-                            <x-fluentui-premium-person-24-o class="h-5 w-5" />
-                        </x-slot:icon>
-                        Subscription
-                    </x-nav-link>
-                @endauth
                 <x-nav-link href="/contact" :active="request()->routeIs('contact.*')">
                     <x-slot:icon><x-heroicon-o-envelope class="h-5 w-5" /></x-slot:icon>
                     {{-- Added Envelope icon --}}
@@ -95,11 +87,33 @@
                     </x-nav-link>
                 @endguest
                 @auth
-                    <x-nav-link href="/profile" :active="request()->is('profile')" @click="open = false">
-                        <x-slot:icon><x-heroicon-o-user class="h-5 w-5" /></x-slot:icon>
-                        {{-- Added User icon --}}
-                        Profile <span aria-hidden="true">&rarr;</span>
-                    </x-nav-link>
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                        <button @click="open = !open" class="flex items-center text-lg">
+                            <img class="w-12 h-12 rounded-full object-cover mr-2"
+                                src="{{ Auth::user()->image ? Auth::user()->image : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->firstname . ' ' . Auth::user()->lastname) . '&color=FFFFFF&background=312e81' }}"
+                                alt="{{ Auth::user()->username }}">
+                            <span>{{ Auth::user()->username }}</span>
+                            <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <div x-show="open" x-transition
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 text-black">
+                            <a href="{{ route('profile.show') }}"
+                                class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+                            <a href="{{ route('subscription.show') }}"
+                                class="block px-4 py-2 text-sm hover:bg-gray-100">Subscription</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                    class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100">Log Out</button>
+                            </form>
+                        </div>
+                    </div>
                 @endauth
             </div>
 

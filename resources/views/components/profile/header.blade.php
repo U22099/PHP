@@ -6,7 +6,7 @@
             {{-- asset('storage/' . $user->image) --}}
             <img class="w-24 h-24 rounded-full object-cover border-4 border-indigo-500"
                 src="{{ $user->image ? $user->image : 'https://ui-avatars.com/api/?name=' . urlencode($user->firstname . ' ' . $user->lastname) . '&color=FFFFFF&background=312e81' }}"
-                alt="{{ $user->username }}">
+                alt="{{ $user->username }}"/>
             <div>
                 <h1 class="flex gap-1 items-center text-2xl md:text-3xl font-extrabold text-gray-900">
                     {{ $user->firstname }}

@@ -106,6 +106,10 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/subscription', [SubscriptionController::class, 'show'])
         ->name('subscription.show');
+    Route::get('/subscription/create', [SubscriptionController::class, 'create'])
+        ->name('subscription.create');
+    Route::get('/subscription/cancel', [SubscriptionController::class, 'cancel'])
+        ->name('subscription.cancel');
 
     // Auth Route
     Route::post('/logout', [SessionController::class, 'destroy'])
